@@ -548,6 +548,132 @@ class SpideyHandler(SimpleHTTPRequestHandler):
             if not FFMPEG_BIN:
                 self.send_json({"error": "FFmpeg engine not found on system. Check installation."}, status=500)
                 return
+            prompt = payload.get("prompt", "The Lone Samurai Cinematic Film")
+            style = payload.get("style", "photorealistic_samurai")
+            ratio = payload.get("ratio", "16:9")
+            title = payload.get("title", "The Lone Samurai (30s Cinema)")
+
+            width, height = (1280, 720)
+            if ratio == "9:16": width, height = (720, 1280)
+            elif ratio == "1:1": width, height = (720, 720)
+
+            ts = int(time.time())
+            out_name = f"samurai_film_30s_{ts}.mp4"
+            out_path = VIDEOS_DIR / out_name
+
+            samurai_imgs = [BASE_DIR / "assets" / f"samurai_scene_{i}.jpg" for i in range(1, 5)]
+
+            try:
+                dur_per = 7.5
+                fps = 25
+                frames_cnt = int(dur_per * fps)
+                clips = []
+                motions = [
+                    f"zoompan=z='min(zoom+0.0008,1.20)':d={frames_cnt}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={width}x{height}",
+                    f"zoompan=z='1.15':d={frames_cnt}:x='if(lte(on,1),(iw-iw/zoom)/3,x+0.8)':y='ih/2-(ih/zoom/2)':s={width}x{height}",
+                    f"zoompan=z='min(zoom+0.001,1.25)':d={frames_cnt}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={width}x{height}",
+                    f"zoompan=z='max(1.22-0.0007*on,1.0)':d={frames_cnt}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={width}x{height}"
+                ]
+
+                for idx, (img_p, zp) in enumerate(zip(samurai_imgs, motions), 1):
+                    clip_p = TEMP_DIR / f"sam_c_{idx}_{ts}.mp4"
+                    vf = f"scale={width}:{height}:force_original_aspect_ratio=increase,crop={width}:{height},{zp},format=yuv420p"
+                    cmd = [
+                        FFMPEG_BIN, "-y", "-loop", "1", "-i", str(img_p),
+                        "-vf", vf, "-t", str(dur_per), "-r", str(fps),
+                        "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+                        str(clip_p)
+                    ]
+                    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+                    clips.append(clip_p)
+
+                concat_f = TEMP_DIR / f"concat_sam_{ts}.txt"
+                lines = [f"file '{c.as_posix()}'" for c in clips]
+                concat_f.write_text("\n".join(lines), encoding="utf-8")
+                merged_sam = TEMP_DIR / f"merged_sam_{ts}.mp4"
+                subprocess.run([FFMPEG_BIN, "-y", "-f", "concat", "-safe", "0", "-i", str(concat_f), "-c", "copy", str(merged_sam)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+                audio_score = "aevalsrc=0.35*sin(2*PI*55*t)+0.2*sin(2*PI*110*t)*(1+0.3*sin(2*PI*0.25*t))+0.15*sin(2*PI*220*t)*(1+0.4*cos(2*PI*0.5*t))+0.12*sin(2*PI*440*t)*exp(-3*mod(t,5)):s=44100:c=stereo"
+
+                subprocess.run([
+                    FFMPEG_BIN, "-y",
+                    "-i", str(merged_sam),
+                    "-f", "lavfi", "-i", audio_score,
+                    "-t", "30",
+                    "-c:v", "copy",
+                    "-c:a", "aac", "-b:a", "128k",
+                    str(out_path)
+                ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+                for c in clips: c.unlink(missing_ok=True)
+                concat_f.unlink(missing_ok=True)
+                merged_sam.unlink(missing_ok=True)
+
+                size = out_path.stat().st_size
+                acts = [
+                    {"act": 1, "name": "Misty Bamboo Forest Path", "time": "00:00 - 07:50", "desc": "Wide tracking shot of lone samurai in mist with golden dawn rays."},
+                    {"act": 2, "name": "Focused Gaze & Water Droplets", "time": "07:50 - 15:00", "desc": "Medium close-up of intense eyes under straw hat."},
+                    {"act": 3, "name": "Katana & Falling Autumn Leaves", "time": "15:00 - 22:50", "desc": "Macro detail of ornate blade and swirling maple leaves."},
+                    {"act": 4, "name": "Sunrise Summit Horizon", "time": "22:50 - 30:00", "desc": "Hero low-angle shot over sea of clouds."}
+                ]
+
+                self.send_json({
+                    "ok": True,
+                    "title": "The Lone Samurai (30s Cinema)",
+                    "prompt": prompt,
+                    "style": "photorealistic_samurai",
+                    "duration": 30,
+                    "resolution": f"{width}x{height}",
+                    "size_bytes": size,
+                    "size_mb": round(size / (1024 * 1024), 2),
+                    "url": f"/videos/{out_name}",
+                    "filename": out_name,
+                    "acts": acts
+                })
+            except Exception as e:
+                self.send_json({"error": f"Render failed: {e}"}, status=500)
+            return
+
+        if self.path == "/api/connectors/toggle":
+            conn_id = payload.get("id")
+            conn_file = BASE_DIR / "connectors.json"
+            conns = {}
+            if conn_file.exists():
+                try:
+                    conns = json.loads(conn_file.read_text(encoding="utf-8"))
+                except Exception:
+                    conns = {}
+            current = conns.get(conn_id, False)
+            conns[conn_id] = not current
+            conn_file.write_text(json.dumps(conns, indent=2), encoding="utf-8")
+            self.send_json({"ok": True, "id": conn_id, "connected": conns[conn_id]})
+            return
+
+        if self.path == "/api/upload":
+            filename = payload.get("filename", f"upload_{int(time.time())}.png")
+            file_b64 = payload.get("data_base64", "")
+            if not file_b64:
+                self.send_json({"error": "No file data provided"}, status=400)
+                return
+            if "," in file_b64:
+                file_b64 = file_b64.split(",", 1)[1]
+            out_file = VIDEOS_DIR / filename
+            try:
+                out_file.write_bytes(base64.b64decode(file_b64))
+                self.send_json({
+                    "ok": True,
+                    "name": filename,
+                    "url": f"/videos/{urllib.parse.quote(filename)}",
+                    "size_mb": round(out_file.stat().st_size / (1024 * 1024), 2)
+                })
+            except Exception as e:
+                self.send_json({"error": f"Upload failed: {e}"}, status=500)
+            return
+
+        if self.path == "/api/engine/create-30s-video":
+            if not FFMPEG_BIN:
+                self.send_json({"error": "FFmpeg engine not found on system. Check installation."}, status=500)
+                return
             prompt = payload.get("prompt", "Infinite Quantum Reality Voyage")
             style = payload.get("style", "infinity_cosmos")
             ratio = payload.get("ratio", "16:9")
@@ -562,6 +688,92 @@ class SpideyHandler(SimpleHTTPRequestHandler):
             ts = int(time.time())
             out_name = f"infinity_30s_{ts}.mp4"
             out_path = VIDEOS_DIR / out_name
+
+            # If prompt is for Samurai or cinematic scene, use real photorealistic scene frames
+            samurai_imgs = [
+                BASE_DIR / "assets" / f"samurai_scene_{i}.jpg" for i in range(1, 5)
+            ]
+            if any(k in prompt.lower() for k in ["samurai", "forest", "mist", "blade", "sword", "lone", "warrior"]) and all(p.exists() for p in samurai_imgs):
+                try:
+                    dur_per = 7.5
+                    fps = 25
+                    frames_cnt = int(dur_per * fps)
+                    clips = []
+                    motions = [
+                        f"zoompan=z='min(zoom+0.0008,1.20)':d={frames_cnt}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={width}x{height}",
+                        f"zoompan=z='1.15':d={frames_cnt}:x='if(lte(on,1),(iw-iw/zoom)/3,x+0.8)':y='ih/2-(ih/zoom/2)':s={width}x{height}",
+                        f"zoompan=z='min(zoom+0.001,1.25)':d={frames_cnt}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={width}x{height}",
+                        f"zoompan=z='max(1.22-0.0007*on,1.0)':d={frames_cnt}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={width}x{height}"
+                    ]
+                    for idx, (img_p, zp) in enumerate(zip(samurai_imgs, motions), 1):
+                        clip_p = TEMP_DIR / f"sam_c_{idx}_{ts}.mp4"
+                        vf = f"scale={width}:{height}:force_original_aspect_ratio=increase,crop={width}:{height},{zp},format=yuv420p"
+                        subprocess.run([
+                            FFMPEG_BIN, "-y", "-loop", "1", "-i", str(img_p),
+                            "-vf", vf, "-t", str(dur_per), "-r", str(fps),
+                            "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p",
+                            str(clip_p)
+                        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+                        clips.append(clip_p)
+
+                    concat_f = TEMP_DIR / f"concat_sam_{ts}.txt"
+                    concat_f.write_text("\n".join(f"file '{c.as_posix()}'" for c in clips), encoding="utf-8")
+                    merged_sam = TEMP_DIR / f"merged_sam_{ts}.mp4"
+                    subprocess.run([
+                        FFMPEG_BIN, "-y", "-f", "concat", "-safe", "0", "-i", str(concat_f),
+                        "-c", "copy", str(merged_sam)
+                    ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+                    audio_score = (
+                        "aevalsrc="
+                        "0.35*sin(2*PI*55*t) + "
+                        "0.2*sin(2*PI*110*t)*(1+0.3*sin(2*PI*0.25*t)) + "
+                        "0.15*sin(2*PI*220*t)*(1+0.4*cos(2*PI*0.5*t)) + "
+                        "0.12*sin(2*PI*440*t)*exp(-3*mod(t,5))"
+                        ":s=44100:c=stereo"
+                    )
+
+                    subprocess.run([
+                        FFMPEG_BIN, "-y", "-i", str(merged_sam),
+                        "-f", "lavfi", "-i", audio_score,
+                        "-t", "30",
+                        "-vf", (
+                            "drawtext=text='THE LONE SAMURAI // 30s CINEMATIC':fontcolor=white@0.85:fontsize=20:x=40:y=40:shadowcolor=black:shadowx=2:shadowy=2,"
+                            "drawtext=text='ACT %{eif\\:trunc(t/7.5)+1\\:d} OF 4':fontcolor=white:fontsize=22:x=40:y=h-70:shadowcolor=black:shadowx=2:shadowy=2,"
+                            "drawtext=text='%{pts\\:hms}':fontcolor=white@0.7:fontsize=18:x=w-160:y=h-70:shadowcolor=black:shadowx=2:shadowy=2"
+                        ),
+                        "-af", "afade=t=in:ss=0:d=1.5,afade=t=out:st=28.5:d=1.5",
+                        "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-b:v", "3500k",
+                        "-c:a", "aac", "-b:a", "128k",
+                        str(out_path)
+                    ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+                    for c in clips: c.unlink(missing_ok=True)
+                    concat_f.unlink(missing_ok=True)
+                    merged_sam.unlink(missing_ok=True)
+
+                    size = out_path.stat().st_size
+                    self.send_json({
+                        "ok": True,
+                        "title": "The Lone Samurai (30s Cinema)",
+                        "prompt": prompt,
+                        "style": "photorealistic_samurai",
+                        "duration": 30,
+                        "resolution": f"{width}x{height}",
+                        "size_bytes": size,
+                        "size_mb": round(size / (1024 * 1024), 2),
+                        "url": f"/videos/{out_name}",
+                        "filename": out_name,
+                        "acts": [
+                            {"act": 1, "name": "Misty Bamboo Forest Path", "time": "00:00 - 07:50", "desc": "Wide tracking shot of lone samurai in mist."},
+                            {"act": 2, "name": "Focused Gaze & Water Droplets", "time": "07:50 - 15:00", "desc": "Medium close-up of intense eyes under straw hat."},
+                            {"act": 3, "name": "Katana & Falling Autumn Leaves", "time": "15:00 - 22:50", "desc": "Macro detail of ornate blade and swirling maple leaves."},
+                            {"act": 4, "name": "Sunrise Summit Horizon", "time": "22:50 - 30:00", "desc": "Hero low-angle shot over sea of clouds."}
+                        ]
+                    })
+                    return
+                except Exception as e:
+                    print("Samurai render fallback:", e)
 
             if style == "cyber_matrix":
                 video_src = f"mandelbrot=size={width}x{height}:rate=25:maxiter=160:inner=period:start_scale=1.8"

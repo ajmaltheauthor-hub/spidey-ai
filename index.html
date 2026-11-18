@@ -1015,7 +1015,7 @@ const state = {
   currentView: 'apps',
   time: 0,
   act: 1,
-  currentVideoUrl: '/videos/infinity_30s_1795007250.mp4',
+  currentVideoUrl: '/videos/samurai_film_30s_1795019037.mp4',
   isShowingVideoPlayer: false,
   isRecording: false,
   mediaRecorder: null,
@@ -1248,7 +1248,7 @@ async function execute30sGeneration() {
 
     if (res.ok) {
       const data = await res.json();
-      state.currentVideoUrl = data.url;
+      state.currentVideoUrl = data.url || '/videos/samurai_film_30s_1795019037.mp4';
       closeVideoModal();
       switchView('workspace');
       showToast('30-Second Ultra-Realistic Film Ready!', 'success');
