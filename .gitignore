@@ -1,0 +1,14 @@
+# Secrets and environment
+.env
+*.env
+__pycache__/
+*.pyc
+
+# Local render cache and large video temp
+temp_render/
+*.tmp
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db

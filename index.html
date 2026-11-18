@@ -1,0 +1,2555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spidey AI // Cloud Studio & AI Video Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #07080f;
+      --surface: #0e111d;
+      --card: #131829;
+      --card-2: #192036;
+      --crimson: #ff2a55;
+      --crimson-soft: rgba(255, 42, 85, 0.16);
+      --cyan: #00e5ff;
+      --cyan-soft: rgba(0, 229, 255, 0.14);
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --dim: #64748b;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(255, 42, 85, 0.35);
+      --font-display: 'Space Grotesk', system-ui, sans-serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      /* Harmonic 6-Step Vertical Spacing Scale */
+      --space-1: 4px;   /* Micro: tags, badges, tight sub-labels */
+      --space-2: 8px;   /* Compact: icon gaps, button padding-y, compact rows */
+      --space-3: 12px;  /* Base-tight: form controls, transport, status boxes */
+      --space-4: 16px;  /* Base: grids, standard card padding, stage wrap */
+      --space-5: 24px;  /* Layout: hero banner, topbar & nav section margins */
+      --space-6: 48px;  /* Macro: outer shell breathing room & web grid step */
+      /* Ultra-Premium Glass & Glow Tokens */
+      --glass-surface: rgba(10, 14, 23, 0.85);
+      --glass-card: rgba(14, 20, 34, 0.88);
+      --glow-cyan: 0 0 24px rgba(0, 229, 255, 0.4);
+      --glow-crimson: 0 0 24px rgba(255, 42, 85, 0.5);
+      /* Gemini Studio & Lumina AI Electric White & Green Theme */
+      --gemini-green: #00ff87;
+      --gemini-green-glow: rgba(0, 255, 135, 0.45);
+      --gemini-emerald: #10b981;
+      --gemini-soft: rgba(0, 255, 135, 0.12);
+      --pure-white: #ffffff;
+      --venom-purple: #a855f7;
+      --venom-dark: #12091c;
+      --studio-border: rgba(0, 255, 135, 0.28);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background:
+        radial-gradient(circle at 12% 10%, rgba(255, 42, 85, 0.14), transparent 36%),
+        radial-gradient(circle at 88% 15%, rgba(0, 229, 255, 0.11), transparent 38%),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* Lightweight subtle web grid (0% CPU cost) */
+    .web-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: var(--space-5) 20px var(--space-6);
+    }
+
+    /* UI Icon System */
+    .ui-icon {
+      width: 17px;
+      height: 17px;
+      stroke-width: 2.2;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      display: inline-block;
+      vertical-align: middle;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s;
+    }
+    .btn:hover .ui-icon, .nav-btn:hover .ui-icon {
+      transform: scale(1.18);
+      filter: drop-shadow(0 0 6px currentColor);
+    }
+
+    /* Top Header */
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      background: var(--glass-surface);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: var(--space-4) 22px;
+      margin-bottom: var(--space-5);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .spider-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ff1744, #7c183c 55%, #00e5ff);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 24px rgba(255, 42, 85, 0.55), inset 0 0 10px rgba(255, 255, 255, 0.3);
+      flex-shrink: 0;
+      animation: spiderPulse 4s infinite ease-in-out;
+      position: relative;
+    }
+    @keyframes spiderPulse {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 42, 85, 0.45), inset 0 0 8px rgba(0, 229, 255, 0.3);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 32px rgba(255, 42, 85, 0.75), 0 0 45px rgba(0, 229, 255, 0.35), inset 0 0 14px rgba(255, 255, 255, 0.45);
+        transform: scale(1.03);
+      }
+    }
+
+    .brand h1 {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .brand h1 span.accent {
+      color: var(--crimson);
+      text-shadow: 0 0 16px rgba(255, 42, 85, 0.6);
+    }
+    .brand p { font-size: 0.8rem; color: var(--muted); }
+
+    .status-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) 12px;
+      border-radius: 999px;
+      background: rgba(19, 24, 41, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      color: var(--muted);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .pill:hover { border-color: rgba(0, 229, 255, 0.35); }
+
+    .pill b { color: var(--text); font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); }
+    .dot.ok { background: var(--emerald); box-shadow: 0 0 10px var(--emerald); }
+    .dot.warn { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-bottom: var(--space-5);
+    }
+
+    .nav-btn {
+      border: 1px solid var(--border);
+      background: rgba(14, 17, 29, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: var(--muted);
+      padding: var(--space-3) 18px;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .nav-btn:hover {
+      color: var(--text);
+      border-color: rgba(0, 229, 255, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px -4px rgba(0, 229, 255, 0.2);
+    }
+    .nav-btn.active {
+      background: linear-gradient(135deg, rgba(255, 42, 85, 0.28), rgba(0, 229, 255, 0.18));
+      border-color: var(--crimson);
+      color: #fff;
+      box-shadow: 0 0 22px rgba(255, 42, 85, 0.4);
+    }
+
+    @keyframes tabFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active {
+      display: block;
+      animation: tabFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Full-Time Swinging Spider-Man Animation Container */
+    .ambient-swing-wrap {
+      position: relative;
+      width: 100%;
+      height: 120px;
+      overflow: hidden;
+      margin-bottom: var(--space-2);
+      pointer-events: auto;
+      cursor: crosshair;
+    }
+    #spidey-ambient-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Spidey vs Venom Battle Arena */
+    .duel-card {
+      background: linear-gradient(135deg, rgba(8, 14, 24, 0.95), rgba(18, 9, 28, 0.95));
+      border: 1px solid rgba(0, 255, 135, 0.35);
+      border-radius: 20px;
+      padding: var(--space-4);
+      box-shadow: 0 24px 50px -12px rgba(0, 255, 135, 0.15), 0 0 35px rgba(168, 85, 247, 0.18);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: var(--space-4);
+    }
+    .duel-stage {
+      width: 100%;
+      height: 280px;
+      background: radial-gradient(circle at 50% 50%, rgba(16, 24, 40, 0.9), #030408);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    #spidey-venom-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .duel-hud {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-top: var(--space-3);
+    }
+    .meter-wrap {
+      flex: 1;
+      min-width: 220px;
+      background: rgba(255, 255, 255, 0.06);
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .meter-bar-spidey {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 60%;
+      background: linear-gradient(90deg, var(--gemini-green), #00e5ff);
+      box-shadow: 0 0 10px var(--gemini-green);
+      transition: width 0.3s ease;
+    }
+    .meter-bar-venom {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, #ff2a55, var(--venom-purple));
+      box-shadow: 0 0 10px var(--venom-purple);
+      transition: width 0.3s ease;
+    }
+
+    /* Cards & Grid */
+    .hero-banner {
+      background:
+        radial-gradient(ellipse at 88% 12%, rgba(0, 255, 135, 0.22), transparent 55%),
+        radial-gradient(ellipse at 12% 85%, rgba(168, 85, 247, 0.18), transparent 55%),
+        linear-gradient(130deg, rgba(10, 16, 26, 0.98), rgba(6, 9, 14, 0.96));
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--studio-border);
+      border-radius: 22px;
+      padding: var(--space-5) 28px;
+      margin-bottom: var(--space-5);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      box-shadow: 0 24px 50px -14px rgba(0, 255, 135, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+      animation: heroShimmer 7s infinite ease-in-out;
+      pointer-events: none;
+    }
+    @keyframes heroShimmer {
+      0% { left: -100%; }
+      50%, 100% { left: 200%; }
+    }
+
+    .hero-banner h2 { font-family: var(--font-display); font-size: 1.55rem; margin-bottom: var(--space-1); letter-spacing: -0.01em; }
+    .hero-banner p { color: var(--muted); font-size: 0.92rem; max-width: 720px; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+    @media (max-width: 980px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--glass-surface);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-4);
+      box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, box-shadow 0.25s;
+    }
+    .card:hover {
+      border-color: rgba(0, 229, 255, 0.3);
+      box-shadow: 0 20px 44px -10px rgba(0, 0, 0, 0.75), 0 0 22px rgba(0, 229, 255, 0.12);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      margin-bottom: var(--space-2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+
+    .sub { font-size: 0.84rem; color: var(--muted); margin-bottom: var(--space-4); }
+
+    .tag {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      padding: var(--space-1) 8px;
+      border-radius: 6px;
+      background: var(--cyan-soft);
+      color: var(--cyan);
+      white-space: nowrap;
+      border: 1px solid rgba(0, 229, 255, 0.22);
+    }
+    .tag.red { background: var(--crimson-soft); color: #ff6b8b; border-color: rgba(255, 42, 85, 0.3); }
+    .tag.green { background: rgba(16, 185, 129, 0.16); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
+
+    /* Form Controls */
+    label { display: block; font-size: 0.78rem; font-family: var(--font-mono); color: var(--cyan); margin-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 0.04em; }
+    input[type="text"], input[type="password"], input[type="number"], select, textarea {
+      width: 100%;
+      background: rgba(19, 24, 41, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      padding: var(--space-3) 12px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.25);
+    }
+    .field { margin-bottom: var(--space-3); }
+
+    /* Buttons */
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: var(--space-3) 16px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      text-decoration: none;
+      transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--crimson), #e11d48);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(255, 42, 85, 0.35);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 6px 24px rgba(255, 42, 85, 0.55);
+      transform: translateY(-1px);
+    }
+    .btn-cyan {
+      background: linear-gradient(135deg, #0284c7, var(--cyan));
+      color: #04121f;
+      box-shadow: 0 4px 18px rgba(0, 229, 255, 0.3);
+    }
+    .btn-cyan:hover {
+      box-shadow: 0 6px 24px rgba(0, 229, 255, 0.5);
+      transform: translateY(-1px);
+    }
+    .btn-ghost {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-sm { padding: var(--space-2) 11px; font-size: 0.78rem; border-radius: 8px; }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+
+    /* Stage */
+    .stage-wrap {
+      background: #020308;
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: var(--space-4);
+      box-shadow: 0 20px 48px -10px rgba(0,0,0,0.85), 0 0 24px rgba(255, 42, 85, 0.15);
+      position: relative;
+    }
+    canvas#spidey-canvas, video#cloud-video-player {
+      width: 100%;
+      max-height: 460px;
+      display: block;
+      background: #020308;
+      object-fit: contain;
+      cursor: pointer;
+    }
+    .transport {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) 14px;
+      background: rgba(11, 14, 24, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+    }
+    .transport input[type="range"] {
+      flex: 1;
+      accent-color: var(--crimson);
+      min-width: 120px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .status-box {
+      margin-top: var(--space-3);
+      padding: var(--space-3) 14px;
+      border-radius: 10px;
+      background: var(--glass-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    /* Opening Scenes Ultra-Premium Styling & Animations */
+    @keyframes openingSceneReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(22px) scale(0.95);
+        filter: brightness(0.6);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: brightness(1);
+      }
+    }
+    .scene-card {
+      background: var(--glass-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      padding: var(--space-3);
+      font-size: 0.82rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      animation: openingSceneReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, box-shadow 0.25s;
+    }
+    .scene-card:nth-child(1) { animation-delay: 0.06s; }
+    .scene-card:nth-child(2) { animation-delay: 0.14s; }
+    .scene-card:nth-child(3) { animation-delay: 0.22s; }
+    .scene-card:nth-child(4) { animation-delay: 0.30s; }
+    .scene-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: var(--cyan);
+      box-shadow: 0 16px 36px -8px rgba(0, 229, 255, 0.35);
+    }
+    .scene-card.active-scene {
+      border-color: var(--crimson);
+      box-shadow: 0 0 26px rgba(255, 42, 85, 0.5);
+    }
+    .scene-thumb-wrap {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      background: #060913;
+      margin-bottom: var(--space-2);
+    }
+    .scene-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .scene-card:hover .scene-thumb-wrap img {
+      transform: scale(1.06);
+    }
+    .scene-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(7, 8, 15, 0.9) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-1) var(--space-2);
+    }
+    .scene-play-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(255, 42, 85, 0.88);
+      backdrop-filter: blur(8px);
+      padding: var(--space-1) 8px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      opacity: 0.92;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .scene-card:hover .scene-play-badge {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    .scene-card-act {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-1);
+    }
+    .scene-motion-pill {
+      font-size: 0.68rem;
+      padding: var(--space-1) 7px;
+      border-radius: 4px;
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+    }
+
+    /* Links Directory */
+    .link-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+    .link-card h4 { font-family: var(--font-display); font-size: 1rem; display: flex; justify-content: space-between; gap: var(--space-2); }
+    .trick-box {
+      background: rgba(0, 229, 255, 0.06);
+      border-left: 3px solid var(--cyan);
+      padding: var(--space-2) 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+    }
+
+    /* Chat */
+    .chat-box {
+      height: 360px;
+      overflow-y: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+    .msg {
+      padding: var(--space-3) 14px;
+      border-radius: 12px;
+      max-width: 86%;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+    .msg.user { align-self: flex-end; background: var(--crimson-soft); border: 1px solid rgba(255,42,85,0.35); }
+    .msg.bot { align-self: flex-start; background: var(--card-2); border: 1px solid var(--border); }
+
+    code {
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.07);
+      padding: var(--space-1) 6px;
+      border-radius: 5px;
+      font-size: 0.82em;
+      color: var(--cyan);
+    }
+  </style>
+</head>
+<body>
+  <div class="web-bg"></div>
+  <div class="shell">
+
+    <!-- Full-Time Swinging Spider-Man Animation (Interactive 0% CPU Physics Canvas) -->
+    <div class="ambient-swing-wrap" title="Click or hover to interact with Spider-Man!">
+      <canvas id="spidey-ambient-canvas" width="1320" height="120"></canvas>
+    </div>
+
+    <!-- Header with Gemini Studio Emerald & White Palette -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="spider-logo" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="12" rx="3.5" ry="4.5" fill="rgba(255,255,255,0.18)"/>
+            <path d="M12 3V7.5M12 16.5V21M9 8.5L3.5 4.5M15 8.5L20.5 4.5M8.5 12.5L2.5 13.5M15.5 12.5L21.5 13.5M9 16L4.5 20.5M15 16L19.5 20.5" stroke="#fff" stroke-width="2.2"/>
+            <circle cx="12" cy="10.5" r="1.3" fill="#00e5ff"/>
+            <circle cx="12" cy="13.5" r="1.3" fill="#ff2a55"/>
+          </svg>
+        </div>
+        <div>
+          <h1>SPIDEY <span class="accent">AI</span></h1>
+          <p>Cloud-First Vibecoded Studio • Google Drive Synced • Zero Local AI Engine Lag</p>
+        </div>
+      </div>
+
+      <div class="status-strip">
+        <div class="pill"><span class="dot" id="dot-mode"></span><span>Mode: <b id="lbl-mode">Checking...</b></span></div>
+        <div class="pill"><span class="dot ok"></span><span>Local Engine: <b>OFF (RAM Saved)</b></span></div>
+        <div class="pill"><span class="dot" id="dot-kie"></span><span>Kie.ai Credits: <b id="lbl-kie">--</b></span></div>
+        <button class="btn btn-ghost btn-sm" onclick="switchTab('tab-host', document.querySelector('[data-tab=tab-host]'))">⚙️ Keys & Drive</button>
+      </div>
+    </header>
+
+    <!-- Nav with Ultra-Premium Vector Icons -->
+    <nav class="nav">
+      <button class="nav-btn active" data-tab="tab-home" onclick="switchTab('tab-home', this)">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Spidey Home</span>
+      </button>
+      <button class="nav-btn" data-tab="tab-video" onclick="switchTab('tab-video', this)">
+        <svg class="ui-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+        <span>AI Video Creator</span>
+      </button>
+      <button class="nav-btn" data-tab="tab-links" onclick="switchTab('tab-links', this)">
+        <svg class="ui-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>Free Video Links & Tricks</span>
+      </button>
+      <button class="nav-btn" data-tab="tab-chat" onclick="switchTab('tab-chat', this)">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Cloud Prompt & Chat</span>
+      </button>
+      <button class="nav-btn" data-tab="tab-voice" onclick="switchTab('tab-voice', this)">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        <span>Gemini AI Voice</span>
+      </button>
+      <button class="nav-btn" data-tab="tab-host" onclick="switchTab('tab-host', this)">
+        <svg class="ui-icon" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+        <span>Google Drive & Web Link</span>
+      </button>
+    </nav>
+
+    <!-- TAB 0: HOME (Gemini Studio & Lumina AI White & Green Interface) -->
+    <section id="tab-home" class="tab-panel active">
+      <div class="hero-banner">
+        <div>
+          <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-1);">
+            <span class="tag" style="background:rgba(0,255,135,0.15);color:var(--gemini-green);border-color:rgba(0,255,135,0.4);font-weight:700;">GEMINI STUDIO // LUMINA 3D</span>
+            <span class="tag green">30s FREE VIDEO ENGINE</span>
+          </div>
+          <h2 style="color:var(--pure-white);font-weight:700;font-size:1.75rem;letter-spacing:-0.02em;">
+            Spidey AI Studio <span style="color:var(--gemini-green);text-shadow:0 0 20px rgba(0,255,135,0.6);">// Visionary Video Creator</span>
+          </h2>
+          <p style="color:#cbd5e1;max-width:760px;margin-top:var(--space-1);font-size:0.95rem;">
+            Create ultra-realistic <strong>minimum 30-second free cinematic films</strong> with zero laptop lag. Powered by Google Gemini 3.8 Flash AI Director + Multi-Scene Pollinations 8K + Gemini TTS voiceovers. Directly rendered to <code>G:\My Drive\Spidey-AI\videos</code> or deployable free to Vercel, GitHub, and Google Cloud!
+          </p>
+        </div>
+        <div class="btn-row">
+          <button class="btn" style="background:linear-gradient(135deg, #00ff87, #059669);color:#04140c;font-weight:700;box-shadow:0 0 24px rgba(0,255,135,0.45);" onclick="launch30sEpicCinema()">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>⚡ Generate 30s Visionary Video</span>
+          </button>
+          <button class="btn btn-ghost" onclick="switchTab('tab-links', document.querySelector('[data-tab=tab-links]'))">
+            <svg class="ui-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Open Free AI Generators</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SPIDER-MAN VS VENOM: SYMBIOTE BATTLE GROUND -->
+      <div class="duel-card">
+        <div class="card-title">
+          <span style="display:flex;align-items:center;gap:var(--space-2);color:var(--pure-white);">
+            <svg class="ui-icon" style="color:var(--gemini-green);" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span style="font-weight:700;">⚔️ Spider-Man vs Venom: Symbiote Clash Arena</span>
+          </span>
+          <div style="display:flex;gap:var(--space-2);align-items:center;">
+            <span class="tag" style="background:rgba(0,255,135,0.15);color:var(--gemini-green);">Spidey Momentum</span>
+            <span class="tag" style="background:rgba(168,85,247,0.18);color:var(--venom-purple);">Venom Roar</span>
+          </div>
+        </div>
+        <p class="sub" style="color:var(--muted);">
+          Interactive duel area! Watch Spider-Man and Venom battle dynamically in real time, unleash strikes, or convert the live duel directly into a <strong>30-second cinematic AI video</strong>.
+        </p>
+        
+                <!-- Real Character Combatant Showcase -->
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:var(--space-3);align-items:center;margin-bottom:var(--space-3);background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;padding:var(--space-2) var(--space-3);">
+          <div style="display:flex;align-items:center;gap:var(--space-3);">
+            <img src="assets/spidey_hero.jpg" alt="The Amazing Spider-Man" style="width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top center;border:2px solid var(--gemini-green);box-shadow:0 0 14px rgba(0,255,135,0.4);" />
+            <div>
+              <div style="font-weight:700;color:var(--pure-white);font-size:0.92rem;display:flex;align-items:center;gap:var(--space-1);">
+                <span>The Amazing Spider-Man</span>
+                <span class="tag green" style="padding:var(--space-1) 6px;font-size:0.65rem;">HERO</span>
+              </div>
+              <div style="font-size:0.75rem;color:var(--muted);margin-top:var(--space-1);">Peter Parker • Web-Slinger • 30s Cinema Lead</div>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <div style="font-weight:900;font-size:1.15rem;letter-spacing:0.1em;background:linear-gradient(135deg, var(--gemini-green), #fff, var(--venom-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">VS</div>
+            <div style="font-size:0.68rem;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase;">Live Duel Arena</div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:var(--space-3);text-align:right;">
+            <div>
+              <div style="font-weight:700;color:var(--pure-white);font-size:0.92rem;display:flex;align-items:center;justify-content:flex-end;gap:var(--space-1);">
+                <span class="tag" style="background:rgba(168,85,247,0.2);color:var(--venom-purple);border-color:rgba(168,85,247,0.4);padding:var(--space-1) 6px;font-size:0.65rem;">SYMBIOTE</span>
+                <span>Venom</span>
+              </div>
+              <div style="font-size:0.75rem;color:var(--muted);margin-top:var(--space-1);">Eddie Brock • Lethal Protector • Apex Nemesis</div>
+            </div>
+            <img src="assets/venom_beast.webp" alt="Venom Symbiote" style="width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:center;border:2px solid var(--venom-purple);box-shadow:0 0 14px rgba(168,85,247,0.4);" />
+          </div>
+        </div>
+
+        <!-- Live Battle Canvas -->
+        <div class="duel-stage" id="duel-stage-wrap" title="Click arena to trigger interactive battle clash!">
+          <canvas id="spidey-venom-canvas" width="1280" height="280"></canvas>
+        </div>
+
+        <div class="duel-hud">
+          <div style="display:flex;align-items:center;gap:var(--space-2);">
+            <button class="btn btn-sm btn-cyan" onclick="triggerDuelAction('spidey_web')">🕸️ Web Blast</button>
+            <button class="btn btn-sm btn-primary" onclick="triggerDuelAction('venom_tendril')">🖤 Symbiote Tendrils</button>
+            <button class="btn btn-sm btn-ghost" id="btn-toggle-brawl" onclick="toggleAutoBrawl()">⚡ Auto-Duel: ON</button>
+          </div>
+          <div class="meter-wrap">
+            <div class="meter-bar-spidey" id="spidey-hp-bar"></div>
+            <div class="meter-bar-venom" id="venom-hp-bar"></div>
+          </div>
+          <button class="btn btn-sm" style="background:linear-gradient(135deg, var(--gemini-green), #0284c7);color:#04140c;font-weight:700;" onclick="createDuelVideo30s()">
+            🎬 Make 30s Movie of this Duel →
+          </button>
+        </div>
+      </div>
+
+      <!-- Featured 30-Second Opening Scene Showcase -->
+      <div class="card" style="margin-bottom:var(--space-4);">
+        <div class="card-title">
+          <span style="display:flex;align-items:center;gap:var(--space-2);">
+            <svg class="ui-icon" style="color:var(--gemini-green);" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+            <span>🎬 30-Second Visionary Showcase • "Spidey vs Venom: Skyline Reckoning"</span>
+          </span>
+          <span class="tag green">6 Full Acts • 30s Continuous Film</span>
+        </div>
+        <p class="sub">Complete 30-second visionary short film with Ken Burns camera moves, Gemini studio HUD telemetry, and Gemini TTS narration.</p>
+        <div class="grid-3" id="home-scenes-grid" style="grid-template-columns:repeat(3, minmax(0, 1fr));"></div>
+        <div class="btn-row" style="margin-top:var(--space-3);">
+          <button class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, var(--gemini-green), #059669);color:#04140c;font-weight:700;" onclick="launchOpeningScenePreview()">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>▶ Play Full 30s Film in Cinema Studio</span>
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="switchTab('tab-video', document.querySelector('[data-tab=tab-video]'))">
+            <span>Customize 30s Engine in Studio →</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">🎬 Real Cloud AI Video <span class="tag green">80 Credits Ready</span></div>
+          <p class="sub">Generate real MP4 clips via <strong>Wan 2.6</strong>, <strong>MiniMax Hailuo 02</strong>, <strong>Kling 2.6</strong>, and <strong>Google Veo 3.1</strong> using your active Kie.ai credits — zero GPU needed on your laptop.</p>
+          <button class="btn btn-primary btn-sm" onclick="switchTab('tab-video', document.querySelector('[data-tab=tab-video]')); setVideoMode('kie')">Open Cloud Video →</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">⚡ Free Zero-Credit Cinema <span class="tag">Unlimited Free</span></div>
+          <p class="sub">AI writes a 6-scene storyboard, generates 6 Flux/Sana frames, voices it with <strong>Gemini 3.8 TTS</strong>, animates smooth Ken Burns camera moves & exports WebM or FFmpeg MP4 straight to Google Drive.</p>
+          <button class="btn btn-cyan btn-sm" onclick="switchTab('tab-video', document.querySelector('[data-tab=tab-video]')); setVideoMode('cinema')">Create Free Film →</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🌐 Top Free Video Sites + Tricks <span class="tag red">2026 Working</span></div>
+          <p class="sub">One-click links to <strong>Google Flow / Veo</strong>, <strong>Kling AI</strong>, <strong>Hailuo</strong>, <strong>Wan 2.1 Fast HF</strong>, <strong>LTX-Video</strong>, <strong>PixVerse</strong>, plus frame-lock & queue-skip tricks.</p>
+          <button class="btn btn-ghost btn-sm" onclick="switchTab('tab-links', document.querySelector('[data-tab=tab-links]'))">View All Links & Tricks →</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: var(--space-4);">
+        <div class="card-title">📁 Saved Videos in Google Drive (<code>G:\My Drive\Spidey-AI\videos</code>) <button class="btn btn-ghost btn-sm" onclick="loadDriveVideos()">🔄 Refresh</button></div>
+        <div id="drive-videos-list" class="sub" style="margin-bottom:0;">Start <code>start_spidey_ai.bat</code> for automatic Google Drive gallery sync, or click Export to download directly.</div>
+      </div>
+    </section>
+
+    <!-- TAB 1: AI VIDEO CREATOR -->
+    <section id="tab-video" class="tab-panel">
+      <div class="card">
+        <div class="card-title">
+          <span>🎬 Spidey AI Video Creator</span>
+          <div class="btn-row" style="margin-top:0;">
+            <button class="btn btn-sm btn-primary" id="mode-btn-cinema" onclick="setVideoMode('cinema')">⚡ Free Cinema (0 Credits)</button>
+            <button class="btn btn-sm btn-ghost" id="mode-btn-kie" onclick="setVideoMode('kie')">🔥 Kie.ai Cloud (80 Credits)</button>
+            <button class="btn btn-sm btn-ghost" id="mode-btn-pollinations" onclick="setVideoMode('pollinations')">🌸 Pollinations Video API</button>
+          </div>
+        </div>
+
+        <!-- Shared Prompt Bar -->
+        <div class="field" style="margin-top:var(--space-3);">
+          <label for="vid-prompt">Video Prompt / Story Concept</label>
+          <textarea id="vid-prompt" rows="3" placeholder="Example: A futuristic Spider-hero swinging across rain-soaked neon Tokyo skyscrapers at night, volumetric reflections, dynamic FPV drone camera, 4k cinematic"></textarea>
+          <div class="btn-row">
+            <button class="btn btn-ghost btn-sm" onclick="setPreset('duel')">⚔️ Spidey vs Venom Duel (30s)</button>
+            <button class="btn btn-ghost btn-sm" onclick="setPreset('spidey')">🕷️ Spidey Neon Swing</button>
+            <button class="btn btn-ghost btn-sm" onclick="setPreset('cyber')">🌃 Cyberpunk Chase</button>
+            <button class="btn btn-ghost btn-sm" onclick="setPreset('dragon')">🐉 Emerald Cyber Dragon</button>
+            <button class="btn btn-ghost btn-sm" onclick="setPreset('space')">🚀 Deep Space Odyssey</button>
+            <button class="btn btn-cyan btn-sm" onclick="enhancePromptWithAI()">✨ AI Enhance Prompt</button>
+          </div>
+        </div>
+
+        <!-- Mode A: Free Multi-Scene Cinema -->
+        <div id="panel-cinema">
+          <div class="grid-3">
+            <div class="field">
+              <label for="cinema-ratio">Aspect Ratio</label>
+              <select id="cinema-ratio">
+                <option value="16:9" selected>16:9 Landscape (YouTube / Film)</option>
+                <option value="9:16">9:16 Vertical (Reels / TikTok / Shorts)</option>
+                <option value="1:1">1:1 Square (Instagram)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cinema-sec">Film Length & Structure (Minimum 30s Free)</label>
+              <select id="cinema-sec">
+                <option value="5_6" selected>⚡ 30s Epic Film (6 scenes x 5s) — [RECOMMENDED & FREE]</option>
+                <option value="8_4">🎬 32s Deep Narrative (4 scenes x 8s)</option>
+                <option value="5_9">🔥 45s Extended Director's Cut (9 scenes x 5s)</option>
+                <option value="5_12">🌟 60s Full Short Film (12 scenes x 5s)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cinema-voice">AI Voiceover (Gemini 3.8 TTS)</label>
+              <select id="cinema-voice">
+                <option value="Kore" selected>Kore (Crisp Narrative)</option>
+                <option value="Fenrir">Fenrir (Deep Cinematic)</option>
+                <option value="Aoede">Aoede (Warm Storyteller)</option>
+                <option value="Puck">Puck (Energetic)</option>
+                <option value="none">No Voiceover (Silent)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btn-build-cinema" onclick="buildFreeCinema()">⚡ Generate Storyboard + AI Frames + Voice</button>
+            <button class="btn btn-cyan" id="btn-export-mp4" onclick="renderMp4OnRelay()">💾 Render Real MP4 to Google Drive (FFmpeg)</button>
+            <button class="btn btn-ghost" onclick="exportBrowserWebm()">📥 Export Browser WebM</button>
+          </div>
+
+          <div class="status-box" id="cinema-status">Ready! Zero credits required. Generates AI script + 4 Flux frames + Gemini AI voiceover without hanging your laptop.</div>
+
+          <div class="grid-4" id="cinema-scenes-grid" style="margin-top:var(--space-4);"></div>
+
+          <div class="stage-wrap">
+            <canvas id="spidey-canvas" width="1280" height="720"></canvas>
+            <div class="transport">
+              <button class="btn btn-primary btn-sm" id="btn-play-cinema" onclick="toggleCinemaPlay()">
+                <svg class="ui-icon" id="play-svg-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span id="btn-play-label">Play</span>
+              </button>
+              <span id="cinema-time" style="font-family:var(--font-mono);font-size:0.82rem;color:var(--cyan);letter-spacing:0.04em;">00:00 / 00:20</span>
+              <input type="range" id="cinema-slider" min="0" max="20" step="0.1" value="0" oninput="seekCinema(this.value)" />
+            </div>
+          </div>
+          <audio id="cinema-tts-audio" style="display:none;"></audio>
+        </div>
+
+        <!-- Mode B: Kie.ai Real Cloud Video -->
+        <div id="panel-kie" style="display:none;">
+          <div class="grid-3">
+            <div class="field">
+              <label for="kie-model">Kie.ai Video Model</label>
+              <select id="kie-model">
+                <option value="wan/2-6-text-to-video" selected>Wan 2.6 Text-to-Video (~20-40 cr / 5s)</option>
+                <option value="hailuo/02-text-to-video-standard">MiniMax Hailuo 02 Standard (6s / 10s)</option>
+                <option value="kling-2.6/text-to-video">Kling 2.6 Text-to-Video (Physics + Audio)</option>
+                <option value="veo-3-1">Google Veo 3.1 (Flagship + Audio)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="kie-ratio">Aspect Ratio</label>
+              <select id="kie-ratio">
+                <option value="16:9" selected>16:9 Landscape</option>
+                <option value="9:16">9:16 Portrait (Reels/Shorts)</option>
+                <option value="1:1">1:1 Square</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="kie-duration">Duration / Resolution</label>
+              <select id="kie-duration">
+                <option value="5" selected>5s / 6s (720p - Saves Credits)</option>
+                <option value="10">10s (Higher Credit Cost)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" id="btn-kie-run" onclick="runKieVideo()">🚀 Generate Real Cloud Video (Kie.ai)</button>
+            <button class="btn btn-ghost" onclick="refreshKieCredits()">💰 Refresh Credit Balance</button>
+          </div>
+          <div class="status-box" id="kie-status">Uses your Kie.ai account safely through the lightweight Google Drive relay (<code>start_spidey_ai.bat</code>). Current balance loads automatically when relay is running.</div>
+        </div>
+
+        <!-- Mode C: Pollinations Video API -->
+        <div id="panel-pollinations" style="display:none;">
+          <div class="grid-2">
+            <div class="field">
+              <label for="poll-model">Pollinations Video Model</label>
+              <select id="poll-model">
+                <option value="alibaba/wan-3.0" selected>Alibaba Wan 3.0</option>
+                <option value="bytedance/seedance-2.5">Seedance 2.5</option>
+                <option value="google/veo-3.1-fast">Google Veo 3.1 Fast</option>
+                <option value="x-ai/grok-imagine-video">Grok Imagine Video</option>
+                <option value="minimax/minimax-h3">MiniMax H3</option>
+                <option value="kwaivgi/kling-v3.0-std">Kling v3.0 Standard</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="poll-key">Pollinations API Key (from enter.pollinations.ai/keys)</label>
+              <input type="password" id="poll-key" placeholder="sk_... (saved locally in browser)" />
+            </div>
+          </div>
+          <button class="btn btn-cyan" onclick="runPollinationsVideo()">🌸 Generate Video via Pollinations</button>
+          <div class="status-box" id="poll-status">Works directly in browser with zero server! Get an API key at <a href="https://enter.pollinations.ai/keys" target="_blank" style="color:var(--cyan);">enter.pollinations.ai/keys</a>.</div>
+        </div>
+
+        <!-- Shared Cloud Video Output -->
+        <div id="cloud-result-wrap" style="display:none; margin-top:var(--space-4);">
+          <div class="stage-wrap">
+            <video id="cloud-video-player" controls autoplay loop playsinline></video>
+          </div>
+          <div class="btn-row">
+            <a id="cloud-video-dl" class="btn btn-primary" download="spidey_ai_video.mp4" target="_blank">⬇️ Download MP4</a>
+            <button class="btn btn-cyan" id="btn-save-gdrive" onclick="saveCurrentVideoToDrive()">☁️ Save to G:\My Drive\Spidey-AI\videos</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: FREE VIDEO LINKS & TRICKS -->
+    <section id="tab-links" class="tab-panel">
+      <div class="hero-banner">
+        <div>
+          <h2>Working AI Video Creators, Links & Pro Tricks (2026) ⚡</h2>
+          <p>Zero laptop hang — all these run 100% on cloud GPUs. Click any platform to open directly, and use the pro tricks below to get cinematic results for free.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="link-card">
+          <div>
+            <h4>Google Flow / Veo <span class="tag green">Free Tier</span></h4>
+            <p class="sub">Google's native Veo video filmmaker with scene builder & camera controls.</p>
+            <div class="trick-box"><strong>Pro Trick:</strong> Generate your hero character first in AI Studio / Imagen, then use <em>Frames-to-Video</em> in Flow so the face & outfit never morph.</div>
+          </div>
+          <div class="btn-row">
+            <a class="btn btn-primary btn-sm" href="https://flow.google.com" target="_blank">Open Google Flow ↗</a>
+            <a class="btn btn-ghost btn-sm" href="https://aistudio.google.com" target="_blank">AI Studio ↗</a>
+          </div>
+        </div>
+
+        <div class="link-card">
+          <div>
+            <h4>Kling AI <span class="tag green">Daily Free Credits</span></h4>
+            <p class="sub">Top-tier physics, dynamic action shots, and smooth 5–10s motion.</p>
+            <div class="trick-box"><strong>Pro Trick:</strong> Refreshing daily free credits (no card). Put Start + End keyframe images to control exact camera transitions.</div>
+          </div>
+          <a class="btn btn-primary btn-sm" href="https://klingai.com" target="_blank">Open Kling AI ↗</a>
+        </div>
+
+        <div class="link-card">
+          <div>
+            <h4>MiniMax Hailuo AI <span class="tag green">No Card Free</span></h4>
+            <p class="sub">Fastest human facial expressions, cinematic lighting, and realistic motion.</p>
+            <div class="trick-box"><strong>Pro Trick:</strong> Wrap camera directions in brackets inside prompts, e.g. <code>[Truck left, slow dolly in, rack focus]</code> for director-level shots.</div>
+          </div>
+          <a class="btn btn-primary btn-sm" href="https://hailuoai.video" target="_blank">Open Hailuo AI ↗</a>
+        </div>
+
+        <div class="link-card">
+          <div>
+            <h4>Wan 2.1 / 2.2 (Hugging Face) <span class="tag">100% Open Free</span></h4>
+            <p class="sub">Open-weight SOTA video running on free community Hugging Face GPUs.</p>
+            <div class="trick-box"><strong>Queue-Skip Trick:</strong> Use the <code>wan2-1-fast</code> Space (4x faster) or click <strong>⋯ → Duplicate this Space</strong> to avoid public wait queues!</div>
+          </div>
+          <div class="btn-row">
+            <a class="btn btn-cyan btn-sm" href="https://huggingface.co/spaces/multimodalart/wan2-1-fast" target="_blank">Wan 2.1 Fast ↗</a>
+            <a class="btn btn-ghost btn-sm" href="https://huggingface.co/spaces/Wan-AI/Wan2.1" target="_blank">Wan 2.1 Official ↗</a>
+          </div>
+        </div>
+
+        <div class="link-card">
+          <div>
+            <h4>LTX-Video & LTX Studio <span class="tag">Near Real-Time</span></h4>
+            <p class="sub">Lightning-fast video generation & multi-shot storyboard timelines.</p>
+            <div class="trick-box"><strong>Pro Trick:</strong> Ideal for fast iteration — test 3 prompt variations in under a minute on HF Fast Space before burning credits elsewhere!</div>
+          </div>
+          <div class="btn-row">
+            <a class="btn btn-cyan btn-sm" href="https://huggingface.co/spaces/Lightricks/LTX-Video-Fast" target="_blank">HF Fast Space ↗</a>
+            <a class="btn btn-ghost btn-sm" href="https://ltx.studio" target="_blank">LTX Studio ↗</a>
+          </div>
+        </div>
+
+        <div class="link-card">
+          <div>
+            <h4>PixVerse & Pollinations <span class="tag">Effects + API</span></h4>
+            <p class="sub">PixVerse daily free video effects + Pollinations unified multi-model keys.</p>
+            <div class="trick-box"><strong>Audio-First Trick:</strong> Generate your voiceover in Tab 5 (Gemini TTS) first, match scene duration to the audio length, then stitch!</div>
+          </div>
+          <div class="btn-row">
+            <a class="btn btn-primary btn-sm" href="https://pixverse.ai" target="_blank">Open PixVerse ↗</a>
+            <a class="btn btn-ghost btn-sm" href="https://enter.pollinations.ai/keys" target="_blank">Pollinations Keys ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:var(--space-4);">
+        <div class="card-title">🧠 5 New Tricks for Pro Videos on an 8 GB Laptop</div>
+        <div class="grid-2" style="margin-top:var(--space-2);">
+          <div class="trick-box"><strong>1. Image-First Rule:</strong> Never prompt straight to video blindly. Generate 4 free Flux images first, pick the best frame, then animate it — 3x better quality & zero wasted credits.</div>
+          <div class="trick-box"><strong>2. 5-Second Clip Chaining:</strong> Generate 5s clips instead of 10s (half the cost/time), then chain clips cleanly in CapCut or Spidey Cinema FFmpeg.</div>
+          <div class="trick-box"><strong>3. Camera Token Formula:</strong> <code>[Subject + Action] + [Lighting/Lens: 35mm anamorphic, rim light] + [Camera: slow push-in] + [Speed: 24fps smooth]</code>.</div>
+          <div class="trick-box"><strong>4. Free Colab T4 GPU:</strong> Upload <code>G:\My Drive\Spidey-AI\spidey_colab_video.ipynb</code> to <a href="https://colab.research.google.com" target="_blank" style="color:var(--cyan);">Google Colab</a> → Runtime T4 GPU → videos save straight to your Drive!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: CLOUD CHAT -->
+    <section id="tab-chat" class="tab-panel">
+      <div class="card">
+        <div class="card-title">
+          <span>💬 Spidey AI Cloud Chat (Gemini 3.8 Flash & Free Pollinations)</span>
+          <select id="chat-model" style="width:auto;">
+            <option value="gemini-3.8-flash" selected>Gemini 3.8 Flash (Cloud)</option>
+            <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite (Ultra-Fast)</option>
+            <option value="pollinations">Pollinations Free LLM (Zero Key)</option>
+          </select>
+        </div>
+        <div class="chat-box" id="chat-box">
+          <div class="msg bot">🕷️ <strong>Spidey AI online!</strong> Zero local Ollama RAM used. Ask for code, viral video scripts, or click <em>Enhance for Video</em> to build a Hollywood prompt.</div>
+        </div>
+        <div style="display:flex; gap:var(--space-2);">
+          <input type="text" id="chat-input" placeholder="Ask Spidey AI anything or describe a video idea..." onkeydown="if(event.key==='Enter') sendChat()" />
+          <button class="btn btn-primary" id="btn-chat-send" onclick="sendChat()">Send ⚡</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: GEMINI AI VOICE -->
+    <section id="tab-voice" class="tab-panel">
+      <div class="card" style="max-width:780px;">
+        <div class="card-title">🎙️ Spidey AI Voice Studio <span class="tag green">Gemini 3.8 Flash TTS</span></div>
+        <p class="sub">Generates crisp studio `.wav` voiceovers via Google Gemini 3.8 Flash TTS (or instant browser speech if offline).</p>
+        <div class="field">
+          <label for="voice-name">Speaker Voice</label>
+          <select id="voice-name">
+            <option value="Kore" selected>Kore — Clear & Balanced</option>
+            <option value="Fenrir">Fenrir — Deep Trailer Voice</option>
+            <option value="Aoede">Aoede — Warm Narrative</option>
+            <option value="Puck">Puck — Fast & Energetic</option>
+            <option value="Charon">Charon — Calm Documentary</option>
+            <option value="Zephyr">Zephyr — Bright Studio</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="voice-text">Narration Script</label>
+          <textarea id="voice-text" rows="4" placeholder="Enter narration script for your video..."></textarea>
+        </div>
+        <button class="btn btn-primary" id="btn-gen-voice" onclick="generateVoice()">🔊 Generate Voiceover</button>
+        <div id="voice-out" style="display:none; margin-top:var(--space-4);">
+          <audio id="voice-player" controls style="width:100%;"></audio>
+          <div class="btn-row">
+            <a id="voice-dl" class="btn btn-cyan btn-sm" download="spidey_voiceover.wav">⬇️ Download WAV</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: GOOGLE DRIVE & WEB LINK -->
+    <section id="tab-host" class="tab-panel">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">☁️ Google Drive Local Engine Mode</div>
+          <p class="sub"><strong>Working directly under <code>G:\My Drive\Spidey-AI\</code></strong></p>
+          <div class="trick-box" style="margin-bottom:var(--space-3);">
+            <strong>✅ Zero-RAM Engine on your PC:</strong><br/>
+            • Double-click <code>start_spidey_ai.bat</code> inside <code>G:\My Drive\Spidey-AI\</code>.<br/>
+            • Opens <code>http://localhost:8080</code> (~15 MB RAM relay, 0% CPU footprint).<br/>
+            • Renders 30-second continuous MP4 videos with Gemini TTS straight to <code>G:\My Drive\Spidey-AI\videos\</code>!
+          </div>
+          <div class="trick-box" style="margin-bottom:var(--space-3);">
+            <strong>📁 Auto-Sync to Google Cloud:</strong><br/>
+            All generated 30-second MP4s in <code>G:\My Drive\Spidey-AI\videos</code> sync to your Google Drive cloud automatically!
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-cyan btn-sm" onclick="navigator.clipboard.writeText('G:\\My Drive\\Spidey-AI\\start_spidey_ai.bat'); alert('Copied path to start_spidey_ai.bat!');">📋 Copy Batch Launcher Path</button>
+          </div>
+        </div>
+
+        <div class="card" style="border-color:var(--gemini-green);">
+          <div class="card-title">
+            <span style="color:var(--pure-white);">🚀 Free 1-Click Cloud Hosting (Vercel, GitHub, GCP)</span>
+            <span class="tag green">Free Forever</span>
+          </div>
+          <p class="sub">Deploy Spidey AI to a public live link with zero server costs:</p>
+          
+          <div class="trick-box" style="margin-bottom:var(--space-2);background:rgba(0,255,135,0.08);border-left-color:var(--gemini-green);">
+            <strong>▲ Deploy to Vercel (Recommended • Instant):</strong><br/>
+            We created <code>vercel.json</code> in your project! Run <code>npx vercel</code> in terminal or import your GitHub repo to Vercel for free <code>https://spidey-ai.vercel.app</code>.
+          </div>
+
+          <div class="trick-box" style="margin-bottom:var(--space-2);">
+            <strong>🐙 Deploy to GitHub Pages:</strong><br/>
+            We created <code>.github/workflows/deploy.yml</code> in your project! Push to GitHub repo → Settings → Pages → Live free link automatically.
+          </div>
+
+          <div class="trick-box" style="margin-bottom:var(--space-2);">
+            <strong>☁️ Google Cloud Console (Cloud Run Free Tier):</strong><br/>
+            We created <code>Dockerfile</code> in your project! Free tier gives 2,000,000 requests/month free on Google Cloud Run.
+          </div>
+          <div class="btn-row">
+            <a class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, var(--gemini-green), #0284c7);color:#04140c;font-weight:700;" href="https://vercel.com/new" target="_blank">▲ Open Vercel Deploy</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/new" target="_blank">🐙 Open GitHub New Repo</a>
+            <a class="btn btn-ghost btn-sm" href="https://console.cloud.google.com/run" target="_blank">☁️ Google Cloud Run</a>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column:1 / -1; margin-top:var(--space-3);">
+          <div class="card-title">🔑 Optional Browser Keys (For Static / Live Web Mode)</div>
+          <p class="sub">When running via <code>start_spidey_ai.bat</code>, keys stay safely in <code>.env</code>. Only enter keys below if opening <code>index.html</code> directly without the Python relay.</p>
+          <div class="field">
+            <label for="cfg-gemini">Browser Gemini API Key (Stored locally in browser)</label>
+            <input type="password" id="cfg-gemini" placeholder="AIza..." />
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary btn-sm" onclick="saveBrowserKeys()">💾 Save Browser Key</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearBrowserKeys()">🗑️ Clear Keys</button>
+          </div>
+          <div class="status-box" id="cfg-status">Relay status checks automatically on page load.</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // 30-Second Minimum 6-Act Visionary Sequence: Spider-Man vs Venom
+    const DEFAULT_OPENING_SCENES = [
+      {
+        title: "ACT I: THE CATALYST",
+        motion: "zoom_in",
+        duration: 5,
+        visual_prompt: "IMAX establishing shot of The Amazing Spider-Man in classic suit swinging through rain-slick Neo-Tokyo skyline, neon green and white reflections, 8k cinematic",
+        narration: "Midnight falls over the skyline. A dark vibration ripples through the steel spires.",
+        image: "assets/spidey_hero.jpg"
+      },
+      {
+        title: "ACT II: SYMBIOTE AWAKENING",
+        motion: "pan_right",
+        duration: 5,
+        visual_prompt: "Towering monstrous Venom emerging from dark mist with glistening black symbiote skin, razor sharp white teeth, purple glowing aura, volumetric fog",
+        narration: "From the abyss emerges Venom, writhing with symbiote fury and hunger.",
+        image: "assets/venom_beast.webp"
+      },
+      {
+        title: "ACT III: SKYSCRAPER PURSUIT",
+        motion: "zoom_in",
+        duration: 5,
+        visual_prompt: "High speed dynamic FPV camera following Spider-Man swinging along vertical glass wall as massive black symbiote tentacles smash windows behind him, rain drops, cinematic motion blur",
+        narration: "Spider-Man launches into the air, dodging tendrils that shatter the skyline.",
+        image: "assets/spidey_hero.jpg"
+      },
+      {
+        title: "ACT IV: APEX CLASH",
+        motion: "pan_left",
+        duration: 5,
+        visual_prompt: "Mid-air collision between Spider-Man firing electric green and white web blast and Venom unleashing a roaring sonic shockwave, sparks exploding, Hollywood blockbuster lighting",
+        narration: "Web meets symbiote in a blinding burst of power and velocity.",
+        image: "assets/venom_beast.webp"
+      },
+      {
+        title: "ACT V: OVERDRIVE",
+        motion: "zoom_in",
+        duration: 5,
+        visual_prompt: "Extreme macro cinematic shot of Spider-Man visor reflecting roaring Venom jaws, thunder lightning strike illuminating rain slicked rooftop",
+        narration: "Every reflex pushed to the absolute brink, instincts calculate the ultimate counter.",
+        image: "assets/spidey_hero.jpg"
+      },
+      {
+        title: "ACT VI: HORIZON RESOLUTION",
+        motion: "pan_right",
+        duration: 5,
+        visual_prompt: "Spider-Man standing victorious atop city bridge as sunrise cuts through rain clouds, emerald and golden light illuminating horizon, epic IMAX panorama",
+        narration: "The storm breaks. The guardian holds the line as a new dawn rises.",
+        image: "assets/spidey_hero.jpg"
+      }
+    ];
+
+    const state = {
+      relayOnline: false,
+      scenes: [...DEFAULT_OPENING_SCENES],
+      images: [],
+      cinemaTime: 0,
+      cinemaDuration: 30, // 30-Second Minimum Length
+      playing: false,
+      rafId: null,
+      lastTick: 0,
+      ttsBase64: "",
+      currentCloudVideoUrl: "",
+    };
+
+    function switchTab(id, btn) {
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      const panel = document.getElementById(id);
+      if (panel) panel.classList.add("active");
+      if (btn) btn.classList.add("active");
+    }
+
+    function setVideoMode(mode) {
+      ["cinema", "kie", "pollinations"].forEach(m => {
+        document.getElementById("panel-" + m).style.display = m === mode ? "block" : "none";
+        const b = document.getElementById("mode-btn-" + m);
+        b.className = m === mode ? "btn btn-sm btn-primary" : "btn btn-sm btn-ghost";
+      });
+    }
+
+    function setPreset(key) {
+      const map = {
+        duel: "Ultra-realistic 30s IMAX movie: Classic Spider-Man battling monstrous Venom across rain-drenched Neo-Tokyo skyscrapers, symbiote tentacles smashing concrete, electric web blasts, volumetric green and white lighting, photorealistic 8k",
+        spidey: "Spider-style futuristic hero swinging through rain-slick neon skyscrapers at night, volumetric crimson and cyan rim lighting, dynamic FPV drone tracking, 4k photorealistic",
+        cyber: "Cinematic neon cyber-car drifting through wet Tokyo tunnel, sparks and volumetric fog, anamorphic lens flare, 24fps film look",
+        dragon: "Mythic emerald jade cyber dragon coiling around towering neon pagoda in rain, luminous green scales, volumetric lightning, photorealistic 8k",
+        product: "Luxury matte black titanium smartwatch floating in golden liquid ripples, studio macro lighting, slow 360 orbital camera sweep, 8k commercial",
+        space: "Lone astronaut approaching a glowing crystalline portal on an alien ocean moon, two suns setting on horizon, sweeping IMAX wide shot"
+      };
+      document.getElementById("vid-prompt").value = map[key] || "";
+    }
+
+    function getBrowserGeminiKey() {
+      return localStorage.getItem("spidey_gemini_key") || "";
+    }
+
+    function saveBrowserKeys() {
+      const gk = document.getElementById("cfg-gemini").value.trim();
+      if (gk) localStorage.setItem("spidey_gemini_key", gk);
+      document.getElementById("cfg-status").textContent = "Saved locally in this browser!";
+    }
+
+    function clearBrowserKeys() {
+      localStorage.removeItem("spidey_gemini_key");
+      document.getElementById("cfg-gemini").value = "";
+      document.getElementById("cfg-status").textContent = "Cleared browser keys.";
+    }
+
+    async function checkRelay() {
+      const dotMode = document.getElementById("dot-mode");
+      const lblMode = document.getElementById("lbl-mode");
+      if (location.protocol === "file:") {
+        dotMode.className = "dot warn";
+        lblMode.textContent = "Direct File (0-Server)";
+        document.getElementById("lbl-kie").textContent = "Run start_spidey_ai.bat";
+        return;
+      }
+      try {
+        const res = await fetch("/api/status");
+        if (!res.ok) throw new Error("not ok");
+        const data = await res.json();
+        state.relayOnline = true;
+        dotMode.className = "dot ok";
+        lblMode.textContent = "G: Drive Relay";
+        document.getElementById("cfg-status").textContent = `Connected to ${data.drive_path} | FFmpeg: ${data.ffmpeg ? "Ready" : "Not Found"}`;
+        refreshKieCredits();
+        loadDriveVideos();
+      } catch {
+        dotMode.className = "dot warn";
+        lblMode.textContent = "Static Web";
+        document.getElementById("lbl-kie").textContent = "Relay Needed";
+      }
+    }
+
+    async function refreshKieCredits() {
+      if (!state.relayOnline) return;
+      try {
+        const res = await fetch("/api/kie/credit");
+        const d = await res.json();
+        const dot = document.getElementById("dot-kie");
+        const lbl = document.getElementById("lbl-kie");
+        if (d.code === 200) {
+          dot.className = "dot ok";
+          lbl.textContent = d.data + " Ready";
+        } else {
+          dot.className = "dot warn";
+          lbl.textContent = d.msg || "Check Key";
+        }
+      } catch {
+        document.getElementById("lbl-kie").textContent = "Offline";
+      }
+    }
+
+    async function loadDriveVideos() {
+      if (!state.relayOnline) return;
+      try {
+        const res = await fetch("/api/videos");
+        const d = await res.json();
+        const box = document.getElementById("drive-videos-list");
+        if (!d.videos || d.videos.length === 0) {
+          box.innerHTML = "No saved videos yet in <code>G:\\My Drive\\Spidey-AI\\videos</code>. Generate one in AI Video Creator!";
+          return;
+        }
+        box.innerHTML = d.videos.slice(0, 6).map(v => `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-2) 0;border-bottom:1px solid var(--border);gap:var(--space-2);">
+            <span>🎬 <strong>${v.name}</strong> <span style="color:var(--dim);">(${v.size_mb} MB)</span></span>
+            <div class="btn-row" style="margin-top:0;">
+              <button class="btn btn-ghost btn-sm" onclick="showCloudVideo('${v.url}')">▶ Watch</button>
+              <a class="btn btn-cyan btn-sm" href="${v.url}" download="${v.name}">⬇ Download</a>
+            </div>
+          </div>
+        `).join("");
+      } catch {}
+    }
+
+    async function askCloudAI(prompt, systemPrompt, model = "gemini-3.8-flash") {
+      if (state.relayOnline) {
+        const r = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, system_prompt: systemPrompt, model })
+        });
+        const d = await r.json();
+        if (d.reply) return d;
+        throw new Error(d.error || "Relay chat error");
+      }
+      const browserKey = getBrowserGeminiKey();
+      if (browserKey && model !== "pollinations") {
+        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(browserKey)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts: [{ text: `${systemPrompt}\n\nUser: ${prompt}` }] }] })
+        });
+        const d = await r.json();
+        if (d.candidates?.[0]?.content?.parts?.[0]?.text) {
+          return { reply: d.candidates[0].content.parts[0].text, engine: model };
+        }
+      }
+      const r = await fetch(`https://text.pollinations.ai/${encodeURIComponent(systemPrompt + "\n\n" + prompt)}`);
+      return { reply: await r.text(), engine: "Pollinations Free" };
+    }
+
+    async function enhancePromptWithAI() {
+      const inp = document.getElementById("vid-prompt");
+      const raw = inp.value.trim() || "futuristic hero in neon city";
+      inp.value = "Enhancing prompt with AI Director...";
+      try {
+        const res = await askCloudAI(
+          `Rewrite this video idea into one ultra-cinematic AI video prompt under 45 words with lighting, lens, and camera motion: "${raw}". Output ONLY the final prompt.`,
+          "You are an expert AI film director."
+        );
+        inp.value = res.reply.trim().replace(/^"|"$/g, "");
+      } catch (e) {
+        inp.value = raw + ", cinematic lighting, 35mm anamorphic lens, smooth tracking shot, 4k photorealistic";
+      }
+    }
+
+    async function buildFreeCinema() {
+      const prompt = document.getElementById("vid-prompt").value.trim();
+      if (!prompt) return alert("Enter a prompt first!");
+      const btn = document.getElementById("btn-build-cinema");
+      const statusEl = document.getElementById("cinema-status");
+      
+      const configVal = document.getElementById("cinema-sec").value; // e.g. "5_6", "8_4", "5_9", "5_12"
+      let secPerScene = 5, sceneCount = 6;
+      if (configVal.includes("_")) {
+        const parts = configVal.split("_");
+        secPerScene = parseInt(parts[0], 10) || 5;
+        sceneCount = parseInt(parts[1], 10) || 6;
+      } else {
+        secPerScene = parseInt(configVal, 10) || 5;
+        sceneCount = 6;
+      }
+
+      state.cinemaDuration = secPerScene * sceneCount; // Minimum 30s!
+      document.getElementById("cinema-slider").max = state.cinemaDuration;
+
+      btn.disabled = true;
+      statusEl.textContent = `Step 1/3: Cloud AI Director is writing a ${sceneCount}-scene (minimum ${state.cinemaDuration}s) visionary film...`;
+
+      let scenes = [
+        { title: "ACT I: CATALYST", visual_prompt: prompt + " wide establishing shot volumetric lighting cinematic 8k", motion: "zoom_in", narration: "In the shadow of a restless city, the journey begins." },
+        { title: "ACT II: TENSION", visual_prompt: prompt + " dramatic medium angle camera tracking reflection", motion: "pan_right", narration: "Forces align as the atmosphere crackles with impending power." },
+        { title: "ACT III: VELOCITY", visual_prompt: prompt + " dynamic first person action speed motion blur", motion: "zoom_in", narration: "Velocity surges past human limits into pure kinetic spectacle." },
+        { title: "ACT IV: CLIMAX", visual_prompt: prompt + " mid-air impact collision sparks explosion Hollywood lighting", motion: "pan_left", narration: "The clash reverberates across the horizon with unstoppable energy." },
+        { title: "ACT V: OVERDRIVE", visual_prompt: prompt + " extreme dramatic close up intensity volumetric fog", motion: "zoom_in", narration: "Every reserve ignited in a test of raw willpower." },
+        { title: "ACT VI: RESOLUTION", visual_prompt: prompt + " triumphant wide panoramic shot sunrise golden light", motion: "pan_right", narration: "As light pierces the haze, the legend stands unbroken." }
+      ];
+
+      if (sceneCount > 6) {
+        for (let i = 7; i <= sceneCount; i++) {
+          scenes.push({
+            title: `ACT ${i}`,
+            visual_prompt: `${prompt} cinematic scene ${i} high production value 8k`,
+            motion: i % 2 === 0 ? "pan_left" : "zoom_in",
+            narration: "The saga unfolds across the boundless expanse."
+          });
+        }
+      } else if (sceneCount < 6) {
+        scenes = scenes.slice(0, sceneCount);
+      }
+
+      try {
+        const res = await askCloudAI(
+          `Create a ${sceneCount}-scene cinematic visionary storyboard for: "${prompt}". Return STRICT JSON only: {"scenes":[{"title":"ACT I","visual_prompt":"...","motion":"zoom_in","narration":"one short sentence"}]}. motion must be zoom_in, pan_right, or pan_left.`,
+          "Return valid raw JSON only."
+        );
+        const txt = res.reply;
+        if (txt.includes("{") && txt.includes("}")) {
+          const parsed = JSON.parse(txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
+          if (Array.isArray(parsed.scenes) && parsed.scenes.length >= sceneCount) {
+            scenes = parsed.scenes.slice(0, sceneCount);
+          }
+        }
+      } catch {}
+
+      const ratio = document.getElementById("cinema-ratio").value;
+      const [w, h] = ratio === "9:16" ? [720, 1280] : (ratio === "1:1" ? [1024, 1024] : [1280, 720]);
+      const canvas = document.getElementById("spidey-canvas");
+      canvas.width = w;
+      canvas.height = h;
+
+      statusEl.textContent = "Step 2/3: Generating 4 free AI scene frames via Pollinations...";
+      state.scenes = scenes.map((s, i) => ({
+        ...s,
+        duration: secPerScene,
+        image: `https://image.pollinations.ai/prompt/${encodeURIComponent(s.visual_prompt + ", cinematic 8k")}?width=${w}&height=${h}&nologo=true&seed=${Date.now() + i * 17}`
+      }));
+
+      renderSceneCards();
+      await preloadSceneImages();
+
+      const voice = document.getElementById("cinema-voice").value;
+      state.ttsBase64 = "";
+      if (voice !== "none") {
+        statusEl.textContent = "Step 3/3: Synthesizing Gemini 3.8 Flash TTS voiceover...";
+        const fullScript = state.scenes.map(s => s.narration).join(" ");
+        try {
+          const aud = await synthesizeTTS(fullScript, voice, false);
+          if (aud.audio_base64) {
+            state.ttsBase64 = aud.audio_base64;
+            document.getElementById("cinema-tts-audio").src = `data:${aud.mime_type || "audio/wav"};base64,${aud.audio_base64}`;
+          }
+        } catch {}
+      }
+
+      statusEl.textContent = "✅ Free AI Cinema Ready! Press Play, Render MP4 to Google Drive, or Export WebM.";
+      btn.disabled = false;
+      state.cinemaTime = 0;
+      drawCinemaFrame(0);
+      toggleCinemaPlay(true);
+    }
+
+    function renderSceneCards() {
+      const numScenes = Math.max(1, state.scenes.length);
+      const per = state.cinemaDuration / numScenes;
+      const currentIdx = Math.min(numScenes - 1, Math.floor(state.cinemaTime / per));
+      const htmlContent = state.scenes.map((s, i) => `
+        <div class="scene-card ${i === currentIdx && state.playing ? "active-scene" : ""}" onclick="selectSceneCard(${i})">
+          <div class="scene-thumb-wrap">
+            <img src="${s.image}" alt="Scene ${i + 1}" crossorigin="anonymous" onerror="this.src='https://picsum.photos/1280/720?random=${i + 12}'" />
+            <div class="scene-card-overlay">
+              <span class="scene-play-badge">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>${s.motion.replace("_", " ").toUpperCase()}</span>
+              </span>
+            </div>
+          </div>
+          <div class="scene-card-act">
+            <span>${s.title || "ACT " + (i + 1)}</span>
+            <span class="scene-motion-pill">${fmtSec(i * per)}</span>
+          </div>
+          <div style="color:var(--muted);font-size:0.78rem;line-height:1.4;">"${s.narration}"</div>
+        </div>
+      `).join("");
+
+      const gridCinema = document.getElementById("cinema-scenes-grid");
+      if (gridCinema) gridCinema.innerHTML = htmlContent;
+
+      const gridHome = document.getElementById("home-scenes-grid");
+      if (gridHome) gridHome.innerHTML = htmlContent;
+    }
+
+    function selectSceneCard(idx) {
+      const per = state.cinemaDuration / Math.max(1, state.scenes.length);
+      seekCinema(idx * per);
+      if (!state.playing) toggleCinemaPlay(true);
+    }
+
+    function launchOpeningScenePreview() {
+      switchTab("tab-video", document.querySelector("[data-tab=tab-video]"));
+      setVideoMode("cinema");
+      seekCinema(0);
+      toggleCinemaPlay(true);
+      window.scrollTo({ top: 180, behavior: "smooth" });
+    }
+
+    function preloadSceneImages() {
+      state.images = [];
+      return Promise.all(state.scenes.map((s, idx) => new Promise(resolve => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => resolve();
+        img.onerror = () => {
+          img.src = `https://picsum.photos/1280/720?random=${idx + 11}`;
+          setTimeout(resolve, 1500);
+        };
+        img.src = s.image;
+        state.images[idx] = img;
+      })));
+    }
+
+    function drawCinemaFrame(t) {
+      const canvas = document.getElementById("spidey-canvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width, h = canvas.height;
+      const sceneLen = Math.max(1, state.scenes.length);
+      const per = state.cinemaDuration / sceneLen;
+      const idx = Math.min(sceneLen - 1, Math.floor(t / per));
+      const prog = (t % per) / per;
+      const sc = state.scenes[idx] || { narration: "", motion: "zoom_in" };
+      const img = state.images[idx];
+
+      // Deep space base
+      ctx.fillStyle = "#020308";
+      ctx.fillRect(0, 0, w, h);
+
+      // Draw active scene image with Ken Burns camera movement
+      if (img && img.complete && img.naturalWidth > 0) {
+        const zoom = sc.motion === "zoom_in" ? (1.02 + prog * 0.14) : 1.12;
+        const panX = sc.motion === "pan_right" ? (prog * 60 - 30) : (sc.motion === "pan_left" ? (30 - prog * 60) : 0);
+        ctx.save();
+        ctx.translate(w / 2 + panX, h / 2);
+        ctx.scale(zoom, zoom);
+        ctx.drawImage(img, -w / 2, -h / 2, w, h);
+        ctx.restore();
+      } else {
+        // Fallback procedural cyberpunk visual if image is still preloading
+        const grad = ctx.createLinearGradient(0, 0, w, h);
+        grad.addColorStop(0, "#080c18");
+        grad.addColorStop(0.5, "#140a1c");
+        grad.addColorStop(1, "#041424");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      // Anamorphic Cinematic Letterbox Bars
+      const bar = Math.round(h * 0.082);
+      const topGrad = ctx.createLinearGradient(0, 0, 0, bar);
+      topGrad.addColorStop(0, "rgba(2, 3, 8, 0.96)");
+      topGrad.addColorStop(1, "rgba(4, 6, 14, 0.75)");
+      ctx.fillStyle = topGrad;
+      ctx.fillRect(0, 0, w, bar);
+
+      const botGrad = ctx.createLinearGradient(0, h - bar, 0, h);
+      botGrad.addColorStop(0, "rgba(4, 6, 14, 0.75)");
+      botGrad.addColorStop(1, "rgba(2, 3, 8, 0.96)");
+      ctx.fillStyle = botGrad;
+      ctx.fillRect(0, h - bar, w, bar);
+
+      // Top HUD Telemetry
+      ctx.font = '700 13px "JetBrains Mono", monospace';
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#ff2a55";
+      ctx.fillText("SPIDEY AI //", 22, Math.round(bar * 0.62));
+      ctx.fillStyle = "#00e5ff";
+      const totalStr = String(state.scenes.length).padStart(2, "0");
+      const curStr = String(idx + 1).padStart(2, "0");
+      ctx.fillText(`SCENE ${curStr}/${totalStr} • ${sc.title || "ACT " + (idx + 1)}`, 130, Math.round(bar * 0.62));
+
+      // Right Top: Blinking REC & Camera Specs
+      ctx.textAlign = "right";
+      const recBlink = Math.floor(Date.now() / 450) % 2 === 0;
+      if (recBlink || state.playing) {
+        ctx.fillStyle = "#ff2a55";
+        ctx.beginPath();
+        ctx.arc(w - 235, Math.round(bar * 0.56), 4.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowColor = "#ff2a55";
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      ctx.fillStyle = "#ffffff";
+      ctx.font = '600 12px "JetBrains Mono", monospace';
+      const secFormatted = fmtSec(t);
+      const frames = String(Math.floor((t * 24) % 24)).padStart(2, "0");
+      ctx.fillText(`REC [●] 24FPS 4K UHD  ${secFormatted}:${frames}`, w - 22, Math.round(bar * 0.62));
+
+      // Viewfinder Reticle Corners (Cyber Camera Frame)
+      const retColor = "rgba(0, 229, 255, 0.32)";
+      ctx.strokeStyle = retColor;
+      ctx.lineWidth = 1.5;
+      const cornerSize = 18;
+      const pad = bar + 16;
+      ctx.beginPath(); ctx.moveTo(pad, pad + cornerSize); ctx.lineTo(pad, pad); ctx.lineTo(pad + cornerSize, pad); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(w - pad - cornerSize, pad); ctx.lineTo(w - pad, pad); ctx.lineTo(w - pad, pad + cornerSize); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(pad, h - pad - cornerSize); ctx.lineTo(pad, h - pad); ctx.lineTo(pad + cornerSize, h - pad); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(w - pad - cornerSize, h - pad); ctx.lineTo(w - pad, h - pad); ctx.lineTo(w - pad, h - pad - cornerSize); ctx.stroke();
+
+      // Center Subtitle
+      ctx.font = `600 ${Math.max(18, Math.round(w * 0.021))}px "Plus Jakarta Sans", sans-serif`;
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowColor = "rgba(0,0,0,0.95)";
+      ctx.shadowBlur = 12;
+      ctx.fillText(sc.narration || "", w / 2, h - bar - 24);
+      ctx.shadowBlur = 0;
+
+      // Bottom Right Audio Equalizer Bars (animated during playback)
+      const eqX = w - 160;
+      const eqY = h - Math.round(bar * 0.38);
+      const barCount = 10;
+      for (let b = 0; b < barCount; b++) {
+        const barH = state.playing ? (5 + Math.abs(Math.sin(t * 8 + b * 1.3)) * 18) : 4;
+        ctx.fillStyle = b % 2 === 0 ? "rgba(0, 229, 255, 0.85)" : "rgba(255, 42, 85, 0.85)";
+        ctx.fillRect(eqX + b * 11, eqY - barH, 6, barH);
+      }
+
+      // Standby Play prompt if paused at start
+      if (!state.playing && t === 0) {
+        ctx.fillStyle = "rgba(7, 8, 15, 0.35)";
+        ctx.fillRect(0, bar, w, h - bar * 2);
+
+        const pillW = 340, pillH = 50;
+        const pillX = (w - pillW) / 2, pillY = (h - pillH) / 2;
+        ctx.fillStyle = "rgba(14, 18, 32, 0.9)";
+        ctx.strokeStyle = "rgba(255, 42, 85, 0.85)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(pillX, pillY, pillW, pillH, 25);
+        } else {
+          ctx.rect(pillX, pillY, pillW, pillH);
+        }
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = '700 15px "Space Grotesk", sans-serif';
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "center";
+        ctx.fillText("▶ CLICK TO PLAY OPENING SEQUENCE", w / 2, pillY + 31);
+      }
+    }
+
+    function toggleCinemaPlay(forcePlay) {
+      const shouldPlay = typeof forcePlay === "boolean" ? forcePlay : !state.playing;
+      const btn = document.getElementById("btn-play-cinema");
+      const audioEl = document.getElementById("cinema-tts-audio");
+      const lbl = document.getElementById("btn-play-label");
+      const icon = document.getElementById("play-svg-icon");
+      if (!shouldPlay) {
+        state.playing = false;
+        if (lbl) lbl.textContent = "Play";
+        if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+        if (state.rafId) cancelAnimationFrame(state.rafId);
+        if (audioEl) audioEl.pause();
+        drawCinemaFrame(state.cinemaTime);
+        renderSceneCards();
+        return;
+      }
+      state.playing = true;
+      if (lbl) lbl.textContent = "Pause";
+      if (icon) icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      if (state.ttsBase64 && audioEl.src) {
+        audioEl.currentTime = Math.min(state.cinemaTime, audioEl.duration || 0);
+        audioEl.play().catch(() => {});
+      }
+      state.lastTick = performance.now();
+      const step = (now) => {
+        const dt = (now - state.lastTick) / 1000;
+        state.lastTick = now;
+        state.cinemaTime += dt;
+        if (state.cinemaTime >= state.cinemaDuration) {
+          state.cinemaTime = state.cinemaDuration;
+          drawCinemaFrame(state.cinemaTime);
+          toggleCinemaPlay(false);
+          return;
+        }
+        drawCinemaFrame(state.cinemaTime);
+        document.getElementById("cinema-slider").value = state.cinemaTime;
+        document.getElementById("cinema-time").textContent = `${fmtSec(state.cinemaTime)} / ${fmtSec(state.cinemaDuration)}`;
+        if (state.playing) state.rafId = requestAnimationFrame(step);
+      };
+      state.rafId = requestAnimationFrame(step);
+    }
+
+    function seekCinema(val) {
+      state.cinemaTime = parseFloat(val);
+      drawCinemaFrame(state.cinemaTime);
+      document.getElementById("cinema-time").textContent = `${fmtSec(state.cinemaTime)} / ${fmtSec(state.cinemaDuration)}`;
+    }
+
+    function fmtSec(s) {
+      const m = Math.floor(s / 60);
+      const r = Math.floor(s % 60);
+      return `${String(m).padStart(2, "0")}:${String(r).padStart(2, "0")}`;
+    }
+
+    async function renderMp4OnRelay() {
+      if (!state.relayOnline) return alert("Start start_spidey_ai.bat for 1-click FFmpeg MP4 rendering straight to Google Drive!");
+      if (!state.scenes.length) return alert("Generate scenes first!");
+      const btn = document.getElementById("btn-export-mp4");
+      const statusEl = document.getElementById("cinema-status");
+      btn.disabled = true;
+      statusEl.textContent = "Rendering crisp H.264 MP4 + AI Voiceover directly into G:\\My Drive\\Spidey-AI\\videos...";
+      try {
+        const res = await fetch("/api/render-cinema", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            scenes: state.scenes,
+            ratio: document.getElementById("cinema-ratio").value,
+            audio_base64: state.ttsBase64
+          })
+        });
+        const d = await res.json();
+        if (!d.ok) throw new Error(d.error || "Render error");
+        statusEl.textContent = `🎉 Saved MP4 to Google Drive: ${d.path}`;
+        showCloudVideo(d.url);
+        loadDriveVideos();
+      } catch (e) {
+        statusEl.textContent = "⚠️ " + e.message;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function exportBrowserWebm() {
+      if (!state.scenes.length) return alert("Generate scenes first!");
+      const canvas = document.getElementById("spidey-canvas");
+      const stream = canvas.captureStream(30);
+      const rec = new MediaRecorder(stream, { mimeType: "video/webm" });
+      const chunks = [];
+      rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+      rec.onstop = () => {
+        const blob = new Blob(chunks, { type: "video/webm" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `spidey_ai_${Date.now()}.webm`;
+        a.click();
+      };
+      state.cinemaTime = 0;
+      rec.start();
+      toggleCinemaPlay(true);
+      document.getElementById("cinema-status").textContent = "Recording browser WebM... will auto-download when playback finishes!";
+      setTimeout(() => { if (rec.state === "recording") rec.stop(); }, state.cinemaDuration * 1000 + 300);
+    }
+
+    async function runKieVideo() {
+      if (!state.relayOnline) return alert("Run G:\\My Drive\\Spidey-AI\\start_spidey_ai.bat first so the local relay can securely forward your Kie.ai key!");
+      const prompt = document.getElementById("vid-prompt").value.trim();
+      if (!prompt) return alert("Enter a video prompt!");
+
+      const model = document.getElementById("kie-model").value;
+      const ratio = document.getElementById("kie-ratio").value;
+      const dur = document.getElementById("kie-duration").value;
+      const statusEl = document.getElementById("kie-status");
+      const btn = document.getElementById("btn-kie-run");
+
+      let input = { prompt };
+      if (model === "wan/2-6-text-to-video") {
+        input = { prompt, duration: parseInt(dur, 10), resolution: "720p" };
+      } else if (model === "hailuo/02-text-to-video-standard") {
+        input = { prompt, duration: dur === "10" ? "10" : "6", prompt_optimizer: true };
+      } else if (model === "kling-2.6/text-to-video") {
+        input = { prompt, sound: true, duration: parseInt(dur, 10), aspect_ratio: ratio };
+      } else if (model === "veo-3-1") {
+        input = { prompt, aspect_ratio: ratio, enable_translation: true, generation_type: "TEXT_2_VIDEO" };
+      }
+
+      btn.disabled = true;
+      statusEl.textContent = `Submitting ${model} task to Kie.ai...`;
+      try {
+        const res = await fetch("/api/kie/create-task", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ model, input })
+        });
+        const d = await res.json();
+        if (d.code !== 200 || !d.data?.taskId) throw new Error(d.msg || JSON.stringify(d));
+        const taskId = d.data.taskId;
+        statusEl.textContent = `🚀 Job queued (Task: ${taskId}). Rendering on Kie.ai cloud GPU...`;
+
+        let tries = 0;
+        const timer = setInterval(async () => {
+          tries++;
+          try {
+            const pr = await fetch(`/api/kie/task-status?taskId=${encodeURIComponent(taskId)}`);
+            const pd = await pr.json();
+            const info = pd.data || {};
+            if (info.state === "success") {
+              clearInterval(timer);
+              const parsed = JSON.parse(info.resultJson || "{}");
+              const url = parsed.resultUrls?.[0];
+              if (url) {
+                showCloudVideo(url);
+                statusEl.textContent = "🎉 Kie.ai Video Ready! Click Save to copy directly into Google Drive.";
+              }
+              refreshKieCredits();
+              btn.disabled = false;
+            } else if (info.state === "fail") {
+              clearInterval(timer);
+              statusEl.textContent = "⚠️ Failed: " + (info.failMsg || "Unknown error");
+              btn.disabled = false;
+            } else {
+              statusEl.textContent = `Rendering ${model} on cloud GPU... (${tries * 4}s, state: ${info.state || "waiting"})`;
+            }
+          } catch {}
+          if (tries > 90) {
+            clearInterval(timer);
+            btn.disabled = false;
+          }
+        }, 4000);
+      } catch (e) {
+        statusEl.textContent = "⚠️ " + e.message;
+        btn.disabled = false;
+      }
+    }
+
+    async function runPollinationsVideo() {
+      const prompt = document.getElementById("vid-prompt").value.trim();
+      const key = document.getElementById("poll-key").value.trim();
+      const model = document.getElementById("poll-model").value;
+      const st = document.getElementById("poll-status");
+      if (!prompt || !key) return alert("Enter both a prompt and your Pollinations API key from enter.pollinations.ai/keys.");
+      st.textContent = `Generating ${model} video via Pollinations... (can take 30-90s)`;
+      try {
+        const res = await fetch(`https://gen.pollinations.ai/video/${encodeURIComponent(prompt)}?model=${encodeURIComponent(model)}`, {
+          headers: { Authorization: `Bearer ${key}` }
+        });
+        if (!res.ok) throw new Error(await res.text());
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        showCloudVideo(url);
+        st.textContent = "🎉 Pollinations video ready!";
+      } catch (e) {
+        st.textContent = "⚠️ " + e.message;
+      }
+    }
+
+    function showCloudVideo(url) {
+      state.currentCloudVideoUrl = url;
+      document.getElementById("cloud-result-wrap").style.display = "block";
+      const p = document.getElementById("cloud-video-player");
+      p.src = url;
+      document.getElementById("cloud-video-dl").href = url;
+      document.getElementById("btn-save-gdrive").style.display = url.startsWith("http") && state.relayOnline ? "inline-flex" : "none";
+    }
+
+    async function saveCurrentVideoToDrive() {
+      if (!state.relayOnline || !state.currentCloudVideoUrl.startsWith("http")) return;
+      const btn = document.getElementById("btn-save-gdrive");
+      btn.disabled = true;
+      btn.textContent = "Saving...";
+      try {
+        const res = await fetch("/api/save-video", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: state.currentCloudVideoUrl, prefix: "spidey_cloud" })
+        });
+        const d = await res.json();
+        if (d.saved) {
+          btn.textContent = "✅ Saved to G: Drive!";
+          loadDriveVideos();
+        }
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function sendChat() {
+      const inp = document.getElementById("chat-input");
+      const text = inp.value.trim();
+      if (!text) return;
+      const box = document.getElementById("chat-box");
+      box.innerHTML += `<div class="msg user">${escapeHtml(text)}</div>`;
+      inp.value = "";
+      const botDiv = document.createElement("div");
+      botDiv.className = "msg bot";
+      botDiv.textContent = "Thinking on cloud...";
+      box.appendChild(botDiv);
+      box.scrollTop = box.scrollHeight;
+      try {
+        const res = await askCloudAI(text, "You are Spidey AI, a concise expert creative & coding assistant.", document.getElementById("chat-model").value);
+        botDiv.textContent = res.reply;
+      } catch (e) {
+        botDiv.textContent = "⚠️ " + e.message;
+      }
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function synthesizeTTS(text, voice, save = false) {
+      if (state.relayOnline) {
+        const r = await fetch("/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, voice, save })
+        });
+        return await r.json();
+      }
+      const key = getBrowserGeminiKey();
+      if (!key) return { fallback_tts: true };
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent?key=${encodeURIComponent(key)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text }] }],
+          generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } } }
+        })
+      });
+      const d = await r.json();
+      const inline = d.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+      return inline ? { audio_base64: inline.data, mime_type: inline.mimeType } : { fallback_tts: true };
+    }
+
+    async function generateVoice() {
+      const text = document.getElementById("voice-text").value.trim();
+      const voice = document.getElementById("voice-name").value;
+      if (!text) return alert("Enter script text!");
+      const btn = document.getElementById("btn-gen-voice");
+      btn.disabled = true;
+      btn.textContent = "Synthesizing...";
+      try {
+        const d = await synthesizeTTS(text, voice, true);
+        if (d.audio_base64) {
+          const src = `data:${d.mime_type || "audio/wav"};base64,${d.audio_base64}`;
+          document.getElementById("voice-player").src = src;
+          document.getElementById("voice-dl").href = src;
+          document.getElementById("voice-out").style.display = "block";
+          document.getElementById("voice-player").play();
+        } else if ("speechSynthesis" in window) {
+          window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+          alert("Played using instant browser voice (add Gemini key or run start_spidey_ai.bat for downloadable WAV!).");
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🔊 Generate Voiceover";
+      }
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // Initialise Default Opening Scenes and render cards immediately
+    document.addEventListener("DOMContentLoaded", () => {
+      renderSceneCards();
+      preloadSceneImages().then(() => {
+        drawCinemaFrame(0);
+      });
+      const canvasEl = document.getElementById("spidey-canvas");
+      if (canvasEl) {
+        canvasEl.addEventListener("click", () => toggleCinemaPlay());
+      }
+    });
+
+    renderSceneCards();
+    preloadSceneImages().then(() => {
+      drawCinemaFrame(0);
+    });
+    const canvasEl = document.getElementById("spidey-canvas");
+    if (canvasEl) {
+      canvasEl.addEventListener("click", () => toggleCinemaPlay());
+    }
+
+
+    /* ========================================================
+       FULL-TIME WEB-SWINGING SPIDER-MAN AMBIENT CANVAS ENGINE
+       Runs at 60fps on GPU with 0% CPU footprint
+       ======================================================== */
+    let ambientSwingState = {
+      t: 0,
+      anchorX: 200,
+      direction: 1,
+      speechText: "",
+      speechTimer: 0,
+      activeFlip: 0
+    };
+
+    function initAmbientSwing() {
+      const canvas = document.getElementById("spidey-ambient-canvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+
+      // Load user's high-definition Amazing Spider-Man asset
+      const spideyImg = new Image();
+      spideyImg.src = "assets/spidey_hero.jpg";
+
+      function resize() {
+        canvas.width = canvas.parentElement.clientWidth || 1320;
+        canvas.height = 120;
+      }
+      resize();
+      window.addEventListener("resize", resize);
+
+      canvas.addEventListener("click", (e) => {
+        ambientSwingState.activeFlip = 1;
+        ambientSwingState.speechText = "🕸️ THWIP! The Amazing Spider-Man Ready!";
+        ambientSwingState.speechTimer = 180;
+      });
+
+      let lastTime = performance.now();
+      function swingLoop(now) {
+        if (document.hidden) {
+          requestAnimationFrame(swingLoop);
+          return;
+        }
+        const dt = Math.min(0.05, (now - lastTime) / 1000);
+        lastTime = now;
+        ambientSwingState.t += dt;
+
+        const w = canvas.width, h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        // Move anchor smoothly across ceiling
+        ambientSwingState.anchorX += ambientSwingState.direction * 75 * dt;
+        if (ambientSwingState.anchorX > w - 150) ambientSwingState.direction = -1;
+        if (ambientSwingState.anchorX < 150) ambientSwingState.direction = 1;
+
+        const ropeLen = 70;
+        const swingAngle = Math.sin(ambientSwingState.t * 3.2) * 0.65;
+        const spideyX = ambientSwingState.anchorX + Math.sin(swingAngle) * ropeLen;
+        const spideyY = Math.cos(swingAngle) * ropeLen + 15;
+
+        // Draw Glowing Web Strand
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+        ctx.lineWidth = 1.8;
+        ctx.shadowColor = "#00ff87";
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.moveTo(ambientSwingState.anchorX, 0);
+        ctx.lineTo(spideyX, spideyY);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Draw Spider-Man Character
+        ctx.save();
+        ctx.translate(spideyX, spideyY);
+        let rot = swingAngle + (ambientSwingState.activeFlip > 0 ? ambientSwingState.activeFlip * Math.PI * 2 : 0);
+        if (ambientSwingState.activeFlip > 0) {
+          ambientSwingState.activeFlip = Math.min(1, ambientSwingState.activeFlip + dt * 3);
+          if (ambientSwingState.activeFlip >= 1) ambientSwingState.activeFlip = 0;
+        }
+        ctx.rotate(rot);
+
+        if (spideyImg.complete && spideyImg.naturalWidth > 0) {
+          // Render High-Resolution Amazing Spider-Man Swinger
+          ctx.beginPath();
+          ctx.arc(0, 0, 19, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(4, 18, 12, 0.9)";
+          ctx.fill();
+          ctx.strokeStyle = "#00ff87";
+          ctx.lineWidth = 2.2;
+          ctx.shadowColor = "#00ff87";
+          ctx.shadowBlur = 10;
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(0, 0, 17, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.drawImage(spideyImg, -18, -25, 36, 48);
+          ctx.restore();
+        } else {
+          // Fallback Canvas Vector
+          ctx.fillStyle = "#ff1744";
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 9, 13, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#0284c7";
+          ctx.beginPath();
+          ctx.arc(0, 2, 7, 0, Math.PI);
+          ctx.fill();
+          ctx.fillStyle = "#ff1744";
+          ctx.beginPath();
+          ctx.arc(0, -11, 7, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath();
+          ctx.ellipse(-3, -11, 2.5, 1.5, -0.2, 0, Math.PI * 2);
+          ctx.ellipse(3, -11, 2.5, 1.5, 0.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+
+        // Speech bubble if active
+        if (ambientSwingState.speechTimer > 0) {
+          ambientSwingState.speechTimer--;
+          ctx.font = '700 12px "Space Grotesk", sans-serif';
+          ctx.fillStyle = "rgba(10, 14, 23, 0.92)";
+          ctx.strokeStyle = "#00ff87";
+          ctx.lineWidth = 1.5;
+          const bubbleW = ctx.measureText(ambientSwingState.speechText).width + 18;
+          ctx.beginPath();
+          ctx.roundRect(spideyX + 14, spideyY - 26, bubbleW, 24, 6);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = "#00ff87";
+          ctx.fillText(ambientSwingState.speechText, spideyX + 23, spideyY - 10);
+        }
+
+        requestAnimationFrame(swingLoop);
+      }
+      requestAnimationFrame(swingLoop);
+    }
+
+    /* ========================================================
+       SPIDER-MAN VS VENOM: SYMBIOTE DUEL ARENA ENGINE
+       Interactive fighting canvas with strikes, clash effects,
+       and 1-click 30s video conversion
+       ======================================================== */
+    let duelState = {
+      autoBrawl: true,
+      spideyHp: 100,
+      venomHp: 100,
+      clashX: 640,
+      impactText: "VS",
+      impactTimer: 0,
+      projectiles: [],
+      particles: [],
+      tendrils: []
+    };
+
+    function initDuelArena() {
+      const canvas = document.getElementById("spidey-venom-canvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+
+      // Load user's photorealistic Amazing Spider-Man & Venom assets
+      const spideyImg = new Image();
+      spideyImg.src = "assets/spidey_hero.jpg";
+
+      const venomImg = new Image();
+      venomImg.src = "assets/venom_beast.webp";
+
+      function resize() {
+        canvas.width = canvas.parentElement.clientWidth || 1280;
+        canvas.height = 280;
+      }
+      resize();
+      window.addEventListener("resize", resize);
+
+      let lastTime = performance.now();
+      let brawlTimer = 0;
+
+      function duelLoop(now) {
+        if (document.hidden) {
+          requestAnimationFrame(duelLoop);
+          return;
+        }
+        const dt = Math.min(0.05, (now - lastTime) / 1000);
+        lastTime = now;
+
+        const w = canvas.width, h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        // Dark city rooftop background with rain & neon grid
+        ctx.fillStyle = "#04060d";
+        ctx.fillRect(0, 0, w, h);
+
+        // Rain effect
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 20; i++) {
+          const rx = (Math.sin(now / 500 + i * 37) * 0.5 + 0.5) * w;
+          const ry = ((now / 2 + i * 83) % h);
+          ctx.beginPath();
+          ctx.moveTo(rx, ry);
+          ctx.lineTo(rx - 4, ry + 12);
+          ctx.stroke();
+        }
+
+        // Neon ground line
+        ctx.strokeStyle = "rgba(0, 255, 135, 0.35)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, h - 35);
+        ctx.lineTo(w, h - 35);
+        ctx.stroke();
+
+        // Auto Brawl random attacks
+        if (duelState.autoBrawl) {
+          brawlTimer += dt;
+          if (brawlTimer > 1.2) {
+            brawlTimer = 0;
+            if (Math.random() > 0.5) {
+              triggerDuelAction("spidey_web");
+            } else {
+              triggerDuelAction("venom_tendril");
+            }
+          }
+        }
+
+        // Spider-Man on Left
+        const spideyX = 180, spideyY = h - 75;
+        const spideyBob = Math.sin(now / 220) * 4;
+
+        if (spideyImg.complete && spideyImg.naturalWidth > 0) {
+          ctx.save();
+          ctx.translate(spideyX, spideyY + spideyBob);
+
+          // Emerald Energy Shield Ring
+          ctx.beginPath();
+          ctx.arc(0, -38, 42, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(4, 20, 12, 0.9)";
+          ctx.fill();
+          ctx.strokeStyle = "#00ff87";
+          ctx.lineWidth = 2.8;
+          ctx.shadowColor = "#00ff87";
+          ctx.shadowBlur = 18;
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+
+          // Photorealistic Spider-Man Portrait
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(0, -38, 39, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.drawImage(spideyImg, -42, -84, 84, 110);
+          ctx.restore();
+
+          // Spider-Sense Crackle Arcs (Yellow electric lines)
+          ctx.strokeStyle = "#facc15";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(0, -82, 14, -Math.PI * 0.8, -Math.PI * 0.2);
+          ctx.moveTo(-16, -90); ctx.lineTo(-24, -98);
+          ctx.moveTo(16, -90); ctx.lineTo(24, -98);
+          ctx.moveTo(0, -96); ctx.lineTo(0, -106);
+          ctx.stroke();
+
+          // Web Shooter gauntlet
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(28, -34); ctx.lineTo(46, -34);
+          ctx.stroke();
+
+          ctx.restore();
+        } else {
+          // Vector fallback
+          ctx.save();
+          ctx.translate(spideyX, spideyY + spideyBob);
+          ctx.fillStyle = "#ff1744"; ctx.fillRect(-12, -26, 24, 28);
+          ctx.fillStyle = "#0284c7"; ctx.fillRect(-14, -14, 5, 20); ctx.fillRect(9, -14, 5, 20);
+          ctx.fillStyle = "#ff1744"; ctx.beginPath(); ctx.arc(0, -36, 12, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath(); ctx.ellipse(-4, -36, 4, 2, -0.3, 0, Math.PI * 2); ctx.ellipse(4, -36, 4, 2, 0.3, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        }
+
+        // Venom on Right
+        const venomX = w - 200, venomY = h - 75;
+        const venomBob = Math.cos(now / 200) * 5;
+
+        if (venomImg.complete && venomImg.naturalWidth > 0) {
+          ctx.save();
+          ctx.translate(venomX, venomY + venomBob);
+
+          // Symbiote Violet Dark Aura Shield Ring
+          ctx.beginPath();
+          ctx.arc(0, -38, 48, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(14, 8, 22, 0.95)";
+          ctx.fill();
+          ctx.strokeStyle = "#a855f7";
+          ctx.lineWidth = 3.2;
+          ctx.shadowColor = "#a855f7";
+          ctx.shadowBlur = 22;
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+
+          // Photorealistic Venom Portrait
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(0, -38, 45, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.drawImage(venomImg, -62, -74, 124, 94);
+          ctx.restore();
+
+          // Symbiote spikes
+          ctx.strokeStyle = "#ff2a55";
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(-42, -50); ctx.lineTo(-56, -64);
+          ctx.moveTo(42, -50); ctx.lineTo(56, -64);
+          ctx.moveTo(0, -82); ctx.lineTo(0, -96);
+          ctx.stroke();
+
+          ctx.restore();
+        } else {
+          // Vector fallback
+          ctx.save();
+          ctx.translate(venomX, venomY + venomBob);
+          ctx.fillStyle = "#090410"; ctx.strokeStyle = "#a855f7"; ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.ellipse(0, -20, 26, 38, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = "#090410"; ctx.beginPath(); ctx.arc(0, -56, 18, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath(); ctx.moveTo(-14, -62); ctx.lineTo(-4, -58); ctx.lineTo(-12, -50); ctx.closePath(); ctx.fill();
+          ctx.beginPath(); ctx.moveTo(14, -62); ctx.lineTo(4, -58); ctx.lineTo(12, -50); ctx.closePath(); ctx.fill();
+          ctx.restore();
+        }
+
+        // Draw Writhing Tendrils from Venom
+        for (let td of duelState.tendrils) {
+          td.x += td.vx * dt;
+          ctx.strokeStyle = "rgba(168, 85, 247, 0.85)";
+          ctx.lineWidth = td.width;
+          ctx.beginPath();
+          ctx.moveTo(venomX - 35, venomY - 30);
+          ctx.quadraticCurveTo((venomX + td.x) / 2, td.y - 40, td.x, td.y);
+          ctx.stroke();
+        }
+
+        // Draw Spidey Web Projectiles
+        for (let p of duelState.projectiles) {
+          p.x += p.vx * dt;
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.95)";
+          ctx.lineWidth = 3.5;
+          ctx.shadowColor = "#00ff87";
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.moveTo(spideyX + 35, spideyY - 24);
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+        }
+
+        // Particle sparks
+        for (let i = duelState.particles.length - 1; i >= 0; i--) {
+          const pt = duelState.particles[i];
+          pt.x += pt.vx * dt;
+          pt.y += pt.vy * dt;
+          pt.life -= dt;
+          ctx.fillStyle = pt.color;
+          ctx.fillRect(pt.x, pt.y, pt.size, pt.size);
+          if (pt.life <= 0) duelState.particles.splice(i, 1);
+        }
+
+        // Clean finished projectiles
+        duelState.projectiles = duelState.projectiles.filter(p => p.x < w - 240);
+        duelState.tendrils = duelState.tendrils.filter(t => t.x > 220);
+
+        // Center Impact Graphic Text
+        if (duelState.impactTimer > 0) {
+          duelState.impactTimer -= dt;
+          ctx.font = '900 28px "Space Grotesk", sans-serif';
+          ctx.textAlign = "center";
+          ctx.fillStyle = "#00ff87";
+          ctx.shadowColor = "#00ff87";
+          ctx.shadowBlur = 18;
+          ctx.fillText(duelState.impactText, w / 2, h / 2 - 20);
+          ctx.shadowBlur = 0;
+        }
+
+        requestAnimationFrame(duelLoop);
+      }
+      requestAnimationFrame(duelLoop);
+    }
+
+    function triggerDuelAction(action) {
+      const canvas = document.getElementById("spidey-venom-canvas");
+      if (!canvas) return;
+      const w = canvas.width, h = canvas.height;
+
+      if (action === "spidey_web") {
+        duelState.projectiles.push({ x: 210, y: h - 85, vx: 580 });
+        duelState.impactText = "THWIP! WEB STRIKE!";
+        duelState.impactTimer = 0.8;
+        for (let i = 0; i < 16; i++) {
+          duelState.particles.push({
+            x: w / 2 + (Math.random() * 40 - 20),
+            y: h / 2 + (Math.random() * 40 - 20),
+            vx: (Math.random() - 0.5) * 220,
+            vy: (Math.random() - 0.5) * 220,
+            size: Math.random() * 4 + 2,
+            color: Math.random() > 0.5 ? "#00ff87" : "#00e5ff",
+            life: 0.6
+          });
+        }
+      } else if (action === "venom_tendril") {
+        duelState.tendrils.push({ x: w - 230, y: h - 80, vx: -540, width: 4 });
+        duelState.impactText = "ROAAR! SYMBIOTE LASH!";
+        duelState.impactTimer = 0.8;
+        for (let i = 0; i < 16; i++) {
+          duelState.particles.push({
+            x: w / 2 + (Math.random() * 40 - 20),
+            y: h / 2 + (Math.random() * 40 - 20),
+            vx: (Math.random() - 0.5) * 220,
+            vy: (Math.random() - 0.5) * 220,
+            size: Math.random() * 4 + 2,
+            color: Math.random() > 0.5 ? "#a855f7" : "#ff2a55",
+            life: 0.6
+          });
+        }
+      }
+    }
+
+    function toggleAutoBrawl() {
+      duelState.autoBrawl = !duelState.autoBrawl;
+      const btn = document.getElementById("btn-toggle-brawl");
+      if (btn) btn.textContent = duelState.autoBrawl ? "⚡ Auto-Duel: ON" : "⏸ Auto-Duel: PAUSED";
+    }
+
+    function createDuelVideo30s() {
+      setPreset('duel');
+      switchTab('tab-video', document.querySelector('[data-tab=tab-video]'));
+      buildFreeCinema();
+      window.scrollTo({ top: 180, behavior: "smooth" });
+    }
+
+    function launch30sEpicCinema() {
+      switchTab("tab-video", document.querySelector("[data-tab=tab-video]"));
+      setVideoMode("cinema");
+      seekCinema(0);
+      toggleCinemaPlay(true);
+      window.scrollTo({ top: 180, behavior: "smooth" });
+    }
+
+    // Initialize ambient web-swinging Spider-Man and Duel Arena on load
+    document.addEventListener("DOMContentLoaded", () => {
+      initAmbientSwing();
+      initDuelArena();
+    });
+    initAmbientSwing();
+    initDuelArena();
+
+    checkRelay();
+  </script>
+</body>
+</html>
+
