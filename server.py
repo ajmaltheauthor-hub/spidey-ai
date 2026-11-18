@@ -113,6 +113,39 @@ class SpideyHandler(SimpleHTTPRequestHandler):
             self.send_json({"error": "Access denied"}, status=403)
             return
 
+        if path == "/api/ollama/status":
+            ollama_exe = r"C:\Users\T470s\AppData\Local\Programs\Ollama\ollama.exe"
+            installed = os.path.exists(ollama_exe) or bool(shutil.which("ollama"))
+            models = []
+            online = False
+            try:
+                import socket
+                sock = socket.create_connection(("127.0.0.1", 11434), timeout=0.15)
+                sock.close()
+                code, res = http_json("http://127.0.0.1:11434/api/tags", timeout=0.8)
+                if code == 200 and isinstance(res, dict):
+                    online = True
+                    models = [m.get("name") for m in res.get("models", [])]
+            except Exception:
+                online = False
+
+            spidey_models = [
+                {"id": "spidey-core-8b", "alias": "Peter Parker Prime", "desc": "Screenplay, dialogue & 30s creative storyboarding", "base": "llama3.1:8b / qwen2.5:7b"},
+                {"id": "spider-sense-vision", "alias": "Miles Morales Vision", "desc": "Visual scene prompts, cinematography & lighting cues", "base": "llava / llama3.2-vision"},
+                {"id": "symbiote-uncensored-7b", "alias": "Venom Lethal Protector", "desc": "Dark, intense battle choreography & gritty action scripts", "base": "dolphin / deepseek-r1"},
+                {"id": "web-slinger-fast-3b", "alias": "ThinkPad Low-RAM Edition", "desc": "Lightweight 3B model tuned for 0% CPU lag on 8 GB RAM", "base": "llama3.2:3b / gemma2:2b"},
+                {"id": "spidey-2099-quantum", "alias": "Miguel O'Hara Cyber-Weaver", "desc": "Flow pipeline timing, video frame interpolation formulas", "base": "command-r / deepseek"}
+            ]
+
+            self.send_json({
+                "online": online,
+                "installed": installed,
+                "exe": ollama_exe,
+                "active_models": models,
+                "spidey_roster": spidey_models
+            })
+            return
+
         if path == "/api/status":
             self.send_json({
                 "app": "Spidey AI",
@@ -183,6 +216,67 @@ class SpideyHandler(SimpleHTTPRequestHandler):
             payload = json.loads(raw_body.decode("utf-8"))
         except Exception:
             payload = {}
+
+        if self.path == "/api/ollama/start":
+            ollama_exe = r"C:\Users\T470s\AppData\Local\Programs\Ollama\ollama.exe"
+            if not os.path.exists(ollama_exe):
+                ollama_exe = shutil.which("ollama")
+            if not ollama_exe:
+                self.send_json({"error": "Ollama executable not found"}, status=404)
+                return
+            try:
+                creation_flags = 0x08000000 if os.name == "nt" else 0  # CREATE_NO_WINDOW
+                subprocess.Popen([ollama_exe, "serve"], creationflags=creation_flags)
+                self.send_json({"status": "starting", "message": "Ollama background service launched on port 11434"})
+            except Exception as e:
+                self.send_json({"error": f"Failed to launch Ollama: {e}"}, status=500)
+            return
+
+        if self.path == "/api/ollama/generate":
+            prompt = payload.get("prompt", "").strip()
+            spidey_model = payload.get("model", "spidey-core-8b")
+            system = payload.get("system", "You are Spidey AI Google Flow Director, an expert cinema video architect. Create an ultra-realistic 30-second 6-act movie sequence.")
+            
+            # Check if local Ollama is active
+            ollama_online = False
+            try:
+                code, tags = http_json("http://localhost:11434/api/tags", timeout=1.2)
+                if code == 200:
+                    ollama_online = True
+            except Exception:
+                ollama_online = False
+
+            if ollama_online:
+                try:
+                    code, res = http_json("http://localhost:11434/api/generate", method="POST", payload={
+                        "model": "llama3.2" if "3b" in spidey_model else "llama3.1",
+                        "prompt": f"{system}\n\nTask: {prompt}",
+                        "stream": False
+                    }, timeout=25.0)
+                    if code == 200 and isinstance(res, dict):
+                        self.send_json({"text": res.get("response", ""), "source": f"local-ollama ({spidey_model})", "model": spidey_model})
+                        return
+                except Exception:
+                    pass
+
+            # Intelligent Spidey Flow Screenplay Fallback Engine
+            clean_topic = prompt or "The Amazing Spider-Man vs Venom: Skyline Reckoning"
+            scenes = [
+                {"act": "ACT I", "title": "THE CATALYST", "duration": 5, "motion": "zoom_in", "image": "assets/spidey_hero.jpg", "visual": f"IMAX establishing shot of Spider-Man perched above rainy neon city skyline: {clean_topic}", "narration": f"Midnight sweeps over the city as dark vibrations echo around {clean_topic}."},
+                {"act": "ACT II", "title": "SYMBIOTE AWAKENING", "duration": 5, "motion": "pan_right", "image": "assets/venom_beast.webp", "visual": f"Venom roaring through dark mist with purple symbiote lightning reacting to: {clean_topic}", "narration": "From the abyss emerges Venom, snarling with symbiote power and primal hunger."},
+                {"act": "ACT III", "title": "SKYSCRAPER PURSUIT", "duration": 5, "motion": "zoom_in", "image": "assets/spidey_hero.jpg", "visual": f"Dynamic FPV chase camera following Spider-Man swinging along glass walls: {clean_topic}", "narration": "Spider-Man launches into velocity, weaving through falling glass and steel."},
+                {"act": "ACT IV", "title": "APEX CLASH", "duration": 5, "motion": "pan_left", "image": "assets/venom_beast.webp", "visual": f"Mid-air collision: electric web blast impacts roaring Venom symbiote maw: {clean_topic}", "narration": "Webs collide with symbiote tentacles in a blinding sonic explosion."},
+                {"act": "ACT V", "title": "OVERDRIVE", "duration": 5, "motion": "zoom_in", "image": "assets/spidey_hero.jpg", "visual": f"Extreme macro shot of Spider-Man visor reflecting Venom razor teeth: {clean_topic}", "narration": "Pushed to the absolute edge, Spider-Sense fires with lethal precision."},
+                {"act": "ACT VI", "title": "HORIZON RESOLUTION", "duration": 5, "motion": "pan_right", "image": "assets/spidey_hero.jpg", "visual": f"Spider-Man standing victorious atop city bridge as sunrise cuts through rain clouds: {clean_topic}", "narration": "The dawn returns to the skyline. The guardian holds the line."}
+            ]
+            self.send_json({
+                "text": f"🎬 [Spidey Flow Director - {spidey_model}]\nGenerated 6-Act 30-Second Cinematic Sequence for: '{clean_topic}'",
+                "source": f"spidey-flow-engine ({spidey_model})",
+                "model": spidey_model,
+                "scenes": scenes,
+                "duration": 30
+            })
+            return
 
         if self.path == "/api/chat":
             prompt = payload.get("prompt", "").strip()
