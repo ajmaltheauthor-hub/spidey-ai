@@ -1,8 +1,6 @@
 # Vercel deployment ignore
-videos/
 temp_render/
 __pycache__/
-*.mp4
 *.pyc
 .git/
 *.bat
