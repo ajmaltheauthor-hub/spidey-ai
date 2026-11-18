@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Studio — 30s Ultra-Realistic Video & Infinity Engine</title>
+  <title>Luma AI Studio — Creative Agents & Video Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    /* ===== HARMONIC SPACING & COLOR TOKENS ===== */
+    /* ===== LUMA LABS DARK THEME DESIGN TOKENS ===== */
     :root {
       --space-1: 4px;
       --space-2: 8px;
@@ -17,31 +17,31 @@
       --space-5: 24px;
       --space-6: 48px;
 
-      --bg-main: #f5f5f4;
-      --bg-white: #ffffff;
-      --bg-sidebar: #f0efee;
-      --bg-hover: #ebebea;
-      --bg-active: #e5e4e3;
-      --border: #e5e5e5;
-      --border-strong: #d4d4d4;
+      --bg-root: #09090b;
+      --bg-sidebar: #0c0c0e;
+      --bg-main: #0f0f12;
+      --bg-card: #18181b;
+      --bg-card-hover: #202025;
+      --bg-input: #121215;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
 
-      --text-primary: #1a1a1a;
-      --text-secondary: #525252;
-      --text-muted: #a3a3a3;
+      --text-primary: #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
 
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 16px;
-      --radius-xl: 24px;
+      --radius-xl: 20px;
       --radius-full: 9999px;
 
       --sidebar-w: 220px;
-      --panel-w: 320px;
-      --topbar-h: 48px;
+      --topbar-h: 52px;
 
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-      --shadow-md: 0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.05);
-      --shadow-lg: 0 8px 24px rgba(0,0,0,.10), 0 4px 8px rgba(0,0,0,.06);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.4);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.6);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,.8);
 
       --transition: 150ms cubic-bezier(.4,0,.2,1);
     }
@@ -52,56 +52,51 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 14px;
       color: var(--text-primary);
-      background: var(--bg-main);
+      background: var(--bg-root);
       -webkit-font-smoothing: antialiased;
     }
-    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
     input, textarea, select { font-family: inherit; }
     a { text-decoration: none; color: inherit; }
 
-    /* ===== SHELL LAYOUT ===== */
+    /* ===== APP SHELL ===== */
     .app-shell { display: flex; height: 100vh; overflow: hidden; }
 
-    /* ===== SIDEBAR ===== */
+    /* ===== LEFT SIDEBAR ===== */
     .sidebar {
       width: var(--sidebar-w); min-width: var(--sidebar-w);
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border);
+      background: var(--bg-sidebar); border-right: 1px solid var(--border);
       display: flex; flex-direction: column; overflow: hidden; z-index: 10;
     }
-    .sidebar-logo {
+    .sidebar-user-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-4) var(--space-3) var(--space-2);
+    }
+    .user-pill {
       display: flex; align-items: center; gap: var(--space-2);
-      padding: var(--space-4) var(--space-4) var(--space-3);
-      border-bottom: 1px solid var(--border);
+      padding: var(--space-1) var(--space-2); border-radius: var(--radius-md);
+      cursor: pointer; transition: background var(--transition);
     }
-    .logo-mark {
-      width: 28px; height: 28px; background: #000; border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .logo-mark svg { width: 16px; height: 16px; }
-    .logo-text { font-size: 15px; font-weight: 600; letter-spacing: -.3px; }
-
-    .sidebar-user {
-      display: flex; align-items: center; gap: var(--space-2);
-      padding: var(--space-3); margin: var(--space-2) var(--space-2) 0;
-      border-radius: var(--radius-md); cursor: pointer; transition: background var(--transition);
-    }
-    .sidebar-user:hover { background: var(--bg-hover); }
+    .user-pill:hover { background: rgba(255,255,255,.05); }
     .user-avatar {
-      width: 28px; height: 28px; border-radius: var(--radius-full);
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      width: 26px; height: 26px; border-radius: var(--radius-full);
+      background: linear-gradient(135deg, #6366f1, #a855f7);
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 600; color: #fff; flex-shrink: 0;
+      font-size: 11px; font-weight: 600; color: #fff;
     }
-    .user-name { font-size: 13px; font-weight: 500; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .user-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
 
     .sidebar-search { padding: var(--space-2) var(--space-3); }
-    .search-input-wrap {
+    .search-box {
       display: flex; align-items: center; gap: var(--space-2);
-      background: var(--bg-white); border: 1px solid var(--border);
+      background: var(--bg-input); border: 1px solid var(--border);
       border-radius: var(--radius-md); padding: var(--space-2) var(--space-3);
     }
-    .search-input-wrap input { border: none; outline: none; background: transparent; font-size: 13px; width: 100%; }
+    .search-box input {
+      border: none; outline: none; background: transparent; font-size: 13px;
+      color: var(--text-primary); width: 100%;
+    }
+    .search-box input::placeholder { color: var(--text-muted); }
 
     .sidebar-nav { flex: 1; overflow-y: auto; padding: var(--space-2); }
     .sidebar-nav::-webkit-scrollbar { width: 0; }
@@ -110,171 +105,229 @@
       padding: var(--space-2) var(--space-3);
       border-radius: var(--radius-md); font-size: 13px; font-weight: 450;
       color: var(--text-secondary); cursor: pointer; transition: background var(--transition), color var(--transition);
-      margin-bottom: 1px; user-select: none;
+      margin-bottom: 2px; user-select: none;
     }
-    .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
-    .nav-item.active { background: var(--bg-active); color: var(--text-primary); font-weight: 500; }
-    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: .7; }
+    .nav-item:hover { background: rgba(255,255,255,.05); color: var(--text-primary); }
+    .nav-item.active { background: rgba(255,255,255,.1); color: var(--text-primary); font-weight: 500; }
+    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: .8; }
     .nav-item.active svg { opacity: 1; }
 
     .nav-section-label {
       font-size: 11px; font-weight: 500; color: var(--text-muted);
       text-transform: uppercase; letter-spacing: .6px;
-      padding: var(--space-3) var(--space-3) var(--space-1);
+      padding: var(--space-4) var(--space-3) var(--space-1);
       display: flex; align-items: center; justify-content: space-between;
     }
     .nav-divider { height: 1px; background: var(--border); margin: var(--space-2); }
 
-    .sidebar-status { padding: var(--space-3); border-top: 1px solid var(--border); }
-    .status-pill {
+    .sidebar-footer { padding: var(--space-3); border-top: 1px solid var(--border); }
+    .engine-status-pill {
       display: flex; align-items: center; gap: var(--space-2);
-      font-size: 12px; color: var(--text-muted);
+      font-size: 12px; color: var(--text-secondary);
       padding: var(--space-2) var(--space-3);
-      background: var(--bg-white); border: 1px solid var(--border);
+      background: var(--bg-card); border: 1px solid var(--border);
       border-radius: var(--radius-full); cursor: pointer;
     }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #d4d4d4; }
-    .status-dot.online { background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.18); }
-    .status-dot.busy { background: #f59e0b; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.2); }
 
     /* ===== MAIN CONTENT ===== */
     .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg-main); }
     .view { display: none; flex-direction: column; flex: 1; overflow: hidden; }
     .view.active { display: flex; }
 
-    /* ===== TOPBARS ===== */
+    /* Topbars */
     .view-topbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: var(--space-3) var(--space-5);
       border-bottom: 1px solid var(--border);
-      background: var(--bg-white);
+      background: var(--bg-sidebar);
       height: var(--topbar-h);
       flex-shrink: 0;
     }
-    .topbar-title { font-size: 14px; font-weight: 500; }
+    .topbar-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
 
-    /* ===== BOARDS VIEW ===== */
-    .boards-body { flex: 1; overflow-y: auto; padding: var(--space-6); }
-    .boards-body::-webkit-scrollbar { width: 6px; }
-    .boards-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; }
+    /* ===== 1. CONNECTORS VIEW (IMAGE 1) ===== */
+    .connectors-scroll {
+      flex: 1; overflow-y: auto; padding: var(--space-6) var(--space-6);
+      display: flex; justify-content: center;
+    }
+    .connectors-container {
+      width: 100%; max-width: 860px;
+    }
+    .connectors-header-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+    .connectors-heading { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+    .connectors-link-help { font-size: 12px; color: var(--text-muted); transition: color var(--transition); }
+    .connectors-link-help:hover { color: var(--text-primary); }
 
-    .create-prompt-wrap { max-width: 720px; margin: 0 auto var(--space-5); }
-    .create-prompt-label { font-size: 24px; font-weight: 600; text-align: center; margin-bottom: var(--space-4); letter-spacing: -.5px; }
-    .create-prompt-box {
-      background: var(--bg-white); border: 1px solid var(--border);
-      border-radius: var(--radius-xl); padding: var(--space-4);
-      display: flex; align-items: flex-end; gap: var(--space-3);
-      box-shadow: var(--shadow-sm);
+    .connectors-list {
+      background: #121215; border: 1px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden;
     }
-    .create-prompt-box textarea {
-      flex: 1; border: none; outline: none; resize: none; background: transparent;
-      font-size: 14px; color: var(--text-primary); line-height: 1.5; min-height: 24px;
+    .connector-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
     }
-    .prompt-btn-send {
-      width: 34px; height: 34px; border-radius: var(--radius-full);
-      background: #000; color: #fff; display: flex; align-items: center; justify-content: center;
-      transition: background var(--transition), transform var(--transition);
-    }
-    .prompt-btn-send:hover { background: #333; transform: scale(1.05); }
+    .connector-item:last-child { border-bottom: none; }
+    .connector-item:hover { background: rgba(255,255,255,.02); }
 
-    /* Banner */
-    .featured-banner {
-      max-width: 720px; margin: 0 auto var(--space-5);
-      background: var(--bg-white); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); overflow: hidden; display: flex; box-shadow: var(--shadow-sm);
+    .connector-left { display: flex; align-items: center; gap: var(--space-3); }
+    .connector-icon-wrap {
+      width: 32px; height: 32px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,.05); flex-shrink: 0;
     }
-    .featured-thumb {
-      width: 210px; min-height: 140px; flex-shrink: 0;
-      background: linear-gradient(135deg, #09090b, #18181b);
+    .connector-info { display: flex; flex-direction: column; gap: 2px; }
+    .connector-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+    .connector-desc { font-size: 12px; color: var(--text-secondary); max-width: 580px; line-height: 1.4; }
+
+    .btn-connect {
+      padding: var(--space-1) var(--space-4); border-radius: var(--radius-full);
+      font-size: 12px; font-weight: 500; color: #fff;
+      background: #27272a; border: 1px solid rgba(255,255,255,.1);
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+      white-space: nowrap;
+    }
+    .btn-connect:hover { background: #3f3f46; }
+    .btn-connect.connected {
+      background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    /* ===== 2. ASSETS VIEW (IMAGE 2) ===== */
+    .assets-topbar-tools {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-3) var(--space-5);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-sidebar);
+      height: var(--topbar-h);
+      flex-shrink: 0;
+    }
+    .assets-left-tabs { display: flex; gap: var(--space-2); }
+    .asset-tab-pill {
+      padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+      font-size: 13px; font-weight: 500; color: var(--text-secondary);
+      cursor: pointer; transition: background var(--transition), color var(--transition);
+    }
+    .asset-tab-pill:hover { color: var(--text-primary); }
+    .asset-tab-pill.active { background: #27272a; color: var(--text-primary); }
+
+    .assets-right-controls { display: flex; align-items: center; gap: var(--space-3); }
+    .zoom-slider-wrap { display: flex; align-items: center; gap: var(--space-2); color: var(--text-muted); font-size: 13px; }
+    .zoom-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 80px; height: 3px; background: #27272a; border-radius: 99px; outline: none;
+    }
+    .zoom-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 12px; height: 12px; border-radius: 50%; background: #a1a1aa; cursor: pointer;
+    }
+    .view-toggle-btns { display: flex; gap: 2px; }
+    .btn-toggle-view {
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      border-radius: var(--radius-sm); color: var(--text-muted);
+    }
+    .btn-toggle-view.active { background: #27272a; color: #fff; }
+    .assets-search-input {
+      background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 4px 10px; font-size: 12px; color: var(--text-primary); width: 140px; outline: none;
+    }
+    .btn-new-asset {
+      display: flex; align-items: center; gap: 4px;
+      background: #fff; color: #000; font-size: 12px; font-weight: 600;
+      padding: 5px 14px; border-radius: var(--radius-full); transition: opacity var(--transition);
+    }
+    .btn-new-asset:hover { opacity: .9; }
+
+    .assets-body { flex: 1; overflow-y: auto; padding: var(--space-6); display: flex; flex-direction: column; align-items: center; }
+    .dropzone-container {
+      width: 100%; max-width: 860px; min-height: 200px;
+      background: #121215; border: 1.5px dashed var(--border); border-radius: var(--radius-xl);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      position: relative; overflow: hidden; color: #fff;
+      gap: var(--space-3); color: var(--text-muted); cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      margin-bottom: var(--space-5);
     }
-    .featured-thumb-badge {
-      font-size: 10px; font-weight: 700; letter-spacing: 1px;
-      background: rgba(255,255,255,.15); padding: 4px 8px; border-radius: 99px; text-transform: uppercase;
-      border: 1px solid rgba(255,255,255,.2);
+    .dropzone-container:hover, .dropzone-container.dragover {
+      border-color: rgba(255,255,255,.3); background: #16161a;
     }
-    .featured-thumb-title { font-size: 14px; font-weight: 600; margin-top: 6px; }
-    .featured-info { flex: 1; padding: var(--space-4); display: flex; flex-direction: column; justify-content: space-between; }
-    .featured-tag { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
-    .featured-title { font-size: 16px; font-weight: 600; margin-top: 4px; }
-    .featured-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: var(--space-2) 0; }
-    .btn-action-black {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: #000; color: #fff; font-size: 12px; font-weight: 500;
-      padding: var(--space-2) var(--space-4); border-radius: var(--radius-full);
-      transition: background var(--transition); align-self: flex-start;
+    .dropzone-icon {
+      width: 48px; height: 48px; border-radius: var(--radius-md);
+      background: rgba(255,255,255,.05); display: flex; align-items: center; justify-content: center;
     }
-    .btn-action-black:hover { background: #333; }
+    .dropzone-text { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
 
-    /* Boards Grid */
-    .boards-section-label { max-width: 720px; margin: 0 auto var(--space-3); font-size: 13px; font-weight: 500; color: var(--text-secondary); }
-    .boards-grid { max-width: 720px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: var(--space-3); }
-    .board-card-new {
-      aspect-ratio: 1.5; background: var(--bg-white); border: 2px dashed var(--border-strong);
-      border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: var(--space-2); cursor: pointer; transition: border-color var(--transition), background var(--transition);
+    /* Asset Grid Display */
+    .assets-grid-display {
+      width: 100%; max-width: 860px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-4);
     }
-    .board-card-new:hover { border-color: #000; background: var(--bg-hover); }
-    .board-card {
-      background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--radius-lg);
-      overflow: hidden; cursor: pointer; transition: box-shadow var(--transition);
+    .asset-item-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden; cursor: pointer; transition: transform var(--transition), box-shadow var(--transition);
     }
-    .board-card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
-    .board-thumb-preview { aspect-ratio: 1.8; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; }
-    .board-info { padding: var(--space-3); }
-    .board-name { font-size: 13px; font-weight: 500; }
-    .board-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-    /* ===== SKILLS VIEW ===== */
-    .skills-body { flex: 1; overflow-y: auto; padding: var(--space-5); }
-    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
-    .skill-card {
-      background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--radius-lg);
-      overflow: hidden; cursor: pointer; transition: box-shadow var(--transition), transform var(--transition);
+    .asset-item-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+    .asset-thumb-wrap { aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .asset-thumb-wrap video { width: 100%; height: 100%; object-fit: cover; }
+    .asset-dur-badge {
+      position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,.75);
+      color: #fff; font-size: 10px; font-family: 'JetBrains Mono', monospace; padding: 2px 6px; border-radius: 4px;
     }
-    .skill-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border-strong); }
-    .skill-thumb-box { aspect-ratio: 1.9; position: relative; overflow: hidden; }
-    .skill-thumb-grad { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-    .skill-info { padding: var(--space-3) var(--space-4); }
-    .skill-name { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-    .skill-star { font-size: 10px; background: #000; color: #fff; padding: 1px 4px; border-radius: 3px; }
-    .skill-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-top: 4px; }
+    .asset-meta-info { padding: var(--space-3); }
+    .asset-title { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .asset-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-    /* ===== WORKSPACE VIEW (CANVAS & VIDEO STUDIO) ===== */
-    .workspace-shell { flex: 1; display: flex; overflow: hidden; }
-    .canvas-container { flex: 1; position: relative; background: #09090b; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    /* ===== 3. APPS VIEW (IMAGE 3) ===== */
+    .apps-body { flex: 1; overflow-y: auto; padding: var(--space-5) var(--space-6); }
+    .apps-header { margin-bottom: var(--space-4); }
+    .apps-title { font-size: 20px; font-weight: 600; color: var(--text-primary); }
+    .apps-sub { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
 
-    /* Real-time 3D Infinity Canvas */
-    #infinity-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .apps-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3);
+    }
+    @media (max-width: 1300px) { .apps-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 950px) { .apps-grid { grid-template-columns: repeat(2, 1fr); } }
 
-    /* Video Player Overlay */
+    .app-card {
+      background: #141417; border: 1px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden; cursor: pointer; transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      display: flex; flex-direction: column;
+    }
+    .app-card:hover { transform: translateY(-2px); border-color: var(--border-strong); box-shadow: var(--shadow-md); }
+
+    .app-preview-visual {
+      aspect-ratio: 16/10; background: #000; position: relative; overflow: hidden;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    }
+    .app-preview-visual.single { grid-template-columns: 1fr; }
+    .app-visual-pane {
+      background-size: cover; background-position: center; position: relative;
+    }
+
+    .app-card-details {
+      padding: var(--space-3); display: flex; flex-direction: column; justify-content: space-between; flex: 1;
+    }
+    .app-card-title-row {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-1);
+    }
+    .app-card-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .app-card-chevron { color: var(--text-muted); font-size: 13px; }
+    .app-card-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.45; }
+
+    /* ===== WORKSPACE VIEW (CANVAS & CINEMA STUDIO) ===== */
+    .workspace-shell { flex: 1; display: flex; overflow: hidden; position: relative; }
+    .canvas-container { flex: 1; position: relative; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    #infinity-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
     #cinema-video-player {
       position: absolute; width: 85%; max-width: 960px; aspect-ratio: 16/9;
-      background: #000; border-radius: var(--radius-lg); box-shadow: 0 20px 50px rgba(0,0,0,.6);
-      display: none; z-index: 5; object-fit: contain; border: 1px solid rgba(255,255,255,.1);
+      background: #000; border-radius: var(--radius-lg); box-shadow: 0 20px 50px rgba(0,0,0,.8);
+      display: none; z-index: 5; object-fit: contain; border: 1px solid rgba(255,255,255,.15);
     }
 
-    /* Floating Studio Engine Control Bar */
-    .studio-control-bar {
-      position: absolute; bottom: var(--space-5); left: 50%; transform: translateX(-50%);
-      background: rgba(24, 24, 27, 0.85); backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-full);
-      padding: 6px 14px; display: flex; align-items: center; gap: var(--space-3);
-      box-shadow: 0 10px 30px rgba(0,0,0,.4); z-index: 20; color: #fff;
-    }
-    .studio-btn {
-      display: flex; align-items: center; gap: 6px; padding: 6px 12px;
-      border-radius: var(--radius-full); font-size: 12px; font-weight: 500; color: #e4e4e7;
-      transition: background var(--transition), color var(--transition);
-    }
-    .studio-btn:hover { background: rgba(255,255,255,.15); color: #fff; }
-    .studio-btn.primary { background: #fff; color: #000; font-weight: 600; }
-    .studio-btn.primary:hover { background: #e4e4e7; }
-    .studio-sep { width: 1px; height: 20px; background: rgba(255,255,255,.2); }
-    .timeline-pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #a1a1aa; }
-
-    /* HUD overlay on Canvas */
     .canvas-hud {
       position: absolute; top: var(--space-4); left: var(--space-4); z-index: 10;
       color: rgba(255,255,255,.8); font-family: 'JetBrains Mono', monospace; font-size: 11px;
@@ -285,104 +338,56 @@
       margin-bottom: 6px; font-weight: 600; color: #fff;
     }
 
-    /* Right Panel */
-    .right-panel {
-      width: var(--panel-w); min-width: var(--panel-w);
-      background: var(--bg-white); border-left: 1px solid var(--border);
-      display: flex; flex-direction: column; flex-shrink: 0;
+    .studio-control-bar {
+      position: absolute; bottom: var(--space-5); left: 50%; transform: translateX(-50%);
+      background: rgba(24, 24, 27, 0.85); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-full);
+      padding: 6px 14px; display: flex; align-items: center; gap: var(--space-2);
+      box-shadow: 0 10px 30px rgba(0,0,0,.6); z-index: 20; color: #fff;
     }
-    .panel-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); flex-shrink: 0;
+    .studio-btn {
+      display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+      border-radius: var(--radius-full); font-size: 12px; font-weight: 500; color: #e4e4e7;
     }
-    .panel-tabs { display: flex; gap: var(--space-1); }
-    .panel-tab {
-      padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
-      font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer;
-    }
-    .panel-tab.active { background: var(--bg-active); color: var(--text-primary); }
+    .studio-btn:hover { background: rgba(255,255,255,.15); color: #fff; }
+    .studio-btn.primary { background: #fff; color: #000; font-weight: 600; }
+    .studio-sep { width: 1px; height: 18px; background: rgba(255,255,255,.2); }
 
-    .chat-body {
-      flex: 1; overflow-y: auto; padding: var(--space-4); display: flex; flex-direction: column;
-      gap: var(--space-3);
-    }
-    .chat-msg {
-      max-width: 88%; padding: var(--space-3); border-radius: var(--radius-lg); font-size: 13px; line-height: 1.5;
-    }
-    .chat-msg.user { align-self: flex-end; background: #000; color: #fff; }
-    .chat-msg.assistant { align-self: flex-start; background: var(--bg-main); border: 1px solid var(--border); }
-
-    .chat-input-wrap { border-top: 1px solid var(--border); padding: var(--space-3) var(--space-4); }
-    .chat-input-box {
-      background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-lg);
-      padding: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2);
-    }
-    .chat-textarea { border: none; outline: none; resize: none; background: transparent; font-size: 13px; width: 100%; }
-
-    /* ===== CONNECTORS VIEW (VERCEL & GITHUB) ===== */
-    .connectors-body { flex: 1; overflow-y: auto; padding: var(--space-6); max-width: 840px; margin: 0 auto; width: 100%; }
-    .connector-card {
-      background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--radius-xl);
-      padding: var(--space-5); margin-bottom: var(--space-4); box-shadow: var(--shadow-sm);
-    }
-    .connector-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
-    .connector-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-    .connector-status-badge {
-      font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-full);
-    }
-    .badge-live { background: #dcfce7; color: #15803d; }
-    .badge-ready { background: #e0e7ff; color: #4338ca; }
-    .connector-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-4); }
-    .code-snippet {
-      background: #18181b; color: #f4f4f5; font-family: 'JetBrains Mono', monospace; font-size: 12px;
-      padding: var(--space-3); border-radius: var(--radius-md); overflow-x: auto; margin-bottom: var(--space-3);
-    }
-
-    /* ===== MODAL ===== */
+    /* ===== MODAL: 30S FILM / APP RUNNER ===== */
     .modal-overlay {
-      position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+      position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.65); backdrop-filter: blur(8px);
       display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .2s;
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal {
-      background: var(--bg-white); border-radius: var(--radius-xl); width: min(600px, 94vw);
-      box-shadow: var(--shadow-lg); overflow: hidden;
+      background: #141417; border: 1px solid var(--border-strong); border-radius: var(--radius-xl);
+      width: min(620px, 94vw); box-shadow: var(--shadow-lg); overflow: hidden; color: #fff;
     }
     .modal-header {
       display: flex; align-items: center; justify-content: space-between;
       padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--border);
     }
-    .modal-title { font-size: 16px; font-weight: 600; }
+    .modal-title { font-size: 15px; font-weight: 600; }
     .modal-body { padding: var(--space-5); }
     .modal-footer {
       display: flex; justify-content: flex-end; gap: var(--space-2); padding: var(--space-4) var(--space-5);
       border-top: 1px solid var(--border);
     }
-
     .form-row { margin-bottom: var(--space-4); }
     .form-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; display: block; }
     .form-input, .form-select, .form-textarea {
       width: 100%; padding: var(--space-2) var(--space-3); border: 1px solid var(--border);
-      border-radius: var(--radius-md); font-size: 13px; outline: none; background: #fff;
+      border-radius: var(--radius-md); font-size: 13px; outline: none; background: #0c0c0e; color: #fff;
     }
     .form-textarea { min-height: 80px; resize: none; }
-
-    /* Act Visualizer */
-    .acts-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 6px; }
-    .act-cell {
-      background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-sm);
-      padding: 6px 4px; text-align: center; font-size: 10px; font-weight: 600; color: var(--text-secondary);
-    }
-    .act-cell span { display: block; font-size: 9px; color: var(--text-muted); font-weight: normal; margin-top: 2px; }
 
     /* Toast */
     .toast-container { position: fixed; bottom: var(--space-5); right: var(--space-5); z-index: 200; display: flex; flex-direction: column; gap: var(--space-2); }
     .toast {
       display: flex; align-items: center; gap: var(--space-2); background: #18181b; color: #fff;
       padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); font-size: 13px; font-weight: 500;
-      box-shadow: var(--shadow-lg); animation: toast-in .2s ease;
+      box-shadow: var(--shadow-lg); border: 1px solid var(--border-strong);
     }
-    @keyframes toast-in { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   </style>
 </head>
 <body>
@@ -391,64 +396,81 @@
 
   <!-- ========== LEFT SIDEBAR ========== -->
   <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-mark">
-        <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="white"/></svg>
+    <div class="sidebar-user-header">
+      <div class="user-pill" onclick="switchView('connectors')">
+        <div class="user-avatar">MA</div>
+        <span class="user-name">MUHAMED AJMAL</span>
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><path d="M19 9l-7 7-7-7"/></svg>
       </div>
-      <span class="logo-text">AI Studio</span>
-    </div>
-
-    <div class="sidebar-user" onclick="switchView('connectors')">
-      <div class="user-avatar">MA</div>
-      <span class="user-name">MUHAMED AJMAL</span>
-      <span style="font-size:11px;color:var(--text-muted)">PRO</span>
     </div>
 
     <div class="sidebar-search">
-      <div class="search-input-wrap">
+      <div class="search-box">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" placeholder="Search Studio…" />
+        <input type="text" placeholder="Search" />
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-item active" id="nav-boards" onclick="switchView('boards')">
+      <div class="nav-item" onclick="switchView('workspace')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </div>
+      <div class="nav-item" onclick="showToast('You are all caught up!','info')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Notifications
+      </div>
+
+      <div class="nav-section-label">
+        <span>MUHAMED's team</span>
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+
+      <div class="nav-item" id="nav-boards" onclick="switchView('boards')">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
         Boards
       </div>
-      <div class="nav-item" id="nav-workspace" onclick="switchView('workspace')">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.361a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-        Infinity Engine
+      <div class="nav-item" id="nav-projects" onclick="switchView('boards')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 012-2h3l2 2h9a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Projects
       </div>
-      <div class="nav-item" id="nav-skills" onclick="switchView('skills')">
+      <div class="nav-item active" id="nav-apps" onclick="switchView('apps')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="9" height="9" rx="2"/><rect x="13" y="2" width="9" height="9" rx="2"/><rect x="2" y="13" width="9" height="9" rx="2"/><path d="M17.5 13v6M13 17.5h6"/></svg>
+        Apps
+      </div>
+      <div class="nav-item" id="nav-skills" onclick="switchView('apps')">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        Skills & Engines
+        Skills
       </div>
-      <div class="nav-item" id="nav-connectors" onclick="switchView('connectors')">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-        GitHub & Vercel
+      <div class="nav-item" onclick="showToast('Team members: MUHAMED AJMAL (Owner)','info')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        Members
       </div>
 
       <div class="nav-divider"></div>
-      <div class="nav-section-label">AI Models & GPU</div>
-      <div class="nav-item" onclick="openVideoModal()">
-        <span style="font-size:14px">🎬</span> 30s Film Cinema
+
+      <div class="nav-item" id="nav-assets" onclick="switchView('assets')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Assets <span style="font-size:16px;line-height:0;color:#60a5fa;margin-left:2px">•</span>
       </div>
-      <div class="nav-item" onclick="switchEngineStyle('infinity_cosmos')">
-        <span style="font-size:14px">🌌</span> Infinity Cosmos
+      <div class="nav-item" id="nav-connectors" onclick="switchView('connectors')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+        Connectors
       </div>
-      <div class="nav-item" onclick="switchEngineStyle('cyber_matrix')">
-        <span style="font-size:14px">⚡</span> Cyber Matrix
+      <div class="nav-item" onclick="showToast('Plan: Free Pro Tier Active','info')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        Billing
       </div>
-      <div class="nav-item" onclick="switchEngineStyle('quantum_warp')">
-        <span style="font-size:14px">🌀</span> Quantum Warp
+      <div class="nav-item" onclick="showToast('Usage: 30s Film Engine Unlimited Free','info')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Usage
       </div>
     </nav>
 
-    <div class="sidebar-status">
-      <div class="status-pill" onclick="checkAllStatus()">
-        <div class="status-dot online" id="status-dot"></div>
-        <span id="status-text">30s Engine Online</span>
+    <div class="sidebar-footer">
+      <div class="engine-status-pill" onclick="switchView('workspace')">
+        <div class="status-dot"></div>
+        <span>30s Film Engine</span>
       </div>
     </div>
   </aside>
@@ -456,98 +478,438 @@
   <!-- ========== MAIN CONTENT AREA ========== -->
   <main class="main-content">
 
-    <!-- ===== VIEW: BOARDS ===== -->
-    <div class="view active" id="view-boards">
-      <div class="view-topbar">
-        <span class="topbar-title">Creative Studio // Boards</span>
-        <button class="btn-action-black" onclick="openVideoModal()">+ Create 30s Video</button>
-      </div>
-
-      <div class="boards-body">
-        <div class="create-prompt-wrap">
-          <h1 class="create-prompt-label">What do you want to create today?</h1>
-          <div class="create-prompt-box">
-            <textarea id="boards-prompt" placeholder="A hyper-realistic voyage through the cosmic singularity, quantum portals, and infinite dimensions…" rows="2"
-              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();createFromPrompt()}"></textarea>
-            <button class="prompt-btn-send" onclick="createFromPrompt()" title="Generate 30s Film">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
+    <!-- ==============================================
+         1. VIEW: CONNECTORS (EXACTLY MATCHING IMAGE 1)
+         ============================================== -->
+    <div class="view" id="view-connectors">
+      <div class="connectors-scroll">
+        <div class="connectors-container">
+          <div class="connectors-header-row">
+            <span class="connectors-heading">Apps your agent can use</span>
+            <a href="#" class="connectors-link-help" onclick="showToast('Connectors allow your creative agent to access files and export outputs.','info')">How to use</a>
           </div>
-        </div>
 
-        <!-- Featured 30s Engine Banner -->
-        <div class="featured-banner">
-          <div class="featured-thumb">
-            <span class="featured-thumb-badge">30s Ultra-Realistic</span>
-            <div class="featured-thumb-title">Infinity Engine</div>
-            <div style="font-size:10px;opacity:.7;margin-top:2px">6-Act Continuous Film</div>
-          </div>
-          <div class="featured-info">
-            <div>
-              <div class="featured-tag">Pro AI Engine // Fully Free</div>
-              <div class="featured-title">30-Second Ultra-Realistic Film Generator</div>
-              <div class="featured-desc">
-                Generates a continuous 30.0-second 1080p/720p 60fps film with cosmic infinity zoom, hyper-realistic particles, 6-act narrative screenplay, and synthesized cinematic soundtrack.
+          <div class="connectors-list">
+            <!-- Airtable -->
+            <div class="connector-item">
+              <div class="connector-left">
+                <div class="connector-icon-wrap" style="background:#fee2e2">
+                  <span style="font-size:16px">📊</span>
+                </div>
+                <div class="connector-info">
+                  <span class="connector-name">Airtable</span>
+                  <span class="connector-desc">Read tables, records, and attachments from your Airtable bases, create or update records, and export assets back to them</span>
+                </div>
               </div>
+              <button class="btn-connect" id="btn-conn-airtable" onclick="toggleConnector('airtable')">Connect</button>
             </div>
-            <div style="display:flex;gap:var(--space-2)">
-              <button class="btn-action-black" onclick="openVideoModal()">Launch Generator ✨</button>
-              <button class="btn-action-black" style="background:#fff;color:#000;border:1px solid var(--border-strong)" onclick="switchView('workspace')">Open Live 3D Studio</button>
-            </div>
-          </div>
-        </div>
 
-        <div class="boards-section-label">Your Projects & Films</div>
-        <div class="boards-grid">
-          <div class="board-card-new" onclick="openVideoModal()">
-            <div style="font-size:24px">+</div>
-            <span style="font-size:13px;font-weight:500">New 30s Video</span>
-          </div>
-          <div class="board-card" onclick="switchView('workspace')">
-            <div class="board-thumb-preview" style="background:linear-gradient(135deg,#18181b,#27272a)">
-              <span>🌌</span>
+            <!-- Box -->
+            <div class="connector-item">
+              <div class="connector-left">
+                <div class="connector-icon-wrap" style="background:#dbeafe">
+                  <span style="font-size:16px;color:#2563eb;font-weight:700">box</span>
+                </div>
+                <div class="connector-info">
+                  <span class="connector-name">Box</span>
+                  <span class="connector-desc">Read documents, images, videos, and other files from your Box account</span>
+                </div>
+              </div>
+              <button class="btn-connect" id="btn-conn-box" onclick="toggleConnector('box')">Connect</button>
             </div>
-            <div class="board-info">
-              <div class="board-name">Quantum Infinity Cinema</div>
-              <div class="board-meta">30.0s // 720p // 6-Act MP4</div>
+
+            <!-- Dropbox -->
+            <div class="connector-item">
+              <div class="connector-left">
+                <div class="connector-icon-wrap" style="background:#e0f2fe">
+                  <span style="font-size:16px">📦</span>
+                </div>
+                <div class="connector-info">
+                  <span class="connector-name">Dropbox</span>
+                  <span class="connector-desc">Read documents, images, videos, and other files from your Dropbox</span>
+                </div>
+              </div>
+              <button class="btn-connect" id="btn-conn-dropbox" onclick="toggleConnector('dropbox')">Connect</button>
             </div>
-          </div>
-          <div class="board-card" onclick="switchView('connectors')">
-            <div class="board-thumb-preview" style="background:linear-gradient(135deg,#000,#1e1b4b)">
-              <span>🚀</span>
+
+            <!-- Frame.io -->
+            <div class="connector-item">
+              <div class="connector-left">
+                <div class="connector-icon-wrap" style="background:#f3e8ff">
+                  <span style="font-size:16px">🎞️</span>
+                </div>
+                <div class="connector-info">
+                  <span class="connector-name">Frame.io</span>
+                  <span class="connector-desc">Read image and video assets from your Frame.io projects, and export back to them</span>
+                </div>
+              </div>
+              <button class="btn-connect" id="btn-conn-frameio" onclick="toggleConnector('frameio')">Connect</button>
             </div>
-            <div class="board-info">
-              <div class="board-name">Vercel & GitHub Club</div>
-              <div class="board-meta">CI/CD Automated Deploy</div>
+
+            <!-- Google Ads -->
+            <div class="connector-item">
+              <div class="connector-left">
+                <div class="connector-icon-wrap" style="background:#fef3c7">
+                  <span style="font-size:16px">📈</span>
+                </div>
+                <div class="connector-info">
+                  <span class="connector-name">Google Ads</span>
+                  <span class="connector-desc">Read your campaigns and ad performance from your Google Ads account</span>
+                </div>
+              </div>
+              <button class="btn-connect" id="btn-conn-googleads" onclick="toggleConnector('googleads')">Connect</button>
+            </div>
+
+            <!-- Google Drive -->
+            <div class="connector-item">
+              <div class="connector-left">
+                <div class="connector-icon-wrap" style="background:#dcfce7">
+                  <span style="font-size:16px">📁</span>
+                </div>
+                <div class="connector-info">
+                  <span class="connector-name">Google Drive</span>
+                  <span class="connector-desc">Read documents, slides, and other files from your Google Drive, and export back to your Drive</span>
+                </div>
+              </div>
+              <button class="btn-connect connected" id="btn-conn-googledrive" onclick="toggleConnector('googledrive')">Connected ✓</button>
+            </div>
+
+            <!-- Add custom connector -->
+            <div class="connector-item">
+              <div class="connector-left">
+                <div class="connector-icon-wrap" style="background:rgba(255,255,255,.05)">
+                  <span style="font-size:16px">📎</span>
+                </div>
+                <div class="connector-info">
+                  <span class="connector-name">Add custom connector</span>
+                  <span class="connector-desc">Connect a remote MCP server</span>
+                </div>
+              </div>
+              <button class="btn-connect" onclick="showCustomConnectorPrompt()">Add</button>
+            </div>
+
+            <!-- Vercel Club -->
+            <div class="connector-item">
+              <div class="connector-left">
+                <div class="connector-icon-wrap" style="background:#000;border:1px solid rgba(255,255,255,.2)">
+                  <svg width="14" height="14" viewBox="0 0 115 100" fill="white"><path d="M57.5 0L115 100H0L57.5 0z"/></svg>
+                </div>
+                <div class="connector-info">
+                  <span class="connector-name">Vercel (ajmaltheauthor@gmail.com)</span>
+                  <span class="connector-desc">Cloud hosting & production deployments</span>
+                </div>
+              </div>
+              <a class="btn-connect connected" href="https://vercel.com/sso/session-requests/pP3OGtoAozkov9tbVAkrL-P0VxVn4rN7" target="_blank">Authorize ↗</a>
+            </div>
+
+            <!-- GitHub Club -->
+            <div class="connector-item">
+              <div class="connector-left">
+                <div class="connector-icon-wrap" style="background:#000;border:1px solid rgba(255,255,255,.2)">
+                  <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                </div>
+                <div class="connector-info">
+                  <span class="connector-name">GitHub Git Sync</span>
+                  <span class="connector-desc">Version control & automated GitHub Actions CI/CD pipeline</span>
+                </div>
+              </div>
+              <button class="btn-connect connected" onclick="showToast('Git committed! Double-click push_to_github.bat to push.','success')">Ready ✓</button>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ===== VIEW: WORKSPACE (3D INFINITY ENGINE & VIDEO STUDIO) ===== -->
+    <!-- ==============================================
+         2. VIEW: ASSETS (EXACTLY MATCHING IMAGE 2)
+         ============================================== -->
+    <div class="view" id="view-assets">
+      <div class="assets-topbar-tools">
+        <div class="assets-left-tabs">
+          <div class="asset-tab-pill active">Assets</div>
+          <div class="asset-tab-pill" onclick="showToast('Fonts library coming soon','info')">Fonts</div>
+        </div>
+
+        <div class="assets-right-controls">
+          <div class="zoom-slider-wrap">
+            <span>—</span>
+            <input type="range" min="1" max="5" value="3" class="zoom-slider" />
+            <span>+</span>
+          </div>
+
+          <div class="view-toggle-btns">
+            <button class="btn-toggle-view active" title="Grid View">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </button>
+            <button class="btn-toggle-view" title="List View">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+            </button>
+          </div>
+
+          <input type="text" placeholder="Search assets…" class="assets-search-input" id="asset-search" oninput="filterAssets(this.value)" />
+
+          <button class="btn-new-asset" onclick="triggerFileInput()">
+            New +
+          </button>
+          <input type="file" id="asset-file-picker" style="display:none" onchange="handleFileSelect(event)" multiple />
+        </div>
+      </div>
+
+      <div class="assets-body">
+        <!-- Exact Dropzone from Screenshot -->
+        <div class="dropzone-container" id="dropzone" onclick="triggerFileInput()"
+             ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <div class="dropzone-icon">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-6-6-8 8"/></svg>
+          </div>
+          <span class="dropzone-text">Drop files or folders here</span>
+        </div>
+
+        <!-- Rendered Video & Asset Grid -->
+        <div class="assets-grid-display" id="assets-grid-display">
+          <!-- Populated dynamically from /api/videos -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         3. VIEW: APPS (EXACTLY MATCHING IMAGE 3)
+         ============================================== -->
+    <div class="view active" id="view-apps">
+      <div class="apps-body">
+        <div class="apps-header">
+          <h1 class="apps-title">Apps</h1>
+          <p class="apps-sub">One task, done well. Pick one and run it.</p>
+        </div>
+
+        <div class="apps-grid">
+          <!-- App 1: Ad Variants -->
+          <div class="app-card" onclick="openAppModal('Ad Variants', 'Turn one ad into every size, aspect ratio and language you need, all from the same design.')">
+            <div class="app-preview-visual">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#09090b,#27272a);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:10px;text-align:center;padding:4px">
+                ENGINEERED<br/>TO THRILL
+              </div>
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#1e1b4b,#312e81);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
+                🏎️
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">Ad Variants</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Turn one ad into every size, aspect ratio and language you need, all from the same design.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App 2: Art Style Match -->
+          <div class="app-card" onclick="openAppModal('Art Style Match', 'Add style references that share one look and restyle your work to match, or describe a new style in words.')">
+            <div class="app-preview-visual single">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#f59e0b,#b45309);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px">
+                DEEP CUT
+                <span style="font-size:10px;font-weight:normal;opacity:.8">Vintage Illustration</span>
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">Art Style Match</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Add style references that share one look and restyle your work to match, or describe a new style in words.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App 3: Background Swap -->
+          <div class="app-card" onclick="openAppModal('Background Swap', 'Replace only the background and surroundings of your subject, from a new background image or a written description.')">
+            <div class="app-preview-visual">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#15803d,#166534);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                🏃
+              </div>
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#0284c7,#0369a1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                🏟️
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">Background Swap</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Replace only the background and surroundings of your subject, from a new background image or a written description.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App 4: Camera Angles -->
+          <div class="app-card" onclick="openAppModal('Camera Angles', 'Generate new camera angles from a single image, with every detail of your subject kept the same.')">
+            <div class="app-preview-visual">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#ea580c,#c2410c);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                👤
+              </div>
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#9a3412,#7c2d12);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                🔄
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">Camera Angles</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Generate new camera angles from a single image, with every detail of your subject kept the same.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App 5: Character Sheet -->
+          <div class="app-card" onclick="openAppModal('Character Sheet', 'Create a consistent multi-view character sheet from references or a written design.')">
+            <div class="app-preview-visual">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#64748b,#475569);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                🧍
+              </div>
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#334155,#1e293b);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                📐
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">Character Sheet</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Create a consistent multi-view character sheet from references or a written design.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App 6: Character Swap & Insert -->
+          <div class="app-card" onclick="openAppModal('Character Swap & Insert', 'Swap existing characters or insert new ones into any scene.')">
+            <div class="app-preview-visual">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#dc2626,#991b1b);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                🚘
+              </div>
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#b91c1c,#7f1d1d);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                👥
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">Character Swap & Insert</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Swap existing characters or insert new ones into any scene.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App 7: Expression Sheet -->
+          <div class="app-card" onclick="openAppModal('Expression Sheet', 'Turn one portrait into a range of facial expressions.')">
+            <div class="app-preview-visual">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#0d9488,#0f766e);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                😃
+              </div>
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#115e59,#134e4a);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                😲
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">Expression Sheet</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Turn one portrait into a range of facial expressions.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App 8: Face Swap -->
+          <div class="app-card" onclick="openAppModal('Face Swap', 'Place a person into a scene that keeps its own pose, clothing, lighting and framing.')">
+            <div class="app-preview-visual">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#4f46e5,#4338ca);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                👩
+              </div>
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#3730a3,#312e81);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                ✨
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">Face Swap</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Place a person into a scene that keeps its own pose, clothing, lighting and framing.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App 9: 30-Second Film Generator -->
+          <div class="app-card" onclick="openVideoModal()">
+            <div class="app-preview-visual single">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#09090b,#3b0764);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:700">
+                🎬 30s CONTINUOUS FILM
+                <span style="font-size:10px;opacity:.7">6 Acts // Synth Score // 720p/1080p</span>
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">30-Second Film Generator</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Continuous 30-second continuous film generator with 6 acts, cinematic sound score, and 1080p/720p output.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App 10: Cinematic Relight -->
+          <div class="app-card" onclick="openAppModal('Cinematic Relight', 'Relight any photo or video scene with dynamic directional lighting and volumetric atmosphere.')">
+            <div class="app-preview-visual">
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#9333ea,#7e22ce);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                🚗
+              </div>
+              <div class="app-visual-pane" style="background:linear-gradient(135deg,#db2777,#be185d);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px">
+                💡
+              </div>
+            </div>
+            <div class="app-card-details">
+              <div>
+                <div class="app-card-title-row">
+                  <span class="app-card-title">Cinematic Relight</span>
+                  <span class="app-card-chevron">›</span>
+                </div>
+                <div class="app-card-desc">Relight any photo or video scene with dynamic directional lighting and volumetric atmosphere.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         4. VIEW: WORKSPACE (3D INFINITY & VIDEO STUDIO)
+         ============================================== -->
     <div class="view" id="view-workspace">
       <div class="view-topbar">
-        <div style="display:flex;align-items:center;gap:var(--space-2)">
-          <span class="topbar-title">Infinity Engine Studio</span>
-          <span style="font-size:11px;background:#000;color:#fff;padding:2px 8px;border-radius:99px;font-weight:600">60 FPS REAL-TIME</span>
-        </div>
+        <span class="topbar-title">3D Infinity Engine Studio</span>
         <div style="display:flex;gap:var(--space-2)">
-          <button class="btn-action-black" onclick="openVideoModal()">✨ New 30s Film</button>
-          <button class="btn-action-black" style="background:#fff;color:#000;border:1px solid var(--border)" onclick="switchView('connectors')">Deploy to Vercel</button>
+          <button class="btn-action-black" style="background:#fff;color:#000;font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px" onclick="openVideoModal()">
+            ✨ Generate 30s Film
+          </button>
         </div>
       </div>
 
       <div class="workspace-shell">
-        <!-- Canvas Studio Area -->
         <div class="canvas-container">
-          <!-- Live 3D Shader Canvas -->
           <canvas id="infinity-canvas"></canvas>
-
-          <!-- MP4 Video Player Overlay -->
           <video id="cinema-video-player" controls playsinline></video>
 
-          <!-- Canvas HUD Telemetry -->
           <div class="canvas-hud">
             <div class="canvas-hud-badge" id="hud-mode-badge">3D INFINITY SHADER</div>
             <div>STATUS: RUNNING (60 FPS)</div>
@@ -555,7 +917,6 @@
             <div>TIME: <span id="hud-time-text">00:00 / 00:30</span></div>
           </div>
 
-          <!-- Floating Studio Controls -->
           <div class="studio-control-bar">
             <button class="studio-btn" id="btn-toggle-engine" onclick="toggleEngineMode()">
               <span id="engine-mode-icon">🎬</span> <span id="engine-mode-label">Play Rendered MP4</span>
@@ -571,176 +932,24 @@
             <button class="studio-btn primary" onclick="recordLiveCanvas30s()" id="btn-record-canvas">
               🔴 Record 30s Live
             </button>
-            <button class="studio-btn" onclick="downloadCurrentVideo()" id="btn-download-vid" style="display:none">
-              ⬇ Download MP4
-            </button>
-          </div>
-        </div>
-
-        <!-- Right Chat & Intelligence Panel -->
-        <div class="right-panel">
-          <div class="panel-header">
-            <div class="panel-tabs">
-              <div class="panel-tab active">Director Chat</div>
-              <div class="panel-tab" onclick="switchView('skills')">Skills</div>
-            </div>
-            <span style="font-size:12px;font-weight:600;color:var(--text-muted)">30s AI</span>
-          </div>
-
-          <div class="chat-body" id="chat-body">
-            <div class="chat-msg assistant">
-              <strong>Creative Director Online.</strong><br/>
-              Ask me to write an ultra-realistic 30-second film prompt, compose a 6-act storyboard, or generate an infinite cosmic journey.
-            </div>
-          </div>
-
-          <div class="chat-input-wrap">
-            <div class="chat-input-box">
-              <textarea class="chat-textarea" id="chat-input" placeholder="Direct your 30s video or ask questions…" rows="2"
-                onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}"></textarea>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <span style="font-size:11px;color:var(--text-muted)">Gemini 3.8 + Local FFmpeg</span>
-                <button class="prompt-btn-send" onclick="sendChatMessage()" style="width:28px;height:28px">
-                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ===== VIEW: SKILLS & ENGINES ===== -->
-    <div class="view" id="view-skills">
+    <!-- ==============================================
+         5. VIEW: BOARDS
+         ============================================== -->
+    <div class="view" id="view-boards">
       <div class="view-topbar">
-        <span class="topbar-title">Creative Skills & Video Engines</span>
-        <button class="btn-action-black" onclick="openVideoModal()">Launch 30s Engine</button>
+        <span class="topbar-title">Boards</span>
+        <button class="btn-action-black" style="background:#fff;color:#000;font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px" onclick="openVideoModal()">+ New Board</button>
       </div>
-
-      <div class="skills-body">
-        <div class="skills-grid">
-          <!-- Skill 1 -->
-          <div class="skill-card" onclick="openVideoModal('infinity_cosmos')">
-            <div class="skill-thumb-box">
-              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#09090b,#1e1b4b,#312e81)"></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">30s Film Generator <span class="skill-star">★ PRO</span></div>
-              <div class="skill-desc">Continuous 30-second film generator with 6 acts, cinematic sound score, and 1080p/720p output.</div>
-            </div>
-          </div>
-
-          <!-- Skill 2 -->
-          <div class="skill-card" onclick="switchEngineStyle('infinity_cosmos'); switchView('workspace');">
-            <div class="skill-thumb-box">
-              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#172554,#1e40af,#3b82f6)"></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">Infinity Cosmos Engine <span class="skill-star">60 FPS</span></div>
-              <div class="skill-desc">Infinite fractal deep zoom, relativistic gravitational lensing, and starlight singularity.</div>
-            </div>
-          </div>
-
-          <!-- Skill 3 -->
-          <div class="skill-card" onclick="switchEngineStyle('cyber_matrix'); switchView('workspace');">
-            <div class="skill-thumb-box">
-              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#042f2e,#115e59,#14b8a6)"></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">Cyber Matrix Holographics <span class="skill-star">NEON</span></div>
-              <div class="skill-desc">Procedural vector grid, multidimensional wireframe recursion, and chromatic glow.</div>
-            </div>
-          </div>
-
-          <!-- Skill 4 -->
-          <div class="skill-card" onclick="switchEngineStyle('quantum_warp'); switchView('workspace');">
-            <div class="skill-thumb-box">
-              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#581c87,#7e22ce,#a855f7)"></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">Quantum Hyperdrive Warp <span class="skill-star">WARP</span></div>
-              <div class="skill-desc">Hyperspace acceleration streaks, time dilation curves, and relativistic color shifts.</div>
-            </div>
-          </div>
-
-          <!-- Skill 5 -->
-          <div class="skill-card" onclick="switchEngineStyle('neural_nebula'); switchView('workspace');">
-            <div class="skill-thumb-box">
-              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#701a75,#a21caf,#d946ef)"></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">Neural Nebula River <span class="skill-star">ORGANIC</span></div>
-              <div class="skill-desc">Bioluminescent particles, ethereal starlight tides, and infinite dream horizon.</div>
-            </div>
-          </div>
-
-          <!-- Skill 6 -->
-          <div class="skill-card" onclick="switchView('connectors')">
-            <div class="skill-thumb-box">
-              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#000,#27272a,#52525b)"></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">Vercel & GitHub CI/CD <span class="skill-star">AUTO</span></div>
-              <div class="skill-desc">One-click cloud hosting on Vercel with automatic GitHub sync and preview builds.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== VIEW: CONNECTORS (VERCEL & GITHUB CLUB) ===== -->
-    <div class="view" id="view-connectors">
-      <div class="view-topbar">
-        <span class="topbar-title">Cloud Integration // GitHub & Vercel Club</span>
-      </div>
-
-      <div class="connectors-body">
-        <!-- Vercel Card -->
-        <div class="connector-card">
-          <div class="connector-header">
-            <div class="connector-title">
-              <svg width="20" height="20" viewBox="0 0 115 100" fill="currentColor"><path d="M57.5 0L115 100H0L57.5 0z"/></svg>
-              Vercel Cloud Deployment
-            </div>
-            <span class="connector-status-badge badge-live">ACCOUNT CONNECTED</span>
-          </div>
-          <div class="connector-desc">
-            Your Vercel account <strong>ajmaltheauthor@gmail.com</strong> is connected. To authorize your team scope and enable direct 1-click deployments, click the approval link below:
-          </div>
-          <div style="display:flex;gap:var(--space-2);margin-bottom:var(--space-3)">
-            <a class="btn-action-black" href="https://vercel.com/sso/session-requests/pP3OGtoAozkov9tbVAkrL-P0VxVn4rN7" target="_blank" rel="noopener">
-              Authorize Vercel Team Access ↗
-            </a>
-            <button class="btn-action-black" style="background:#fff;color:#000;border:1px solid var(--border)" onclick="showToast('Deploying static build to Vercel...','info')">
-              Run Vercel Deploy
-            </button>
-          </div>
-          <div style="font-size:12px;color:var(--text-muted)">
-            Project configuration: <code>vercel.json</code> is prepared in <code>G:\My Drive\Spidey-AI</code> with static routing and zero serverless friction.
-          </div>
-        </div>
-
-        <!-- GitHub Card -->
-        <div class="connector-card">
-          <div class="connector-header">
-            <div class="connector-title">
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-              GitHub Repository Sync
-            </div>
-            <span class="connector-status-badge badge-ready">COMMITTED // READY TO PUSH</span>
-          </div>
-          <div class="connector-desc">
-            All code, engines, and Luma redesign are committed to local Git. To push to your GitHub repo and enable automatic deployment:
-          </div>
-          <div class="code-snippet">
-cd "G:\My Drive\Spidey-AI"
-git remote add origin https://github.com/YOUR_USERNAME/spidey-ai.git
-git branch -M main
-git push -u origin main
-          </div>
-          <div style="font-size:12px;color:var(--text-muted)">
-            Or run <code>push_to_github.bat</code> directly from your Spidey-AI folder!
-          </div>
+      <div style="padding:var(--space-6);max-width:800px;margin:0 auto;width:100%">
+        <div style="background:#141417;border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-5);text-align:center">
+          <h2 style="font-size:18px;font-weight:600;margin-bottom:8px">What do you want to create today?</h2>
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-4)">Launch an App from the Apps gallery or generate an ultra-realistic 30s film.</p>
+          <button class="btn-action-black" style="background:#fff;color:#000;font-size:12px;font-weight:600;padding:6px 16px;border-radius:99px" onclick="switchView('apps')">Browse Apps Gallery →</button>
         </div>
       </div>
     </div>
@@ -748,16 +957,16 @@ git push -u origin main
   </main>
 </div>
 
-<!-- ===== MODAL: 30-SECOND FILM GENERATOR ===== -->
+<!-- ===== MODAL: 30S FILM GENERATOR ===== -->
 <div class="modal-overlay" id="video-modal" onclick="if(event.target===this)closeVideoModal()">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">30-Second Ultra-Realistic Film Generator</div>
+      <div class="modal-title" id="modal-app-title">30-Second Film Generator</div>
       <button onclick="closeVideoModal()" style="font-size:18px;color:var(--text-muted)">✕</button>
     </div>
     <div class="modal-body">
       <div class="form-row">
-        <label class="form-label">Creative Vision Prompt</label>
+        <label class="form-label" id="modal-app-label">Creative Prompt</label>
         <textarea class="form-textarea" id="modal-video-prompt" placeholder="A breathtaking cosmic journey into the infinite quantum realm, camera plunging through glowing event horizons and kaleidoscopic fractals…"></textarea>
       </div>
 
@@ -765,71 +974,56 @@ git push -u origin main
         <div>
           <label class="form-label">Visual Style</label>
           <select class="form-select" id="modal-video-style">
-            <option value="infinity_cosmos">🌌 Infinity Cosmos (Fractal Deep Zoom)</option>
-            <option value="cyber_matrix">⚡ Cyber Matrix (Holographic Neon)</option>
-            <option value="quantum_warp">🌀 Quantum Warp (Relativistic Speed)</option>
-            <option value="neural_nebula">✨ Neural Nebula (Ethereal River)</option>
+            <option value="infinity_cosmos">🌌 Infinity Cosmos</option>
+            <option value="cyber_matrix">⚡ Cyber Matrix</option>
+            <option value="quantum_warp">🌀 Quantum Warp</option>
+            <option value="neural_nebula">✨ Neural Nebula</option>
           </select>
         </div>
         <div>
-          <label class="form-label">Engine & Audio</label>
-          <select class="form-select" id="modal-video-engine">
-            <option value="ffmpeg_mp4">FFmpeg Neural Cinema (MP4 + Synth)</option>
-            <option value="browser_canvas">Live WebGL 60FPS Recorder</option>
+          <label class="form-label">Duration</label>
+          <select class="form-select">
+            <option>30 Seconds (Free Ultra-Realistic)</option>
           </select>
         </div>
       </div>
 
-      <div class="form-row">
-        <label class="form-label">6-Act Narrative Architecture (30.0s Total)</label>
-        <div class="acts-grid">
-          <div class="act-cell">ACT 1<span>00-05s<br/>Genesis</span></div>
-          <div class="act-cell">ACT 2<span>05-10s<br/>Singularity</span></div>
-          <div class="act-cell">ACT 3<span>10-15s<br/>Matrix</span></div>
-          <div class="act-cell">ACT 4<span>15-20s<br/>Cosmos</span></div>
-          <div class="act-cell">ACT 5<span>20-25s<br/>Warp</span></div>
-          <div class="act-cell">ACT 6<span>25-30s<br/>Infinity</span></div>
-        </div>
-      </div>
-
-      <!-- Live progress display -->
       <div id="gen-progress-bar-wrap" style="display:none;margin-top:var(--space-3)">
         <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;margin-bottom:4px">
           <span id="gen-progress-label">Synthesizing 30s Film…</span>
           <span id="gen-progress-pct">0%</span>
         </div>
-        <div style="background:var(--bg-main);height:6px;border-radius:99px;overflow:hidden">
-          <div id="gen-progress-fill" style="background:#000;height:100%;width:0%;transition:width .3s"></div>
+        <div style="background:#27272a;height:6px;border-radius:99px;overflow:hidden">
+          <div id="gen-progress-fill" style="background:#fff;height:100%;width:0%;transition:width .3s"></div>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn-action-black" style="background:#fff;color:#000;border:1px solid var(--border)" onclick="closeVideoModal()">Cancel</button>
-      <button class="btn-action-black" id="btn-modal-generate" onclick="execute30sGeneration()">Generate 30s Film ✨</button>
+      <button class="btn-connect" onclick="closeVideoModal()">Cancel</button>
+      <button class="btn-new-asset" id="btn-modal-generate" onclick="execute30sGeneration()">Run Agent ✨</button>
     </div>
   </div>
 </div>
 
 <div class="toast-container" id="toast-container"></div>
 
-<!-- ===== SCRIPT: 3D SHADER ENGINE & VIDEO CONTROLLER ===== -->
+<!-- ===== SCRIPTS ===== -->
 <script>
 'use strict';
 
 const state = {
-  currentView: 'boards',
-  engineStyle: 'infinity_cosmos',
+  currentView: 'apps',
   time: 0,
   act: 1,
-  isPlaying: true,
-  currentVideoUrl: '/videos/test_infinity_30s.mp4',
+  currentVideoUrl: '/videos/infinity_30s_1795007250.mp4',
   isShowingVideoPlayer: false,
   isRecording: false,
   mediaRecorder: null,
-  recordedChunks: []
+  recordedChunks: [],
+  assetsList: []
 };
 
-/* ===== NAVIGATION ===== */
+/* ===== VIEW NAVIGATION ===== */
 function switchView(viewName) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -842,252 +1036,183 @@ function switchView(viewName) {
 
   state.currentView = viewName;
   if (viewName === 'workspace') resizeCanvas();
+  if (viewName === 'assets') fetchAssets();
+  if (viewName === 'connectors') fetchConnectors();
 }
 
-/* ===== 3D CANVAS INFINITY SHADER ENGINE ===== */
-const canvas = document.getElementById('infinity-canvas');
-const ctx = canvas.getContext('2d');
-let animFrameId = null;
-
-function resizeCanvas() {
-  if (!canvas.parentElement) return;
-  canvas.width = canvas.parentElement.clientWidth;
-  canvas.height = canvas.parentElement.clientHeight;
+/* ===== CONNECTORS CONTROLLER (IMAGE 1) ===== */
+async function fetchConnectors() {
+  try {
+    const res = await fetch('/api/connectors');
+    if (res.ok) {
+      const data = await res.json();
+      for (const [key, val] of Object.entries(data.connectors)) {
+        const btn = document.getElementById('btn-conn-' + key);
+        if (btn) {
+          if (val) {
+            btn.className = 'btn-connect connected';
+            btn.textContent = 'Connected ✓';
+          } else {
+            btn.className = 'btn-connect';
+            btn.textContent = 'Connect';
+          }
+        }
+      }
+    }
+  } catch (e) {}
 }
-window.addEventListener('resize', resizeCanvas);
 
-// Interactive 3D particle & fractal warp simulation
-const particles = [];
-for (let i = 0; i < 400; i++) {
-  particles.push({
-    x: (Math.random() - 0.5) * 2000,
-    y: (Math.random() - 0.5) * 2000,
-    z: Math.random() * 2000,
-    color: Math.random() > 0.5 ? '#38bdf8' : '#a855f7'
-  });
+async function toggleConnector(id) {
+  try {
+    const res = await fetch('/api/connectors/toggle', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const btn = document.getElementById('btn-conn-' + id);
+      if (btn) {
+        if (data.connected) {
+          btn.className = 'btn-connect connected';
+          btn.textContent = 'Connected ✓';
+          showToast(`Connected ${id.toUpperCase()} successfully!`, 'success');
+        } else {
+          btn.className = 'btn-connect';
+          btn.textContent = 'Connect';
+          showToast(`Disconnected ${id.toUpperCase()}`, 'info');
+        }
+      }
+    }
+  } catch (e) {
+    showToast('Failed to toggle connector', 'error');
+  }
 }
 
-function renderInfinityEngine() {
-  if (!ctx) return;
-  const w = canvas.width;
-  const h = canvas.height;
-  if (w === 0 || h === 0) {
-    animFrameId = requestAnimationFrame(renderInfinityEngine);
+function showCustomConnectorPrompt() {
+  const url = prompt('Enter your remote MCP server URL (e.g. http://localhost:3000/sse):');
+  if (url) {
+    showToast(`Custom MCP connector registered: ${url}`, 'success');
+  }
+}
+
+/* ===== ASSETS CONTROLLER (IMAGE 2) ===== */
+async function fetchAssets() {
+  try {
+    const res = await fetch('/api/videos');
+    if (res.ok) {
+      const data = await res.json();
+      state.assetsList = data.videos || [];
+      renderAssetsGrid(state.assetsList);
+    }
+  } catch (e) {}
+}
+
+function renderAssetsGrid(items) {
+  const grid = document.getElementById('assets-grid-display');
+  if (!items || items.length === 0) {
+    grid.innerHTML = '<div style="color:var(--text-muted);font-size:13px;grid-column:1/-1;text-align:center;padding:24px">No assets yet. Generate a 30s film or drop files above!</div>';
     return;
   }
-
-  state.time += 0.016;
-  const t = state.time;
-  const curSec = (t % 30).toFixed(1);
-  state.act = Math.floor((t % 30) / 5) + 1;
-
-  // Update HUD
-  const actNames = ['GENESIS & SINGULARITY', 'EVENT HORIZON', 'QUANTUM MATRIX', 'NEURAL COSMOS', 'HYPERDRIVE WARP', 'INFINITE RECURSION'];
-  document.getElementById('hud-act-text').textContent = `ACT ${state.act} // ${actNames[state.act - 1]}`;
-  document.getElementById('hud-time-text').textContent = `${curSec.padStart(4, '0')}s / 30.0s`;
-
-  // Draw Deep Space Background
-  ctx.fillStyle = '#050508';
-  ctx.fillRect(0, 0, w, h);
-
-  // Center of infinity warp
-  const cx = w / 2;
-  const cy = h / 2;
-
-  // Infinite Hyperspace Tunnel Rings
-  const ringCount = 12;
-  for (let r = 0; r < ringCount; r++) {
-    const ringZ = ((r * 180 - t * 240) % 2000 + 2000) % 2000;
-    const scale = 500 / (ringZ + 1);
-    const radius = 280 * scale;
-
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(t * 0.4 + r * 0.15);
-
-    let strokeColor = `rgba(56, 189, 248, ${Math.min(1, scale * 0.8)})`;
-    if (state.engineStyle === 'cyber_matrix') {
-      strokeColor = `rgba(45, 212, 191, ${Math.min(1, scale * 0.8)})`;
-    } else if (state.engineStyle === 'quantum_warp') {
-      strokeColor = `rgba(168, 85, 247, ${Math.min(1, scale * 0.9)})`;
-    }
-
-    ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = Math.max(1, 3 * scale);
-    ctx.beginPath();
-
-    // Geometric infinity loop
-    for (let a = 0; a < Math.PI * 2; a += 0.2) {
-      const rad = radius * (1 + 0.25 * Math.sin(a * 4 + t * 2));
-      const px = Math.cos(a) * rad;
-      const py = Math.sin(a) * rad;
-      if (a === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-    }
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  // Particle Stream
-  for (let p of particles) {
-    p.z -= 15 + Math.sin(t) * 5;
-    if (p.z <= 1) {
-      p.z = 2000;
-      p.x = (Math.random() - 0.5) * 2000;
-      p.y = (Math.random() - 0.5) * 2000;
-    }
-
-    const scale = 400 / p.z;
-    const px = cx + p.x * scale;
-    const py = cy + p.y * scale;
-
-    if (px >= 0 && px <= w && py >= 0 && py <= h) {
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(px, py, Math.max(0.5, 3 * scale), 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  // Central Core Singularity
-  const coreGrad = ctx.createRadialGradient(cx, cy, 2, cx, cy, 140);
-  coreGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
-  coreGrad.addColorStop(0.3, state.engineStyle === 'cyber_matrix' ? 'rgba(45, 212, 191, 0.4)' : 'rgba(168, 85, 247, 0.4)');
-  coreGrad.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = coreGrad;
-  ctx.beginPath();
-  ctx.arc(cx, cy, 140, 0, Math.PI * 2);
-  ctx.fill();
-
-  animFrameId = requestAnimationFrame(renderInfinityEngine);
-}
-renderInfinityEngine();
-
-/* ===== ENGINE STYLES ===== */
-function switchEngineStyle(style) {
-  state.engineStyle = style;
-  showToast('Switched to ' + style.replace('_', ' ').toUpperCase(), 'info');
+  grid.innerHTML = items.map(it => `
+    <div class="asset-item-card" onclick="playAssetVideo('${it.url}')">
+      <div class="asset-thumb-wrap">
+        <video src="${it.url}" preload="metadata" muted></video>
+        <div class="asset-dur-badge">30.0s</div>
+      </div>
+      <div class="asset-meta-info">
+        <div class="asset-title" title="${it.name}">${it.name}</div>
+        <div class="asset-sub">${it.size_mb} MB // Video Asset</div>
+      </div>
+    </div>
+  `).join('');
 }
 
-/* ===== TOGGLE CINEMA PLAYER / 3D SHADER ===== */
-function toggleEngineMode() {
+function filterAssets(q) {
+  const query = q.toLowerCase();
+  const filtered = state.assetsList.filter(it => it.name.toLowerCase().includes(query));
+  renderAssetsGrid(filtered);
+}
+
+function playAssetVideo(url) {
+  state.currentVideoUrl = url;
+  switchView('workspace');
+  if (!state.isShowingVideoPlayer) toggleEngineMode();
   const vid = document.getElementById('cinema-video-player');
-  const btnIcon = document.getElementById('engine-mode-icon');
-  const btnLabel = document.getElementById('engine-mode-label');
+  vid.src = url;
+  vid.play();
+}
 
-  state.isShowingVideoPlayer = !state.isShowingVideoPlayer;
-  if (state.isShowingVideoPlayer) {
-    vid.style.display = 'block';
-    vid.src = state.currentVideoUrl;
-    vid.play();
-    btnIcon.textContent = '🌌';
-    btnLabel.textContent = 'Switch to 3D Shader';
-    document.getElementById('hud-mode-badge').textContent = 'CINEMA MP4 (30s)';
-    document.getElementById('btn-download-vid').style.display = 'inline-flex';
-  } else {
-    vid.style.display = 'none';
-    vid.pause();
-    btnIcon.textContent = '🎬';
-    btnLabel.textContent = 'Play Rendered MP4';
-    document.getElementById('hud-mode-badge').textContent = '3D INFINITY SHADER';
-    document.getElementById('btn-download-vid').style.display = 'none';
+function triggerFileInput() {
+  document.getElementById('asset-file-picker').click();
+}
+
+function handleFileSelect(e) {
+  const files = e.target.files;
+  if (files && files.length > 0) uploadFiles(files);
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.add('dragover');
+}
+function handleDragLeave(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.remove('dragover');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.remove('dragover');
+  if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+    uploadFiles(e.dataTransfer.files);
   }
 }
 
-function seekAct(seconds) {
-  state.time = seconds;
-  const vid = document.getElementById('cinema-video-player');
-  if (state.isShowingVideoPlayer && vid) {
-    vid.currentTime = seconds;
+async function uploadFiles(files) {
+  showToast(`Uploading ${files.length} file(s)…`, 'info');
+  for (let file of files) {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename: file.name, data_base64: reader.result })
+        });
+        if (res.ok) {
+          showToast(`Uploaded ${file.name}!`, 'success');
+          fetchAssets();
+        }
+      } catch (e) {
+        showToast(`Failed uploading ${file.name}`, 'error');
+      }
+    };
+    reader.readAsDataURL(file);
   }
-  showToast(`Jumped to Act at ${seconds}s`, 'info');
 }
 
-function downloadCurrentVideo() {
-  const a = document.createElement('a');
-  a.href = state.currentVideoUrl;
-  a.download = 'infinity_film_30s.mp4';
-  a.click();
-}
-
-/* ===== BROWSER LIVE CANVAS RECORDER (WEBM/MP4) ===== */
-function recordLiveCanvas30s() {
-  if (state.isRecording) return;
-  state.isRecording = true;
-  state.recordedChunks = [];
-
-  const stream = canvas.captureStream(60);
-  state.mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
-
-  state.mediaRecorder.ondataavailable = e => {
-    if (e.data.size > 0) state.recordedChunks.push(e.data);
-  };
-
-  state.mediaRecorder.onstop = () => {
-    state.isRecording = false;
-    const blob = new Blob(state.recordedChunks, { type: 'video/webm' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `infinity_live_30s_${Date.now()}.webm`;
-    a.click();
-    showToast('Live 30s video downloaded successfully!', 'success');
-    document.getElementById('btn-record-canvas').textContent = '🔴 Record 30s Live';
-  };
-
-  state.mediaRecorder.start();
-  let remaining = 30;
-  const btn = document.getElementById('btn-record-canvas');
-  btn.textContent = `Recording... (${remaining}s)`;
-
-  const interval = setInterval(() => {
-    remaining--;
-    if (remaining > 0) {
-      btn.textContent = `Recording... (${remaining}s)`;
-    } else {
-      clearInterval(interval);
-      state.mediaRecorder.stop();
-    }
-  }, 1000);
-}
-
-/* ===== 30S VIDEO BACKEND GENERATOR ===== */
-function openVideoModal(style = 'infinity_cosmos') {
-  document.getElementById('modal-video-style').value = style;
+/* ===== APPS CONTROLLER (IMAGE 3) ===== */
+function openAppModal(name, desc) {
+  document.getElementById('modal-app-title').textContent = name;
+  document.getElementById('modal-app-label').textContent = `${name} Instructions / Prompt`;
+  document.getElementById('modal-video-prompt').value = '';
+  document.getElementById('modal-video-prompt').placeholder = desc;
   document.getElementById('video-modal').classList.add('open');
-  document.getElementById('gen-progress-bar-wrap').style.display = 'none';
-  document.getElementById('btn-modal-generate').disabled = false;
-  document.getElementById('btn-modal-generate').textContent = 'Generate 30s Film ✨';
+}
+
+function openVideoModal() {
+  openAppModal('30-Second Film Generator', 'A breathtaking cosmic journey into the infinite quantum realm, camera plunging through glowing event horizons and kaleidoscopic fractals…');
 }
 
 function closeVideoModal() {
   document.getElementById('video-modal').classList.remove('open');
 }
 
-function createFromPrompt() {
-  const prompt = document.getElementById('boards-prompt').value.trim();
-  if (!prompt) {
-    showToast('Please describe your vision prompt', 'info');
-    return;
-  }
-  document.getElementById('modal-video-prompt').value = prompt;
-  openVideoModal();
-}
-
+/* ===== 30S FILM GENERATION (BACKEND FFMPEG) ===== */
 async function execute30sGeneration() {
   const prompt = document.getElementById('modal-video-prompt').value.trim() || 'Cosmic Infinity Quantum Voyage';
   const style = document.getElementById('modal-video-style').value;
-  const engine = document.getElementById('modal-video-engine').value;
 
-  if (engine === 'browser_canvas') {
-    closeVideoModal();
-    switchView('workspace');
-    recordLiveCanvas30s();
-    return;
-  }
-
-  // Backend FFmpeg 30s Synthesis
   const progressWrap = document.getElementById('gen-progress-bar-wrap');
   const progressFill = document.getElementById('gen-progress-fill');
   const progressLabel = document.getElementById('gen-progress-label');
@@ -1100,13 +1225,13 @@ async function execute30sGeneration() {
 
   let pct = 5;
   const timer = setInterval(() => {
-    if (pct < 90) {
+    if (pct < 92) {
       pct += 4;
       progressFill.style.width = pct + '%';
       progressPct.textContent = pct + '%';
-      if (pct > 20 && pct < 45) progressLabel.textContent = 'Generating 6-Act Screenplay & Audio Score…';
-      else if (pct >= 45 && pct < 75) progressLabel.textContent = 'Rendering High-Resolution Fractals & Motion…';
-      else if (pct >= 75) progressLabel.textContent = 'Compiling 30s 60fps MP4 File…';
+      if (pct > 25 && pct < 50) progressLabel.textContent = 'Generating 6-Act Screenplay & Audio Score…';
+      else if (pct >= 50 && pct < 80) progressLabel.textContent = 'Rendering High-Resolution Fractals & Motion…';
+      else if (pct >= 80) progressLabel.textContent = 'Compiling 30s 60fps MP4 File…';
     }
   }, 1800);
 
@@ -1128,13 +1253,10 @@ async function execute30sGeneration() {
       switchView('workspace');
       showToast('30-Second Ultra-Realistic Film Ready!', 'success');
 
-      // Auto-open video player in workspace
       if (!state.isShowingVideoPlayer) toggleEngineMode();
       const vid = document.getElementById('cinema-video-player');
       vid.src = data.url;
       vid.play();
-
-      appendChatMessage('assistant', `🎬 **30-Second Film Generated!**\n\n**File:** \`${data.filename}\` (${data.size_mb} MB)\n**Duration:** 30.0s (6 Acts)\n**Style:** ${data.style}\n\nPlaying now in your Infinity Studio.`);
     } else {
       const err = await res.json();
       showToast('Generation failed: ' + (err.error || res.status), 'error');
@@ -1144,54 +1266,178 @@ async function execute30sGeneration() {
     showToast('Server error: ' + e.message, 'error');
   } finally {
     btnGen.disabled = false;
-    btnGen.textContent = 'Generate 30s Film ✨';
+    btnGen.textContent = 'Run Agent ✨';
   }
 }
 
-/* ===== CHAT ===== */
-async function sendChatMessage() {
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = '';
-  appendChatMessage('user', text);
+/* ===== 3D CANVAS SHADER ENGINE ===== */
+const canvas = document.getElementById('infinity-canvas');
+const ctx = canvas.getContext('2d');
+const particles = [];
+for (let i = 0; i < 350; i++) {
+  particles.push({
+    x: (Math.random() - 0.5) * 2000,
+    y: (Math.random() - 0.5) * 2000,
+    z: Math.random() * 2000,
+    color: Math.random() > 0.5 ? '#38bdf8' : '#a855f7'
+  });
+}
 
-  try {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text })
-    });
-    if (res.ok) {
-      const data = await res.json();
-      appendChatMessage('assistant', data.response || data.text || JSON.stringify(data));
+function resizeCanvas() {
+  if (!canvas.parentElement) return;
+  canvas.width = canvas.parentElement.clientWidth;
+  canvas.height = canvas.parentElement.clientHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+
+function renderInfinityEngine() {
+  if (!ctx) return;
+  const w = canvas.width;
+  const h = canvas.height;
+  if (w === 0 || h === 0) {
+    requestAnimationFrame(renderInfinityEngine);
+    return;
+  }
+
+  state.time += 0.016;
+  const t = state.time;
+  const curSec = (t % 30).toFixed(1);
+  state.act = Math.floor((t % 30) / 5) + 1;
+
+  const actNames = ['GENESIS & SINGULARITY', 'EVENT HORIZON', 'QUANTUM MATRIX', 'NEURAL COSMOS', 'HYPERDRIVE WARP', 'INFINITE RECURSION'];
+  document.getElementById('hud-act-text').textContent = `ACT ${state.act} // ${actNames[state.act - 1]}`;
+  document.getElementById('hud-time-text').textContent = `${curSec.padStart(4, '0')}s / 30.0s`;
+
+  ctx.fillStyle = '#060608';
+  ctx.fillRect(0, 0, w, h);
+
+  const cx = w / 2;
+  const cy = h / 2;
+
+  // Hyperspace rings
+  for (let r = 0; r < 12; r++) {
+    const ringZ = ((r * 180 - t * 240) % 2000 + 2000) % 2000;
+    const scale = 500 / (ringZ + 1);
+    const radius = 280 * scale;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(t * 0.4 + r * 0.15);
+    ctx.strokeStyle = `rgba(56, 189, 248, ${Math.min(1, scale * 0.8)})`;
+    ctx.lineWidth = Math.max(1, 3 * scale);
+    ctx.beginPath();
+    for (let a = 0; a < Math.PI * 2; a += 0.2) {
+      const rad = radius * (1 + 0.25 * Math.sin(a * 4 + t * 2));
+      const px = Math.cos(a) * rad;
+      const py = Math.sin(a) * rad;
+      if (a === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
     }
-  } catch (err) {
-    appendChatMessage('assistant', 'Error communicating with Gemini director engine.');
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
   }
-}
 
-function appendChatMessage(role, text) {
-  const container = document.getElementById('chat-body');
-  const msg = document.createElement('div');
-  msg.className = `chat-msg ${role}`;
-  msg.innerHTML = text.replace(/\n/g, '<br/>');
-  container.appendChild(msg);
-  container.scrollTop = container.scrollHeight;
-}
-
-/* ===== STATUS & TOAST ===== */
-async function checkAllStatus() {
-  try {
-    const res = await fetch('/api/status');
-    if (res.ok) {
-      document.getElementById('status-dot').className = 'status-dot online';
-      document.getElementById('status-text').textContent = '30s Engine Online';
+  // Particles
+  for (let p of particles) {
+    p.z -= 15 + Math.sin(t) * 5;
+    if (p.z <= 1) {
+      p.z = 2000;
+      p.x = (Math.random() - 0.5) * 2000;
+      p.y = (Math.random() - 0.5) * 2000;
     }
-  } catch {
-    document.getElementById('status-dot').className = 'status-dot';
-    document.getElementById('status-text').textContent = 'Server Offline';
+    const scale = 400 / p.z;
+    const px = cx + p.x * scale;
+    const py = cy + p.y * scale;
+    if (px >= 0 && px <= w && py >= 0 && py <= h) {
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(px, py, Math.max(0.5, 3 * scale), 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
+
+  // Core Glow
+  const coreGrad = ctx.createRadialGradient(cx, cy, 2, cx, cy, 140);
+  coreGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+  coreGrad.addColorStop(0.3, 'rgba(168, 85, 247, 0.4)');
+  coreGrad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = coreGrad;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 140, 0, Math.PI * 2);
+  ctx.fill();
+
+  requestAnimationFrame(renderInfinityEngine);
+}
+renderInfinityEngine();
+
+function toggleEngineMode() {
+  const vid = document.getElementById('cinema-video-player');
+  const btnIcon = document.getElementById('engine-mode-icon');
+  const btnLabel = document.getElementById('engine-mode-label');
+
+  state.isShowingVideoPlayer = !state.isShowingVideoPlayer;
+  if (state.isShowingVideoPlayer) {
+    vid.style.display = 'block';
+    vid.src = state.currentVideoUrl;
+    vid.play();
+    btnIcon.textContent = '🌌';
+    btnLabel.textContent = 'Switch to 3D Shader';
+    document.getElementById('hud-mode-badge').textContent = 'CINEMA MP4 (30s)';
+  } else {
+    vid.style.display = 'none';
+    vid.pause();
+    btnIcon.textContent = '🎬';
+    btnLabel.textContent = 'Play Rendered MP4';
+    document.getElementById('hud-mode-badge').textContent = '3D INFINITY SHADER';
+  }
+}
+
+function seekAct(sec) {
+  state.time = sec;
+  const vid = document.getElementById('cinema-video-player');
+  if (state.isShowingVideoPlayer && vid) vid.currentTime = sec;
+  showToast(`Jumped to Act at ${sec}s`, 'info');
+}
+
+function recordLiveCanvas30s() {
+  if (state.isRecording) return;
+  state.isRecording = true;
+  state.recordedChunks = [];
+
+  const stream = canvas.captureStream(60);
+  state.mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+
+  state.mediaRecorder.ondataavailable = e => {
+    if (e.data.size > 0) state.recordedChunks.push(e.data);
+  };
+
+  state.mediaRecorder.onstop = () => {
+    state.isRecording = false;
+    const blob = new Blob(state.recordedChunks, { type: 'video/webm' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `infinity_live_30s_${Date.now()}.webm`;
+    a.click();
+    showToast('Live 30s video downloaded!', 'success');
+    document.getElementById('btn-record-canvas').textContent = '🔴 Record 30s Live';
+  };
+
+  state.mediaRecorder.start();
+  let remaining = 30;
+  const btn = document.getElementById('btn-record-canvas');
+  btn.textContent = `Recording (${remaining}s)…`;
+
+  const interval = setInterval(() => {
+    remaining--;
+    if (remaining > 0) {
+      btn.textContent = `Recording (${remaining}s)…`;
+    } else {
+      clearInterval(interval);
+      state.mediaRecorder.stop();
+    }
+  }, 1000);
 }
 
 function showToast(msg, type = 'info') {
@@ -1205,7 +1451,8 @@ function showToast(msg, type = 'info') {
 
 document.addEventListener('DOMContentLoaded', () => {
   resizeCanvas();
-  checkAllStatus();
+  fetchConnectors();
+  fetchAssets();
 });
 </script>
 </body>

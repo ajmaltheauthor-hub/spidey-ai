@@ -194,6 +194,27 @@ class SpideyHandler(SimpleHTTPRequestHandler):
                 self.send_json({"code": 500, "msg": str(e)}, status=500)
             return
 
+        if path == "/api/connectors":
+            conn_file = BASE_DIR / "connectors.json"
+            default_conns = {
+                "airtable": False,
+                "box": False,
+                "dropbox": False,
+                "frameio": False,
+                "googleads": False,
+                "googledrive": True,
+                "vercel": True,
+                "github": True
+            }
+            if conn_file.exists():
+                try:
+                    data = json.loads(conn_file.read_text(encoding="utf-8"))
+                    default_conns.update(data)
+                except Exception:
+                    pass
+            self.send_json({"connectors": default_conns})
+            return
+
         if path == "/api/videos":
             items = []
             for p in sorted(VIDEOS_DIR.glob("*"), key=lambda x: x.stat().st_mtime, reverse=True):
@@ -485,6 +506,42 @@ class SpideyHandler(SimpleHTTPRequestHandler):
                 self.send_json({"ok": True, "name": out_name, "url": f"/videos/{out_name}", "path": str(out_path)})
             except Exception as e:
                 self.send_json({"error": f"Render failed: {e}"}, status=500)
+            return
+
+        if self.path == "/api/connectors/toggle":
+            conn_id = payload.get("id")
+            conn_file = BASE_DIR / "connectors.json"
+            conns = {}
+            if conn_file.exists():
+                try:
+                    conns = json.loads(conn_file.read_text(encoding="utf-8"))
+                except Exception:
+                    conns = {}
+            current = conns.get(conn_id, False)
+            conns[conn_id] = not current
+            conn_file.write_text(json.dumps(conns, indent=2), encoding="utf-8")
+            self.send_json({"ok": True, "id": conn_id, "connected": conns[conn_id]})
+            return
+
+        if self.path == "/api/upload":
+            filename = payload.get("filename", f"upload_{int(time.time())}.png")
+            file_b64 = payload.get("data_base64", "")
+            if not file_b64:
+                self.send_json({"error": "No file data provided"}, status=400)
+                return
+            if "," in file_b64:
+                file_b64 = file_b64.split(",", 1)[1]
+            out_file = VIDEOS_DIR / filename
+            try:
+                out_file.write_bytes(base64.b64decode(file_b64))
+                self.send_json({
+                    "ok": True,
+                    "name": filename,
+                    "url": f"/videos/{urllib.parse.quote(filename)}",
+                    "size_mb": round(out_file.stat().st_size / (1024 * 1024), 2)
+                })
+            except Exception as e:
+                self.send_json({"error": f"Upload failed: {e}"}, status=500)
             return
 
         if self.path == "/api/engine/create-30s-video":
