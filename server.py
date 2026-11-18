@@ -487,6 +487,99 @@ class SpideyHandler(SimpleHTTPRequestHandler):
                 self.send_json({"error": f"Render failed: {e}"}, status=500)
             return
 
+        if self.path == "/api/engine/create-30s-video":
+            if not FFMPEG_BIN:
+                self.send_json({"error": "FFmpeg engine not found on system. Check installation."}, status=500)
+                return
+            prompt = payload.get("prompt", "Infinite Quantum Reality Voyage")
+            style = payload.get("style", "infinity_cosmos")
+            ratio = payload.get("ratio", "16:9")
+            title = payload.get("title", "Quantum Infinity 30s")
+
+            width, height = (1280, 720)
+            if ratio == "9:16":
+                width, height = (720, 1280)
+            elif ratio == "1:1":
+                width, height = (720, 720)
+
+            ts = int(time.time())
+            out_name = f"infinity_30s_{ts}.mp4"
+            out_path = VIDEOS_DIR / out_name
+
+            if style == "cyber_matrix":
+                video_src = f"mandelbrot=size={width}x{height}:rate=25:maxiter=160:inner=period:start_scale=1.8"
+                color_vf = "hue=h=t*18:s=1.8,curves=all='0/0 0.5/0.2 1/1'"
+            elif style == "quantum_warp":
+                video_src = f"mandelbrot=size={width}x{height}:rate=25:maxiter=200:inner=black:start_scale=4.2"
+                color_vf = "hue=h=t*25:s=sin(t*0.5)+1.2,lenscorrection=cx=0.5:cy=0.5:k1=-0.15:k2=0.08"
+            elif style == "neural_nebula":
+                video_src = f"mandelbrot=size={width}x{height}:rate=25:maxiter=140:inner=white:start_scale=2.5"
+                color_vf = "hue=h=t*10:s=1.5,curves=vintage"
+            else:
+                video_src = f"mandelbrot=size={width}x{height}:rate=25:maxiter=150:inner=black:start_scale=3.5"
+                color_vf = "hue=h=t*12:s=sin(t)+1"
+
+            text_vf = (
+                f"{color_vf},"
+                "drawtext=text='AI STUDIO // 30s INFINITY ENGINE':fontcolor=white@0.85:fontsize=18:x=40:y=40:shadowcolor=black:shadowx=2:shadowy=2,"
+                "drawtext=text='ACT %{eif\\:trunc(t/5)+1\\:d} / 6 - %{eif\\:mod(trunc(t),5)+1\\:d}s':fontcolor=white:fontsize=24:x=40:y=h-70:shadowcolor=black:shadowx=2:shadowy=2,"
+                "drawtext=text='%{pts\\:hms}':fontcolor=white@0.7:fontsize=18:x=w-160:y=h-70:shadowcolor=black:shadowx=2:shadowy=2"
+            )
+
+            audio_synth = (
+                "aevalsrc="
+                "0.4*sin(2*PI*(44+16*t/30)*t) + "
+                "0.25*sin(2*PI*110*t) + "
+                "0.18*sin(2*PI*(220+75*t/30)*t) + "
+                "0.1*sin(2*PI*(440+20*sin(2*PI*0.5*t))*t)"
+                ":s=44100:c=stereo"
+            )
+
+            cmd = [
+                FFMPEG_BIN, "-y",
+                "-f", "lavfi", "-i", video_src,
+                "-f", "lavfi", "-i", audio_synth,
+                "-t", "30",
+                "-vf", text_vf,
+                "-af", "afade=t=in:ss=0:d=1.5,afade=t=out:st=28.5:d=1.5",
+                "-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p", "-b:v", "3500k",
+                "-c:a", "aac", "-b:a", "128k",
+                str(out_path)
+            ]
+
+            try:
+                res = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+                if res.returncode != 0:
+                    self.send_json({"error": f"FFmpeg failed: {res.stderr[-300:]}"}, status=500)
+                    return
+
+                size = out_path.stat().st_size
+                acts = [
+                    {"act": 1, "name": "Genesis & Singularity Ignition", "time": "00:00 - 00:05", "desc": "Sub-atomic particle ignition and infinite void expansion."},
+                    {"act": 2, "name": "Event Horizon Curvature", "time": "00:05 - 00:10", "desc": "Relativistic gravitational light deflection and distortion."},
+                    {"act": 3, "name": "Quantum Matrix Shift", "time": "00:10 - 00:15", "desc": "Multidimensional hyper-geometric fractal displacement."},
+                    {"act": 4, "name": "Neural Cosmos Nebula", "time": "00:15 - 00:20", "desc": "Volumetric starlight synthesis and chromatic particle river."},
+                    {"act": 5, "name": "Hyperdrive Warp Velocity", "time": "00:20 - 00:25", "desc": "Infinite speed acceleration and relativistic time dilation."},
+                    {"act": 6, "name": "Transcendence & Infinity Loop", "time": "00:25 - 00:30", "desc": "Recursive cosmic loop entering eternal singularity."}
+                ]
+
+                self.send_json({
+                    "ok": True,
+                    "title": title,
+                    "prompt": prompt,
+                    "style": style,
+                    "duration": 30,
+                    "resolution": f"{width}x{height}",
+                    "size_bytes": size,
+                    "size_mb": round(size / (1024 * 1024), 2),
+                    "url": f"/videos/{out_name}",
+                    "filename": out_name,
+                    "acts": acts
+                })
+            except Exception as e:
+                self.send_json({"error": f"Render exception: {e}"}, status=500)
+            return
+
         self.send_json({"error": "Endpoint not found"}, status=404)
 
 

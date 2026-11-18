@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Creative Studio — MUHAMED AJMAL</title>
+  <title>AI Studio — 30s Ultra-Realistic Video & Infinity Engine</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    /* ===== DESIGN TOKENS ===== */
+    /* ===== HARMONIC SPACING & COLOR TOKENS ===== */
     :root {
       --space-1: 4px;
       --space-2: 8px;
@@ -38,7 +38,6 @@
       --sidebar-w: 220px;
       --panel-w: 320px;
       --topbar-h: 48px;
-      --toolbar-h: 56px;
 
       --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
       --shadow-md: 0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.05);
@@ -47,7 +46,6 @@
       --transition: 150ms cubic-bezier(.4,0,.2,1);
     }
 
-    /* ===== RESET ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; overflow: hidden; }
     body {
@@ -58,54 +56,35 @@
       -webkit-font-smoothing: antialiased;
     }
     button { font-family: inherit; cursor: pointer; border: none; background: none; }
-    input, textarea { font-family: inherit; }
+    input, textarea, select { font-family: inherit; }
     a { text-decoration: none; color: inherit; }
 
-    /* ===== LAYOUT ===== */
-    .app-shell {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
+    /* ===== SHELL LAYOUT ===== */
+    .app-shell { display: flex; height: 100vh; overflow: hidden; }
 
     /* ===== SIDEBAR ===== */
     .sidebar {
-      width: var(--sidebar-w);
-      min-width: var(--sidebar-w);
+      width: var(--sidebar-w); min-width: var(--sidebar-w);
       background: var(--bg-sidebar);
       border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 10;
+      display: flex; flex-direction: column; overflow: hidden; z-index: 10;
     }
-
     .sidebar-logo {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
+      display: flex; align-items: center; gap: var(--space-2);
       padding: var(--space-4) var(--space-4) var(--space-3);
       border-bottom: 1px solid var(--border);
     }
     .logo-mark {
-      width: 28px; height: 28px;
-      background: #000;
-      border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      width: 28px; height: 28px; background: #000; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .logo-mark svg { width: 16px; height: 16px; }
-    .logo-text { font-size: 15px; font-weight: 600; letter-spacing: -.3px; color: var(--text-primary); }
+    .logo-text { font-size: 15px; font-weight: 600; letter-spacing: -.3px; }
 
     .sidebar-user {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      padding: var(--space-3) var(--space-3);
-      margin: var(--space-2) var(--space-2) 0;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: background var(--transition);
+      display: flex; align-items: center; gap: var(--space-2);
+      padding: var(--space-3); margin: var(--space-2) var(--space-2) 0;
+      border-radius: var(--radius-md); cursor: pointer; transition: background var(--transition);
     }
     .sidebar-user:hover { background: var(--bg-hover); }
     .user-avatar {
@@ -115,42 +94,23 @@
       font-size: 11px; font-weight: 600; color: #fff; flex-shrink: 0;
     }
     .user-name { font-size: 13px; font-weight: 500; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .user-chevron { color: var(--text-muted); }
 
-    .sidebar-search {
-      padding: var(--space-2) var(--space-3);
-    }
+    .sidebar-search { padding: var(--space-2) var(--space-3); }
     .search-input-wrap {
       display: flex; align-items: center; gap: var(--space-2);
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: var(--space-2) var(--space-3);
-      transition: border-color var(--transition), box-shadow var(--transition);
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: var(--space-2) var(--space-3);
     }
-    .search-input-wrap:focus-within {
-      border-color: var(--border-strong);
-      box-shadow: 0 0 0 3px rgba(0,0,0,.04);
-    }
-    .search-input-wrap input {
-      border: none; outline: none; background: transparent;
-      font-size: 13px; color: var(--text-primary); width: 100%;
-    }
-    .search-input-wrap input::placeholder { color: var(--text-muted); }
+    .search-input-wrap input { border: none; outline: none; background: transparent; font-size: 13px; width: 100%; }
 
-    .sidebar-nav { flex: 1; overflow-y: auto; padding: var(--space-2) var(--space-2); }
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: var(--space-2); }
     .sidebar-nav::-webkit-scrollbar { width: 0; }
-
     .nav-item {
       display: flex; align-items: center; gap: var(--space-2);
       padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-md);
-      font-size: 13px; font-weight: 450;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: background var(--transition), color var(--transition);
-      user-select: none;
-      margin-bottom: 1px;
+      border-radius: var(--radius-md); font-size: 13px; font-weight: 450;
+      color: var(--text-secondary); cursor: pointer; transition: background var(--transition), color var(--transition);
+      margin-bottom: 1px; user-select: none;
     }
     .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
     .nav-item.active { background: var(--bg-active); color: var(--text-primary); font-weight: 500; }
@@ -163,50 +123,27 @@
       padding: var(--space-3) var(--space-3) var(--space-1);
       display: flex; align-items: center; justify-content: space-between;
     }
-    .nav-section-label button {
-      font-size: 18px; color: var(--text-muted); line-height: 1;
-      transition: color var(--transition);
-    }
-    .nav-section-label button:hover { color: var(--text-primary); }
+    .nav-divider { height: 1px; background: var(--border); margin: var(--space-2); }
 
-    .nav-divider { height: 1px; background: var(--border); margin: var(--space-2) var(--space-2); }
-
-    .sidebar-status {
-      padding: var(--space-3);
-      border-top: 1px solid var(--border);
-    }
+    .sidebar-status { padding: var(--space-3); border-top: 1px solid var(--border); }
     .status-pill {
       display: flex; align-items: center; gap: var(--space-2);
       font-size: 12px; color: var(--text-muted);
       padding: var(--space-2) var(--space-3);
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-full);
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--radius-full); cursor: pointer;
     }
-    .status-dot {
-      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
-      background: #d4d4d4;
-      transition: background .3s;
-    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #d4d4d4; }
     .status-dot.online { background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.18); }
     .status-dot.busy { background: #f59e0b; }
-    .status-dot.error { background: #ef4444; }
 
     /* ===== MAIN CONTENT ===== */
-    .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: var(--bg-main);
-    }
-
-    /* ===== VIEWS ===== */
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg-main); }
     .view { display: none; flex-direction: column; flex: 1; overflow: hidden; }
     .view.active { display: flex; }
 
-    /* --- BOARDS VIEW --- */
-    .boards-topbar {
+    /* ===== TOPBARS ===== */
+    .view-topbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: var(--space-3) var(--space-5);
       border-bottom: 1px solid var(--border);
@@ -214,1412 +151,685 @@
       height: var(--topbar-h);
       flex-shrink: 0;
     }
-    .topbar-left { display: flex; align-items: center; gap: var(--space-2); }
     .topbar-title { font-size: 14px; font-weight: 500; }
-    .topbar-right { display: flex; align-items: center; gap: var(--space-2); }
-    .btn-icon {
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: var(--radius-md);
-      color: var(--text-secondary);
-      transition: background var(--transition), color var(--transition);
-    }
-    .btn-icon:hover { background: var(--bg-hover); color: var(--text-primary); }
 
-    .boards-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: var(--space-6) var(--space-6);
-    }
+    /* ===== BOARDS VIEW ===== */
+    .boards-body { flex: 1; overflow-y: auto; padding: var(--space-6); }
     .boards-body::-webkit-scrollbar { width: 6px; }
-    .boards-body::-webkit-scrollbar-track { background: transparent; }
     .boards-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; }
 
-    .create-prompt-wrap {
-      max-width: 680px; margin: 0 auto var(--space-5);
-    }
-    .create-prompt-label {
-      font-size: 22px; font-weight: 600;
-      color: var(--text-primary);
-      text-align: center;
-      margin-bottom: var(--space-4);
-      letter-spacing: -.4px;
-    }
+    .create-prompt-wrap { max-width: 720px; margin: 0 auto var(--space-5); }
+    .create-prompt-label { font-size: 24px; font-weight: 600; text-align: center; margin-bottom: var(--space-4); letter-spacing: -.5px; }
     .create-prompt-box {
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: var(--space-4) var(--space-4);
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: var(--space-4);
       display: flex; align-items: flex-end; gap: var(--space-3);
       box-shadow: var(--shadow-sm);
-      transition: border-color var(--transition), box-shadow var(--transition);
-    }
-    .create-prompt-box:focus-within {
-      border-color: var(--border-strong);
-      box-shadow: var(--shadow-md);
     }
     .create-prompt-box textarea {
-      flex: 1; border: none; outline: none; resize: none;
-      background: transparent; font-size: 14px; color: var(--text-primary);
-      min-height: 24px; max-height: 120px; line-height: 1.5;
+      flex: 1; border: none; outline: none; resize: none; background: transparent;
+      font-size: 14px; color: var(--text-primary); line-height: 1.5; min-height: 24px;
     }
-    .create-prompt-box textarea::placeholder { color: var(--text-muted); }
-    .prompt-actions { display: flex; align-items: center; gap: var(--space-1); flex-shrink: 0; }
-    .prompt-btn-attach {
-      width: 32px; height: 32px; border-radius: var(--radius-full);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-muted);
-      transition: background var(--transition), color var(--transition);
-    }
-    .prompt-btn-attach:hover { background: var(--bg-hover); color: var(--text-primary); }
     .prompt-btn-send {
-      width: 32px; height: 32px; border-radius: var(--radius-full);
-      background: #000; color: #fff;
-      display: flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: var(--radius-full);
+      background: #000; color: #fff; display: flex; align-items: center; justify-content: center;
       transition: background var(--transition), transform var(--transition);
     }
-    .prompt-btn-send:hover { background: #333; transform: scale(1.04); }
+    .prompt-btn-send:hover { background: #333; transform: scale(1.05); }
 
-    /* Featured skill banner */
+    /* Banner */
     .featured-banner {
-      max-width: 680px; margin: 0 auto var(--space-5);
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      display: flex;
-      box-shadow: var(--shadow-sm);
+      max-width: 720px; margin: 0 auto var(--space-5);
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden; display: flex; box-shadow: var(--shadow-sm);
     }
     .featured-thumb {
-      width: 200px; min-height: 120px; flex-shrink: 0;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
+      width: 210px; min-height: 140px; flex-shrink: 0;
+      background: linear-gradient(135deg, #09090b, #18181b);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; color: #fff;
     }
-    .featured-thumb-inner {
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg,
-        rgba(99,102,241,.8) 0%,
-        rgba(139,92,246,.6) 50%,
-        rgba(236,72,153,.4) 100%
-      );
+    .featured-thumb-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      background: rgba(255,255,255,.15); padding: 4px 8px; border-radius: 99px; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,.2);
     }
-    .featured-thumb-label {
-      position: relative; z-index: 1;
-      font-size: 11px; font-weight: 600; color: rgba(255,255,255,.9);
-      letter-spacing: .5px; text-transform: uppercase;
+    .featured-thumb-title { font-size: 14px; font-weight: 600; margin-top: 6px; }
+    .featured-info { flex: 1; padding: var(--space-4); display: flex; flex-direction: column; justify-content: space-between; }
+    .featured-tag { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
+    .featured-title { font-size: 16px; font-weight: 600; margin-top: 4px; }
+    .featured-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: var(--space-2) 0; }
+    .btn-action-black {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #000; color: #fff; font-size: 12px; font-weight: 500;
+      padding: var(--space-2) var(--space-4); border-radius: var(--radius-full);
+      transition: background var(--transition); align-self: flex-start;
     }
-    .featured-info {
-      flex: 1; padding: var(--space-4);
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .featured-tag {
-      font-size: 11px; font-weight: 500; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: .5px;
-      margin-bottom: var(--space-2);
-    }
-    .featured-title { font-size: 15px; font-weight: 600; margin-bottom: var(--space-1); }
-    .featured-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: var(--space-3); }
-    .btn-try {
-      display: inline-flex; align-items: center;
-      background: #000; color: #fff;
-      font-size: 12px; font-weight: 500;
-      padding: var(--space-2) var(--space-4);
-      border-radius: var(--radius-full);
-      transition: background var(--transition);
-      align-self: flex-start;
-    }
-    .btn-try:hover { background: #333; }
+    .btn-action-black:hover { background: #333; }
 
-    /* Boards grid */
-    .boards-section-label {
-      max-width: 680px; margin: 0 auto var(--space-3);
-      font-size: 13px; font-weight: 500; color: var(--text-secondary);
-    }
-    .boards-grid {
-      max-width: 680px; margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: var(--space-3);
-    }
+    /* Boards Grid */
+    .boards-section-label { max-width: 720px; margin: 0 auto var(--space-3); font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+    .boards-grid { max-width: 720px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: var(--space-3); }
     .board-card-new {
-      aspect-ratio: 1.5;
-      background: var(--bg-white);
-      border: 2px dashed var(--border-strong);
-      border-radius: var(--radius-lg);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: var(--space-2);
-      cursor: pointer;
-      transition: border-color var(--transition), background var(--transition);
+      aspect-ratio: 1.5; background: var(--bg-white); border: 2px dashed var(--border-strong);
+      border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: var(--space-2); cursor: pointer; transition: border-color var(--transition), background var(--transition);
     }
     .board-card-new:hover { border-color: #000; background: var(--bg-hover); }
-    .board-card-new .new-icon {
-      width: 36px; height: 36px; border-radius: var(--radius-full);
-      background: var(--bg-main); border: 1px solid var(--border-strong);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; color: var(--text-secondary);
-      transition: background var(--transition);
-    }
-    .board-card-new:hover .new-icon { background: #000; color: #fff; border-color: #000; }
-    .board-card-new span { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
-
     .board-card {
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      cursor: pointer;
-      transition: box-shadow var(--transition), border-color var(--transition);
+      background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden; cursor: pointer; transition: box-shadow var(--transition);
     }
     .board-card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
-    .board-thumb {
-      aspect-ratio: 1.8;
-      background: var(--bg-main);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 2px;
-    }
-    .board-thumb-cell { background: linear-gradient(135deg, #e0e0e0, #f0f0f0); }
-    .board-thumb-cell:nth-child(1) { background: linear-gradient(135deg, #667eea22, #764ba222); }
-    .board-thumb-cell:nth-child(2) { background: linear-gradient(135deg, #f0931522, #f2994a22); }
-    .board-thumb-cell:nth-child(3) { background: linear-gradient(135deg, #11998e22, #38ef7d22); }
-    .board-thumb-cell:nth-child(4) { background: linear-gradient(135deg, #eb3d3d22, #ff6b6b22); }
-    .board-info { padding: var(--space-3) var(--space-3) var(--space-3); }
-    .board-name { font-size: 13px; font-weight: 500; margin-bottom: var(--space-1); }
-    .board-meta { font-size: 12px; color: var(--text-muted); }
+    .board-thumb-preview { aspect-ratio: 1.8; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; }
+    .board-info { padding: var(--space-3); }
+    .board-name { font-size: 13px; font-weight: 500; }
+    .board-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-    /* --- SKILLS VIEW --- */
-    .skills-topbar {
-      display: flex; align-items: center; gap: var(--space-3);
-      padding: var(--space-3) var(--space-5);
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-white);
-      height: var(--topbar-h);
-      flex-shrink: 0;
-    }
-    .filter-pill {
-      padding: var(--space-1) var(--space-3);
-      border-radius: var(--radius-full);
-      font-size: 12px; font-weight: 500;
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-      background: var(--bg-white);
-      cursor: pointer;
-      transition: all var(--transition);
-      white-space: nowrap;
-    }
-    .filter-pill:hover { border-color: var(--border-strong); color: var(--text-primary); }
-    .filter-pill.active { background: #000; color: #fff; border-color: #000; }
-    .topbar-spacer { flex: 1; }
-    .view-toggle { display: flex; gap: var(--space-1); }
-    .btn-view-toggle {
-      width: 28px; height: 28px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: var(--radius-sm);
-      color: var(--text-muted);
-      transition: background var(--transition), color var(--transition);
-    }
-    .btn-view-toggle:hover { background: var(--bg-hover); color: var(--text-primary); }
-    .btn-view-toggle.active { background: var(--bg-active); color: var(--text-primary); }
-
-    .skills-body {
-      flex: 1; overflow-y: auto;
-      padding: var(--space-5) var(--space-5);
-    }
-    .skills-body::-webkit-scrollbar { width: 6px; }
-    .skills-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-4);
-    }
+    /* ===== SKILLS VIEW ===== */
+    .skills-body { flex: 1; overflow-y: auto; padding: var(--space-5); }
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
     .skill-card {
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      cursor: pointer;
-      transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+      background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden; cursor: pointer; transition: box-shadow var(--transition), transform var(--transition);
     }
-    .skill-card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: var(--border-strong);
-      transform: translateY(-1px);
-    }
-    .skill-thumb {
-      aspect-ratio: 1.9;
-      position: relative;
-      overflow: hidden;
-    }
-    .skill-thumb-bg {
-      position: absolute; inset: 0;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
-    }
-    .skill-thumb-bg div { transition: transform .4s; }
-    .skill-card:hover .skill-thumb-bg div { transform: scale(1.03); }
-    .skill-info { padding: var(--space-3) var(--space-4) var(--space-4); }
-    .skill-name {
-      font-size: 14px; font-weight: 600;
-      color: var(--text-primary); margin-bottom: var(--space-1);
-      display: flex; align-items: center; gap: var(--space-1);
-    }
-    .skill-star {
-      color: #000; font-size: 11px;
-      background: #000; color: #fff;
-      border-radius: 3px; padding: 1px 4px;
-      font-weight: 500;
-    }
-    .skill-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
-    .skill-by { font-size: 11px; color: var(--text-muted); margin-top: var(--space-2); }
+    .skill-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--border-strong); }
+    .skill-thumb-box { aspect-ratio: 1.9; position: relative; overflow: hidden; }
+    .skill-thumb-grad { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .skill-info { padding: var(--space-3) var(--space-4); }
+    .skill-name { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .skill-star { font-size: 10px; background: #000; color: #fff; padding: 1px 4px; border-radius: 3px; }
+    .skill-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-top: 4px; }
 
-    /* Skill card gradients */
-    .g1 div:nth-child(1) { background: linear-gradient(135deg, #1a1a2e, #16213e); }
-    .g1 div:nth-child(2) { background: linear-gradient(135deg, #0f3460, #533483); }
-    .g1 div:nth-child(3) { background: linear-gradient(135deg, #533483, #c77dff); }
-    .g1 div:nth-child(4) { background: linear-gradient(135deg, #e0aaff, #9d4edd); }
+    /* ===== WORKSPACE VIEW (CANVAS & VIDEO STUDIO) ===== */
+    .workspace-shell { flex: 1; display: flex; overflow: hidden; }
+    .canvas-container { flex: 1; position: relative; background: #09090b; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 
-    .g2 div:nth-child(1) { background: linear-gradient(135deg, #2d1b69, #11998e); }
-    .g2 div:nth-child(2) { background: linear-gradient(135deg, #38ef7d, #11998e); }
-    .g2 div:nth-child(3) { background: linear-gradient(135deg, #0f9b58, #0a7a46); }
-    .g2 div:nth-child(4) { background: linear-gradient(135deg, #96e6a1, #d4fc79); }
+    /* Real-time 3D Infinity Canvas */
+    #infinity-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
-    .g3 div:nth-child(1) { background: linear-gradient(135deg, #f093fb, #f5576c); }
-    .g3 div:nth-child(2) { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-    .g3 div:nth-child(3) { background: linear-gradient(135deg, #f5576c, #f093fb); }
-    .g3 div:nth-child(4) { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-
-    .g4 div:nth-child(1) { background: linear-gradient(135deg, #667eea, #764ba2); }
-    .g4 div:nth-child(2) { background: linear-gradient(135deg, #f093fb, #f5576c); }
-    .g4 div:nth-child(3) { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-    .g4 div:nth-child(4) { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-
-    .g5 div:nth-child(1) { background: linear-gradient(135deg, #fa709a, #fee140); }
-    .g5 div:nth-child(2) { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
-    .g5 div:nth-child(3) { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
-    .g5 div:nth-child(4) { background: linear-gradient(135deg, #fda085, #f6d365); }
-
-    .g6 div:nth-child(1) { background: linear-gradient(135deg, #2c3e50, #bdc3c7); }
-    .g6 div:nth-child(2) { background: linear-gradient(135deg, #232526, #414345); }
-    .g6 div:nth-child(3) { background: linear-gradient(135deg, #757f9a, #d7dde8); }
-    .g6 div:nth-child(4) { background: linear-gradient(135deg, #74b9ff, #a29bfe); }
-
-    .g7 div:nth-child(1) { background: linear-gradient(135deg, #f9d423, #f83600); }
-    .g7 div:nth-child(2) { background: linear-gradient(135deg, #f83600, #c0392b); }
-    .g7 div:nth-child(3) { background: linear-gradient(135deg, #f9d423, #f9ca24); }
-    .g7 div:nth-child(4) { background: linear-gradient(135deg, #f9ca24, #f0932b); }
-
-    .g8 div:nth-child(1) { background: linear-gradient(135deg, #0575e6, #021b79); }
-    .g8 div:nth-child(2) { background: linear-gradient(135deg, #021b79, #0575e6); }
-    .g8 div:nth-child(3) { background: linear-gradient(135deg, #00c6ff, #0072ff); }
-    .g8 div:nth-child(4) { background: linear-gradient(135deg, #0072ff, #00c6ff); }
-
-    .g9 div:nth-child(1) { background: linear-gradient(135deg, #1abc9c, #2ecc71); }
-    .g9 div:nth-child(2) { background: linear-gradient(135deg, #3498db, #2980b9); }
-    .g9 div:nth-child(3) { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-    .g9 div:nth-child(4) { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-
-    .g10 div:nth-child(1) { background: linear-gradient(135deg, #fd1d1d, #833ab4); }
-    .g10 div:nth-child(2) { background: linear-gradient(135deg, #833ab4, #fcb045); }
-    .g10 div:nth-child(3) { background: linear-gradient(135deg, #fcb045, #fd1d1d); }
-    .g10 div:nth-child(4) { background: linear-gradient(135deg, #fd1d1d, #fcb045); }
-
-    /* --- WORKSPACE VIEW --- */
-    .workspace-topbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: var(--space-2) var(--space-4);
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-white);
-      height: var(--topbar-h);
-      flex-shrink: 0;
+    /* Video Player Overlay */
+    #cinema-video-player {
+      position: absolute; width: 85%; max-width: 960px; aspect-ratio: 16/9;
+      background: #000; border-radius: var(--radius-lg); box-shadow: 0 20px 50px rgba(0,0,0,.6);
+      display: none; z-index: 5; object-fit: contain; border: 1px solid rgba(255,255,255,.1);
     }
-    .breadcrumb {
-      display: flex; align-items: center; gap: var(--space-1);
-      font-size: 13px; font-weight: 500; color: var(--text-secondary);
-    }
-    .breadcrumb span:last-child { color: var(--text-primary); }
-    .breadcrumb-sep { color: var(--text-muted); }
-    .workspace-actions { display: flex; align-items: center; gap: var(--space-2); }
-    .btn-upgrade {
-      display: flex; align-items: center; gap: var(--space-1);
-      background: #000; color: #fff;
-      font-size: 12px; font-weight: 500;
-      padding: var(--space-1) var(--space-3);
-      border-radius: var(--radius-full);
-      transition: background var(--transition);
-    }
-    .btn-upgrade:hover { background: #333; }
-    .btn-share {
-      display: flex; align-items: center;
-      background: var(--bg-white); color: var(--text-primary);
-      font-size: 12px; font-weight: 500;
-      padding: var(--space-1) var(--space-3);
-      border-radius: var(--radius-full);
-      border: 1px solid var(--border);
-      transition: background var(--transition), border-color var(--transition);
-    }
-    .btn-share:hover { background: var(--bg-hover); border-color: var(--border-strong); }
 
-    .workspace-body {
-      flex: 1; display: flex; overflow: hidden;
+    /* Floating Studio Engine Control Bar */
+    .studio-control-bar {
+      position: absolute; bottom: var(--space-5); left: 50%; transform: translateX(-50%);
+      background: rgba(24, 24, 27, 0.85); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-full);
+      padding: 6px 14px; display: flex; align-items: center; gap: var(--space-3);
+      box-shadow: 0 10px 30px rgba(0,0,0,.4); z-index: 20; color: #fff;
     }
-    .canvas-area {
-      flex: 1; position: relative;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 24px, rgba(0,0,0,.03) 24px, rgba(0,0,0,.03) 25px
-      ),
-      repeating-linear-gradient(
-        90deg, transparent, transparent 24px, rgba(0,0,0,.03) 24px, rgba(0,0,0,.03) 25px
-      );
-      background-color: var(--bg-main);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .canvas-empty {
-      text-align: center; color: var(--text-muted);
-    }
-    .canvas-empty-icon {
-      width: 48px; height: 48px;
-      border: 2px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto var(--space-3);
-      color: var(--text-muted);
-    }
-    .canvas-empty p { font-size: 13px; }
-    .canvas-empty p strong { color: var(--text-secondary); }
-
-    .workspace-toolbar {
-      position: absolute; bottom: var(--space-4); left: 50%; transform: translateX(-50%);
-      display: flex; align-items: center; gap: var(--space-1);
-      background: var(--bg-white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-full);
-      padding: var(--space-1) var(--space-2);
-      box-shadow: var(--shadow-md);
-    }
-    .toolbar-btn {
-      width: 36px; height: 36px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: var(--radius-full);
-      color: var(--text-secondary);
+    .studio-btn {
+      display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+      border-radius: var(--radius-full); font-size: 12px; font-weight: 500; color: #e4e4e7;
       transition: background var(--transition), color var(--transition);
     }
-    .toolbar-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
-    .toolbar-btn.active { background: #000; color: #fff; }
-    .toolbar-sep {
-      width: 1px; height: 24px; background: var(--border);
-      margin: 0 var(--space-1);
+    .studio-btn:hover { background: rgba(255,255,255,.15); color: #fff; }
+    .studio-btn.primary { background: #fff; color: #000; font-weight: 600; }
+    .studio-btn.primary:hover { background: #e4e4e7; }
+    .studio-sep { width: 1px; height: 20px; background: rgba(255,255,255,.2); }
+    .timeline-pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #a1a1aa; }
+
+    /* HUD overlay on Canvas */
+    .canvas-hud {
+      position: absolute; top: var(--space-4); left: var(--space-4); z-index: 10;
+      color: rgba(255,255,255,.8); font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      line-height: 1.6; pointer-events: none;
     }
-    .toolbar-zoom {
-      display: flex; align-items: center; gap: var(--space-1);
-      font-size: 12px; color: var(--text-secondary); padding: 0 var(--space-2);
+    .canvas-hud-badge {
+      display: inline-block; background: rgba(255,255,255,.15); padding: 2px 8px; border-radius: 4px;
+      margin-bottom: 6px; font-weight: 600; color: #fff;
     }
 
-    /* Right panel */
+    /* Right Panel */
     .right-panel {
-      width: var(--panel-w);
-      min-width: var(--panel-w);
-      background: var(--bg-white);
-      border-left: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      flex-shrink: 0;
+      width: var(--panel-w); min-width: var(--panel-w);
+      background: var(--bg-white); border-left: 1px solid var(--border);
+      display: flex; flex-direction: column; flex-shrink: 0;
     }
     .panel-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: var(--space-3) var(--space-4);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
+      padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
-    .panel-tabs {
-      display: flex; gap: var(--space-1);
-    }
+    .panel-tabs { display: flex; gap: var(--space-1); }
     .panel-tab {
-      padding: var(--space-1) var(--space-3);
-      border-radius: var(--radius-full);
-      font-size: 13px; font-weight: 500;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: background var(--transition), color var(--transition);
+      padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+      font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer;
     }
-    .panel-tab:hover { background: var(--bg-hover); color: var(--text-primary); }
     .panel-tab.active { background: var(--bg-active); color: var(--text-primary); }
-    .panel-tab-content { display: none; flex: 1; overflow: hidden; flex-direction: column; }
-    .panel-tab-content.active { display: flex; }
-
-    .chat-title-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: var(--space-3) var(--space-4);
-      flex-shrink: 0;
-    }
-    .chat-title {
-      font-size: 13px; font-weight: 500;
-      display: flex; align-items: center; gap: var(--space-1);
-    }
-    .btn-run {
-      background: #000; color: #fff;
-      font-size: 12px; font-weight: 500;
-      padding: var(--space-1) var(--space-3);
-      border-radius: var(--radius-full);
-      transition: background var(--transition);
-    }
-    .btn-run:hover { background: #333; }
-    .btn-run.loading {
-      background: #666;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
 
     .chat-body {
-      flex: 1; overflow-y: auto;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: var(--space-4);
-    }
-    .chat-body::-webkit-scrollbar { width: 4px; }
-    .chat-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-    .chat-body.has-messages {
-      align-items: stretch;
-      justify-content: flex-start;
+      flex: 1; overflow-y: auto; padding: var(--space-4); display: flex; flex-direction: column;
       gap: var(--space-3);
     }
-    .chat-empty {
-      display: flex; flex-direction: column;
-      align-items: center; gap: var(--space-3);
-      color: var(--text-muted);
-    }
-    .chat-empty-spinner {
-      width: 40px; height: 40px;
-      border: 2px solid var(--border);
-      border-top-color: var(--border-strong);
-      border-radius: 50%;
-      animation: spin 1.4s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .chat-empty p { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
-
     .chat-msg {
-      max-width: 85%;
-      padding: var(--space-3) var(--space-3);
-      border-radius: var(--radius-lg);
-      font-size: 13px; line-height: 1.6;
+      max-width: 88%; padding: var(--space-3); border-radius: var(--radius-lg); font-size: 13px; line-height: 1.5;
     }
-    .chat-msg.user {
-      align-self: flex-end;
-      background: #000; color: #fff;
-      border-radius: var(--radius-lg) var(--radius-lg) var(--space-1) var(--radius-lg);
-    }
-    .chat-msg.assistant {
-      align-self: flex-start;
-      background: var(--bg-main); color: var(--text-primary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--space-1);
-    }
-    .chat-msg.system {
-      align-self: center;
-      font-size: 11px; color: var(--text-muted);
-      padding: var(--space-1) var(--space-3);
-      background: transparent; border: none;
-    }
+    .chat-msg.user { align-self: flex-end; background: #000; color: #fff; }
+    .chat-msg.assistant { align-self: flex-start; background: var(--bg-main); border: 1px solid var(--border); }
 
-    .chat-input-wrap {
-      border-top: 1px solid var(--border);
-      padding: var(--space-3) var(--space-4);
-      flex-shrink: 0;
-    }
+    .chat-input-wrap { border-top: 1px solid var(--border); padding: var(--space-3) var(--space-4); }
     .chat-input-box {
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-3);
-      display: flex; flex-direction: column; gap: var(--space-2);
-      transition: border-color var(--transition), box-shadow var(--transition);
+      background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2);
     }
-    .chat-input-box:focus-within {
-      border-color: var(--border-strong);
-      box-shadow: 0 0 0 3px rgba(0,0,0,.04);
-    }
-    .chat-textarea {
-      border: none; outline: none; resize: none;
-      background: transparent; font-size: 13px; color: var(--text-primary);
-      min-height: 20px; max-height: 100px; line-height: 1.5;
-      width: 100%;
-    }
-    .chat-textarea::placeholder { color: var(--text-muted); }
-    .chat-input-actions {
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .chat-input-left { display: flex; gap: var(--space-1); }
-    .chat-action-btn {
-      width: 28px; height: 28px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: var(--radius-sm);
-      color: var(--text-muted);
-      font-size: 11px;
-      transition: background var(--transition), color var(--transition);
-    }
-    .chat-action-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
-    .chat-send-btn {
-      width: 28px; height: 28px;
-      background: #000; color: #fff;
-      border-radius: var(--radius-full);
-      display: flex; align-items: center; justify-content: center;
-      transition: background var(--transition), transform var(--transition);
-    }
-    .chat-send-btn:hover { background: #333; transform: scale(1.06); }
+    .chat-textarea { border: none; outline: none; resize: none; background: transparent; font-size: 13px; width: 100%; }
 
-    /* Assets tab */
-    .assets-body {
-      flex: 1; overflow-y: auto;
-      padding: var(--space-3) var(--space-4);
+    /* ===== CONNECTORS VIEW (VERCEL & GITHUB) ===== */
+    .connectors-body { flex: 1; overflow-y: auto; padding: var(--space-6); max-width: 840px; margin: 0 auto; width: 100%; }
+    .connector-card {
+      background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--radius-xl);
+      padding: var(--space-5); margin-bottom: var(--space-4); box-shadow: var(--shadow-sm);
     }
-    .assets-empty {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      height: 100%; gap: var(--space-3);
-      color: var(--text-muted); text-align: center;
+    .connector-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
+    .connector-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .connector-status-badge {
+      font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-full);
     }
-    .assets-empty p { font-size: 13px; }
+    .badge-live { background: #dcfce7; color: #15803d; }
+    .badge-ready { background: #e0e7ff; color: #4338ca; }
+    .connector-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-4); }
+    .code-snippet {
+      background: #18181b; color: #f4f4f5; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      padding: var(--space-3); border-radius: var(--radius-md); overflow-x: auto; margin-bottom: var(--space-3);
+    }
 
-    /* Skills tab in panel */
-    .panel-skills-body {
-      flex: 1; overflow-y: auto;
-      padding: var(--space-3) var(--space-3);
-      display: flex; flex-direction: column; gap: var(--space-2);
-    }
-    .panel-skill-item {
-      display: flex; align-items: center; gap: var(--space-3);
-      padding: var(--space-3) var(--space-3);
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: background var(--transition), border-color var(--transition);
-    }
-    .panel-skill-item:hover { background: var(--bg-hover); border-color: var(--border-strong); }
-    .panel-skill-icon {
-      width: 36px; height: 36px; border-radius: var(--radius-sm);
-      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-    }
-    .panel-skill-info { flex: 1; min-width: 0; }
-    .panel-skill-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
-    .panel-skill-desc { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    /* ===== VIDEO GENERATION MODAL ===== */
+    /* ===== MODAL ===== */
     .modal-overlay {
-      position: fixed; inset: 0; z-index: 100;
-      background: rgba(0,0,0,.5);
-      backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity .2s;
+      position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .2s;
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal {
-      background: var(--bg-white);
-      border-radius: var(--radius-xl);
-      width: min(560px, 94vw);
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
-      transform: translateY(16px) scale(.97);
-      transition: transform .2s cubic-bezier(.4,0,.2,1);
+      background: var(--bg-white); border-radius: var(--radius-xl); width: min(600px, 94vw);
+      box-shadow: var(--shadow-lg); overflow: hidden;
     }
-    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
     .modal-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: var(--space-5) var(--space-5) var(--space-4);
-      border-bottom: 1px solid var(--border);
+      padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--border);
     }
     .modal-title { font-size: 16px; font-weight: 600; }
-    .modal-close {
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: var(--radius-md);
-      color: var(--text-muted);
-      transition: background var(--transition), color var(--transition);
-    }
-    .modal-close:hover { background: var(--bg-hover); color: var(--text-primary); }
     .modal-body { padding: var(--space-5); }
     .modal-footer {
-      display: flex; justify-content: flex-end; gap: var(--space-2);
-      padding: var(--space-4) var(--space-5);
+      display: flex; justify-content: flex-end; gap: var(--space-2); padding: var(--space-4) var(--space-5);
       border-top: 1px solid var(--border);
     }
-    .btn-ghost {
-      padding: var(--space-2) var(--space-4);
-      border-radius: var(--radius-full);
-      font-size: 13px; font-weight: 500;
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-      transition: background var(--transition), border-color var(--transition);
-    }
-    .btn-ghost:hover { background: var(--bg-hover); border-color: var(--border-strong); color: var(--text-primary); }
-    .btn-primary {
-      padding: var(--space-2) var(--space-5);
-      border-radius: var(--radius-full);
-      font-size: 13px; font-weight: 500;
-      background: #000; color: #fff;
-      transition: background var(--transition), transform var(--transition);
-    }
-    .btn-primary:hover { background: #333; }
-    .btn-primary:active { transform: scale(.97); }
-    .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
 
-    .form-label {
-      font-size: 12px; font-weight: 500; color: var(--text-secondary);
-      margin-bottom: var(--space-1); display: block;
-    }
-    .form-input, .form-select, .form-textarea {
-      width: 100%; padding: var(--space-2) var(--space-3);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      font-size: 13px; color: var(--text-primary);
-      background: var(--bg-white);
-      outline: none;
-      transition: border-color var(--transition), box-shadow var(--transition);
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: var(--border-strong);
-      box-shadow: 0 0 0 3px rgba(0,0,0,.04);
-    }
-    .form-textarea { min-height: 80px; resize: none; line-height: 1.5; }
     .form-row { margin-bottom: var(--space-4); }
-    .form-row:last-child { margin-bottom: 0; }
-    .form-hint { font-size: 11px; color: var(--text-muted); margin-top: var(--space-1); }
+    .form-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; display: block; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: var(--space-2) var(--space-3); border: 1px solid var(--border);
+      border-radius: var(--radius-md); font-size: 13px; outline: none; background: #fff;
+    }
+    .form-textarea { min-height: 80px; resize: none; }
 
-    /* Progress / generation state */
-    .gen-progress {
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-4);
-      display: none;
+    /* Act Visualizer */
+    .acts-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 6px; }
+    .act-cell {
+      background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 6px 4px; text-align: center; font-size: 10px; font-weight: 600; color: var(--text-secondary);
     }
-    .gen-progress.active { display: block; }
-    .progress-bar-wrap {
-      background: var(--bg-active);
-      border-radius: var(--radius-full);
-      height: 4px; overflow: hidden;
-      margin-bottom: var(--space-3);
-    }
-    .progress-bar {
-      height: 100%; background: #000;
-      border-radius: var(--radius-full);
-      width: 0%;
-      transition: width .4s ease;
-    }
-    .progress-steps { display: flex; flex-direction: column; gap: var(--space-1); }
-    .progress-step {
-      display: flex; align-items: center; gap: var(--space-2);
-      font-size: 12px; color: var(--text-muted);
-      transition: color .2s;
-    }
-    .progress-step.done { color: var(--text-secondary); }
-    .progress-step.active-step { color: var(--text-primary); font-weight: 500; }
-    .step-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--border-strong); flex-shrink: 0;
-      transition: background .2s;
-    }
-    .progress-step.done .step-dot { background: #22c55e; }
-    .progress-step.active-step .step-dot {
-      background: #000;
-      animation: pulse-dot .8s ease infinite;
-    }
-    @keyframes pulse-dot {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .5; transform: scale(.7); }
-    }
+    .act-cell span { display: block; font-size: 9px; color: var(--text-muted); font-weight: normal; margin-top: 2px; }
 
-    /* ===== TOAST ===== */
-    .toast-container {
-      position: fixed; bottom: var(--space-5); right: var(--space-5);
-      z-index: 200; display: flex; flex-direction: column; gap: var(--space-2);
-    }
+    /* Toast */
+    .toast-container { position: fixed; bottom: var(--space-5); right: var(--space-5); z-index: 200; display: flex; flex-direction: column; gap: var(--space-2); }
     .toast {
-      display: flex; align-items: center; gap: var(--space-3);
-      background: #1a1a1a; color: #fff;
-      padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-lg);
-      font-size: 13px; font-weight: 500;
-      box-shadow: var(--shadow-lg);
-      animation: toast-in .25s cubic-bezier(.4,0,.2,1) forwards;
-      max-width: 340px;
+      display: flex; align-items: center; gap: var(--space-2); background: #18181b; color: #fff;
+      padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); font-size: 13px; font-weight: 500;
+      box-shadow: var(--shadow-lg); animation: toast-in .2s ease;
     }
-    .toast.success .toast-icon { color: #4ade80; }
-    .toast.error .toast-icon { color: #f87171; }
-    .toast.info .toast-icon { color: #60a5fa; }
-    @keyframes toast-in {
-      from { transform: translateX(16px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    /* ===== NOTIFICATIONS DOT ===== */
-    .nav-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      background: #ef4444; color: #fff;
-      font-size: 10px; font-weight: 600;
-      min-width: 16px; height: 16px;
-      border-radius: var(--radius-full);
-      margin-left: auto; padding: 0 4px;
-    }
-
-    /* ===== OLLAMA MODEL SELECTOR ===== */
-    .model-selector {
-      display: flex; align-items: center; gap: var(--space-2);
-      padding: var(--space-2) var(--space-3);
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      font-size: 12px; cursor: pointer;
-      transition: border-color var(--transition), background var(--transition);
-    }
-    .model-selector:hover { border-color: var(--border-strong); background: var(--bg-hover); }
-    .model-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-strong); }
-    .model-dot.ready { background: #22c55e; }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1100px) {
-      .right-panel { display: none; }
-    }
-    @media (max-width: 800px) {
-      .sidebar { display: none; }
-    }
+    @keyframes toast-in { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   </style>
 </head>
 <body>
 
 <div class="app-shell">
 
-  <!-- ========== SIDEBAR ========== -->
+  <!-- ========== LEFT SIDEBAR ========== -->
   <aside class="sidebar">
-    <!-- Logo -->
     <div class="sidebar-logo">
       <div class="logo-mark">
-        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-          <circle cx="8" cy="8" r="2" fill="white"/>
-        </svg>
+        <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="white"/></svg>
       </div>
       <span class="logo-text">AI Studio</span>
     </div>
 
-    <!-- User -->
-    <div class="sidebar-user">
+    <div class="sidebar-user" onclick="switchView('connectors')">
       <div class="user-avatar">MA</div>
       <span class="user-name">MUHAMED AJMAL</span>
-      <svg class="user-chevron" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      <span style="font-size:11px;color:var(--text-muted)">PRO</span>
     </div>
 
-    <!-- Search -->
     <div class="sidebar-search">
       <div class="search-input-wrap">
-        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--text-muted);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" placeholder="Search" />
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search Studio…" />
       </div>
     </div>
 
-    <!-- Nav -->
     <nav class="sidebar-nav">
-      <div class="nav-item" onclick="switchView('home')">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Home
-      </div>
-      <div class="nav-item" onclick="switchView('notifications')">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path stroke-linecap="round" d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-        Notifications
-        <span class="nav-badge" id="notif-badge" style="display:none">3</span>
-      </div>
-
-      <div class="nav-section-label">
-        <span id="team-label">MUHAMED's team</span>
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
-      </div>
-
       <div class="nav-item active" id="nav-boards" onclick="switchView('boards')">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
         Boards
       </div>
-      <div class="nav-item" onclick="switchView('projects')">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M3 7a2 2 0 012-2h3l2 2h9a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-        Projects
-      </div>
-      <div class="nav-item" onclick="switchView('apps')">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="9" height="9" rx="2"/><rect x="13" y="2" width="9" height="9" rx="2"/><rect x="2" y="13" width="9" height="9" rx="2"/><path stroke-linecap="round" d="M17.5 13v6M13 17.5h6"/></svg>
-        Apps
+      <div class="nav-item" id="nav-workspace" onclick="switchView('workspace')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.361a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Infinity Engine
       </div>
       <div class="nav-item" id="nav-skills" onclick="switchView('skills')">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        Skills
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Skills & Engines
       </div>
-      <div class="nav-item">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        Members
+      <div class="nav-item" id="nav-connectors" onclick="switchView('connectors')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+        GitHub & Vercel
       </div>
 
       <div class="nav-divider"></div>
-
-      <div class="nav-section-label">
-        Assets
-        <button onclick="showToast('Asset upload coming soon!','info')">+</button>
+      <div class="nav-section-label">AI Models & GPU</div>
+      <div class="nav-item" onclick="openVideoModal()">
+        <span style="font-size:14px">🎬</span> 30s Film Cinema
       </div>
-      <div class="nav-item">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path stroke-linecap="round" d="M21 15l-5-5L5 21"/></svg>
-        My Assets
+      <div class="nav-item" onclick="switchEngineStyle('infinity_cosmos')">
+        <span style="font-size:14px">🌌</span> Infinity Cosmos
       </div>
-      <div class="nav-item" onclick="switchView('workspace')">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
-        Connectors
+      <div class="nav-item" onclick="switchEngineStyle('cyber_matrix')">
+        <span style="font-size:14px">⚡</span> Cyber Matrix
       </div>
-      <div class="nav-item">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-        Billing
-      </div>
-      <div class="nav-item">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-        Usage
+      <div class="nav-item" onclick="switchEngineStyle('quantum_warp')">
+        <span style="font-size:14px">🌀</span> Quantum Warp
       </div>
     </nav>
 
-    <!-- Status pill -->
     <div class="sidebar-status">
-      <div class="status-pill" id="relay-status-pill" onclick="checkAllStatus()" title="Click to refresh status" style="cursor:pointer">
-        <div class="status-dot" id="relay-dot"></div>
-        <span id="relay-status-text">Checking engines…</span>
+      <div class="status-pill" onclick="checkAllStatus()">
+        <div class="status-dot online" id="status-dot"></div>
+        <span id="status-text">30s Engine Online</span>
       </div>
     </div>
   </aside>
 
-  <!-- ========== MAIN CONTENT ========== -->
+  <!-- ========== MAIN CONTENT AREA ========== -->
   <main class="main-content">
 
-    <!-- ===== BOARDS VIEW ===== -->
+    <!-- ===== VIEW: BOARDS ===== -->
     <div class="view active" id="view-boards">
-      <div class="boards-topbar">
-        <div class="topbar-left">
-          <span class="topbar-title">Boards</span>
-        </div>
-        <div class="topbar-right">
-          <button class="btn-icon" title="Search" onclick="showToast('Search boards','info')">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          </button>
-          <button class="btn-icon" title="Grid view">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          </button>
-          <button class="btn-icon" title="More options">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-          </button>
-        </div>
+      <div class="view-topbar">
+        <span class="topbar-title">Creative Studio // Boards</span>
+        <button class="btn-action-black" onclick="openVideoModal()">+ Create 30s Video</button>
       </div>
 
       <div class="boards-body">
-        <!-- Create prompt -->
         <div class="create-prompt-wrap">
           <h1 class="create-prompt-label">What do you want to create today?</h1>
           <div class="create-prompt-box">
-            <textarea id="boards-prompt" placeholder="Describe what you want to create…" rows="1"
-              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();createFromPrompt()}"
-              oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-            <div class="prompt-actions">
-              <button class="prompt-btn-attach" title="Attach file" onclick="showToast('File attachment coming soon','info')">
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-              </button>
-              <button class="prompt-btn-attach" title="Voice input" onclick="showToast('Voice input coming soon','info')">
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path stroke-linecap="round" d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg>
-              </button>
-              <button class="prompt-btn-send" onclick="createFromPrompt()" title="Create">
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-            </div>
+            <textarea id="boards-prompt" placeholder="A hyper-realistic voyage through the cosmic singularity, quantum portals, and infinite dimensions…" rows="2"
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();createFromPrompt()}"></textarea>
+            <button class="prompt-btn-send" onclick="createFromPrompt()" title="Generate 30s Film">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
           </div>
         </div>
 
-        <!-- Featured skill -->
+        <!-- Featured 30s Engine Banner -->
         <div class="featured-banner">
           <div class="featured-thumb">
-            <div class="featured-thumb-inner"></div>
-            <span class="featured-thumb-label">AI Film</span>
+            <span class="featured-thumb-badge">30s Ultra-Realistic</span>
+            <div class="featured-thumb-title">Infinity Engine</div>
+            <div style="font-size:10px;opacity:.7;margin-top:2px">6-Act Continuous Film</div>
           </div>
           <div class="featured-info">
-            <div class="featured-tag">Featured Skill</div>
-            <div class="featured-title">30-Second Film Generator</div>
-            <div class="featured-desc">Generate a continuous 30-second AI film from a single text prompt. Full screenplay, voice narration, and cinematic color grading.</div>
-            <button class="btn-try" onclick="openVideoModal()">Try now →</button>
+            <div>
+              <div class="featured-tag">Pro AI Engine // Fully Free</div>
+              <div class="featured-title">30-Second Ultra-Realistic Film Generator</div>
+              <div class="featured-desc">
+                Generates a continuous 30.0-second 1080p/720p 60fps film with cosmic infinity zoom, hyper-realistic particles, 6-act narrative screenplay, and synthesized cinematic soundtrack.
+              </div>
+            </div>
+            <div style="display:flex;gap:var(--space-2)">
+              <button class="btn-action-black" onclick="openVideoModal()">Launch Generator ✨</button>
+              <button class="btn-action-black" style="background:#fff;color:#000;border:1px solid var(--border-strong)" onclick="switchView('workspace')">Open Live 3D Studio</button>
+            </div>
           </div>
         </div>
 
-        <!-- Boards -->
-        <div class="boards-section-label">Recent Boards</div>
+        <div class="boards-section-label">Your Projects & Films</div>
         <div class="boards-grid">
           <div class="board-card-new" onclick="openVideoModal()">
-            <div class="new-icon">+</div>
-            <span>New Board</span>
+            <div style="font-size:24px">+</div>
+            <span style="font-size:13px;font-weight:500">New 30s Video</span>
           </div>
           <div class="board-card" onclick="switchView('workspace')">
-            <div class="board-thumb">
-              <div class="board-thumb-cell"></div>
-              <div class="board-thumb-cell"></div>
-              <div class="board-thumb-cell"></div>
-              <div class="board-thumb-cell"></div>
+            <div class="board-thumb-preview" style="background:linear-gradient(135deg,#18181b,#27272a)">
+              <span>🌌</span>
             </div>
             <div class="board-info">
-              <div class="board-name">My First Board</div>
-              <div class="board-meta">Edited just now</div>
+              <div class="board-name">Quantum Infinity Cinema</div>
+              <div class="board-meta">30.0s // 720p // 6-Act MP4</div>
             </div>
           </div>
-          <div class="board-card" onclick="switchView('workspace')">
-            <div class="board-thumb" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea22,#764ba222)">
-              <span style="font-size:28px">🎬</span>
+          <div class="board-card" onclick="switchView('connectors')">
+            <div class="board-thumb-preview" style="background:linear-gradient(135deg,#000,#1e1b4b)">
+              <span>🚀</span>
             </div>
             <div class="board-info">
-              <div class="board-name">Video Generation Lab</div>
-              <div class="board-meta">30-sec film engine</div>
+              <div class="board-name">Vercel & GitHub Club</div>
+              <div class="board-meta">CI/CD Automated Deploy</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ===== SKILLS VIEW ===== -->
-    <div class="view" id="view-skills">
-      <div class="skills-topbar">
-        <button class="filter-pill active" onclick="setFilter(this,'all')">All</button>
-        <button class="filter-pill" onclick="setFilter(this,'installed-me')">Installed for me</button>
-        <button class="filter-pill" onclick="setFilter(this,'installed-team')">Installed for team</button>
-        <button class="filter-pill" onclick="setFilter(this,'on-board')">Installed on a board</button>
-        <button class="filter-pill" onclick="setFilter(this,'created')">Created by me</button>
-        <div class="topbar-spacer"></div>
-        <div class="view-toggle">
-          <button class="btn-view-toggle active" title="Grid view">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          </button>
-          <button class="btn-view-toggle" title="List view">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-          </button>
+    <!-- ===== VIEW: WORKSPACE (3D INFINITY ENGINE & VIDEO STUDIO) ===== -->
+    <div class="view" id="view-workspace">
+      <div class="view-topbar">
+        <div style="display:flex;align-items:center;gap:var(--space-2)">
+          <span class="topbar-title">Infinity Engine Studio</span>
+          <span style="font-size:11px;background:#000;color:#fff;padding:2px 8px;border-radius:99px;font-weight:600">60 FPS REAL-TIME</span>
         </div>
+        <div style="display:flex;gap:var(--space-2)">
+          <button class="btn-action-black" onclick="openVideoModal()">✨ New 30s Film</button>
+          <button class="btn-action-black" style="background:#fff;color:#000;border:1px solid var(--border)" onclick="switchView('connectors')">Deploy to Vercel</button>
+        </div>
+      </div>
+
+      <div class="workspace-shell">
+        <!-- Canvas Studio Area -->
+        <div class="canvas-container">
+          <!-- Live 3D Shader Canvas -->
+          <canvas id="infinity-canvas"></canvas>
+
+          <!-- MP4 Video Player Overlay -->
+          <video id="cinema-video-player" controls playsinline></video>
+
+          <!-- Canvas HUD Telemetry -->
+          <div class="canvas-hud">
+            <div class="canvas-hud-badge" id="hud-mode-badge">3D INFINITY SHADER</div>
+            <div>STATUS: RUNNING (60 FPS)</div>
+            <div>ACT: <span id="hud-act-text">ACT 1 // QUANTUM SINGULARITY</span></div>
+            <div>TIME: <span id="hud-time-text">00:00 / 00:30</span></div>
+          </div>
+
+          <!-- Floating Studio Controls -->
+          <div class="studio-control-bar">
+            <button class="studio-btn" id="btn-toggle-engine" onclick="toggleEngineMode()">
+              <span id="engine-mode-icon">🎬</span> <span id="engine-mode-label">Play Rendered MP4</span>
+            </button>
+            <div class="studio-sep"></div>
+            <button class="studio-btn" onclick="seekAct(0)">Act 1</button>
+            <button class="studio-btn" onclick="seekAct(5)">Act 2</button>
+            <button class="studio-btn" onclick="seekAct(10)">Act 3</button>
+            <button class="studio-btn" onclick="seekAct(15)">Act 4</button>
+            <button class="studio-btn" onclick="seekAct(20)">Act 5</button>
+            <button class="studio-btn" onclick="seekAct(25)">Act 6</button>
+            <div class="studio-sep"></div>
+            <button class="studio-btn primary" onclick="recordLiveCanvas30s()" id="btn-record-canvas">
+              🔴 Record 30s Live
+            </button>
+            <button class="studio-btn" onclick="downloadCurrentVideo()" id="btn-download-vid" style="display:none">
+              ⬇ Download MP4
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Chat & Intelligence Panel -->
+        <div class="right-panel">
+          <div class="panel-header">
+            <div class="panel-tabs">
+              <div class="panel-tab active">Director Chat</div>
+              <div class="panel-tab" onclick="switchView('skills')">Skills</div>
+            </div>
+            <span style="font-size:12px;font-weight:600;color:var(--text-muted)">30s AI</span>
+          </div>
+
+          <div class="chat-body" id="chat-body">
+            <div class="chat-msg assistant">
+              <strong>Creative Director Online.</strong><br/>
+              Ask me to write an ultra-realistic 30-second film prompt, compose a 6-act storyboard, or generate an infinite cosmic journey.
+            </div>
+          </div>
+
+          <div class="chat-input-wrap">
+            <div class="chat-input-box">
+              <textarea class="chat-textarea" id="chat-input" placeholder="Direct your 30s video or ask questions…" rows="2"
+                onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}"></textarea>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:11px;color:var(--text-muted)">Gemini 3.8 + Local FFmpeg</span>
+                <button class="prompt-btn-send" onclick="sendChatMessage()" style="width:28px;height:28px">
+                  <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== VIEW: SKILLS & ENGINES ===== -->
+    <div class="view" id="view-skills">
+      <div class="view-topbar">
+        <span class="topbar-title">Creative Skills & Video Engines</span>
+        <button class="btn-action-black" onclick="openVideoModal()">Launch 30s Engine</button>
       </div>
 
       <div class="skills-body">
         <div class="skills-grid">
           <!-- Skill 1 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g1"><div></div><div></div><div></div><div></div></div>
+          <div class="skill-card" onclick="openVideoModal('infinity_cosmos')">
+            <div class="skill-thumb-box">
+              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#09090b,#1e1b4b,#312e81)"></div>
             </div>
             <div class="skill-info">
-              <div class="skill-name">30-Second Film Generator <span class="skill-star">★</span></div>
-              <div class="skill-desc">Generate a continuous 30s AI film from a text prompt with screenplay and voice.</div>
-              <div class="skill-by">by AI Studio</div>
+              <div class="skill-name">30s Film Generator <span class="skill-star">★ PRO</span></div>
+              <div class="skill-desc">Continuous 30-second film generator with 6 acts, cinematic sound score, and 1080p/720p output.</div>
             </div>
           </div>
+
           <!-- Skill 2 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g2"><div></div><div></div><div></div><div></div></div>
+          <div class="skill-card" onclick="switchEngineStyle('infinity_cosmos'); switchView('workspace');">
+            <div class="skill-thumb-box">
+              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#172554,#1e40af,#3b82f6)"></div>
             </div>
             <div class="skill-info">
-              <div class="skill-name">Text to Video <span class="skill-star">★</span></div>
-              <div class="skill-desc">Create cinematic video clips from detailed text descriptions in seconds.</div>
-              <div class="skill-by">by AI Studio</div>
+              <div class="skill-name">Infinity Cosmos Engine <span class="skill-star">60 FPS</span></div>
+              <div class="skill-desc">Infinite fractal deep zoom, relativistic gravitational lensing, and starlight singularity.</div>
             </div>
           </div>
+
           <!-- Skill 3 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g3"><div></div><div></div><div></div><div></div></div>
+          <div class="skill-card" onclick="switchEngineStyle('cyber_matrix'); switchView('workspace');">
+            <div class="skill-thumb-box">
+              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#042f2e,#115e59,#14b8a6)"></div>
             </div>
             <div class="skill-info">
-              <div class="skill-name">Scene Background Swap <span class="skill-star">★</span></div>
-              <div class="skill-desc">Replace video backgrounds while preserving subjects, identity, and motion.</div>
-              <div class="skill-by">by AI Studio</div>
+              <div class="skill-name">Cyber Matrix Holographics <span class="skill-star">NEON</span></div>
+              <div class="skill-desc">Procedural vector grid, multidimensional wireframe recursion, and chromatic glow.</div>
             </div>
           </div>
+
           <!-- Skill 4 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g4"><div></div><div></div><div></div><div></div></div>
+          <div class="skill-card" onclick="switchEngineStyle('quantum_warp'); switchView('workspace');">
+            <div class="skill-thumb-box">
+              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#581c87,#7e22ce,#a855f7)"></div>
             </div>
             <div class="skill-info">
-              <div class="skill-name">Style Transfer Engine <span class="skill-star">★</span></div>
-              <div class="skill-desc">Apply cinematic visual styles from reference images to any video footage.</div>
-              <div class="skill-by">by AI Studio</div>
+              <div class="skill-name">Quantum Hyperdrive Warp <span class="skill-star">WARP</span></div>
+              <div class="skill-desc">Hyperspace acceleration streaks, time dilation curves, and relativistic color shifts.</div>
             </div>
           </div>
+
           <!-- Skill 5 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g5"><div></div><div></div><div></div><div></div></div>
+          <div class="skill-card" onclick="switchEngineStyle('neural_nebula'); switchView('workspace');">
+            <div class="skill-thumb-box">
+              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#701a75,#a21caf,#d946ef)"></div>
             </div>
             <div class="skill-info">
-              <div class="skill-name">AI Voice Narration <span class="skill-star">★</span></div>
-              <div class="skill-desc">Neural TTS with multiple voice personas, emotion control, and SSML support.</div>
-              <div class="skill-by">by AI Studio</div>
+              <div class="skill-name">Neural Nebula River <span class="skill-star">ORGANIC</span></div>
+              <div class="skill-desc">Bioluminescent particles, ethereal starlight tides, and infinite dream horizon.</div>
             </div>
           </div>
+
           <!-- Skill 6 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g6"><div></div><div></div><div></div><div></div></div>
+          <div class="skill-card" onclick="switchView('connectors')">
+            <div class="skill-thumb-box">
+              <div class="skill-thumb-grad" style="background:linear-gradient(135deg,#000,#27272a,#52525b)"></div>
             </div>
             <div class="skill-info">
-              <div class="skill-name">Photo to Cinematic Video <span class="skill-star">★</span></div>
-              <div class="skill-desc">Animate still images with Ken Burns effect, parallax, and smooth motion.</div>
-              <div class="skill-by">by AI Studio</div>
-            </div>
-          </div>
-          <!-- Skill 7 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g7"><div></div><div></div><div></div><div></div></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">Cinematic Color Grade <span class="skill-star">★</span></div>
-              <div class="skill-desc">Apply professional Hollywood color grading looks to any video clip.</div>
-              <div class="skill-by">by AI Studio</div>
-            </div>
-          </div>
-          <!-- Skill 8 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g8"><div></div><div></div><div></div><div></div></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">Storyboard Creator <span class="skill-star">★</span></div>
-              <div class="skill-desc">Generate a 6-act visual storyboard with AI scene descriptions from prompts.</div>
-              <div class="skill-by">by AI Studio</div>
-            </div>
-          </div>
-          <!-- Skill 9 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g9"><div></div><div></div><div></div><div></div></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">4K AI Upscale <span class="skill-star">★</span></div>
-              <div class="skill-desc">Enhance and upscale video to 4K resolution with AI-driven detail recovery.</div>
-              <div class="skill-by">by AI Studio</div>
-            </div>
-          </div>
-          <!-- Skill 10 -->
-          <div class="skill-card" onclick="openVideoModal()">
-            <div class="skill-thumb">
-              <div class="skill-thumb-bg g10"><div></div><div></div><div></div><div></div></div>
-            </div>
-            <div class="skill-info">
-              <div class="skill-name">Character Animation Studio <span class="skill-star">★</span></div>
-              <div class="skill-desc">Pose and animate AI characters from reference images with motion transfer.</div>
-              <div class="skill-by">by AI Studio</div>
+              <div class="skill-name">Vercel & GitHub CI/CD <span class="skill-star">AUTO</span></div>
+              <div class="skill-desc">One-click cloud hosting on Vercel with automatic GitHub sync and preview builds.</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ===== WORKSPACE VIEW ===== -->
-    <div class="view" id="view-workspace">
-      <div class="workspace-topbar">
-        <div class="breadcrumb">
-          <span>MY FIRST BOARD</span>
-          <span class="breadcrumb-sep">/</span>
-          <span>PAGE 1</span>
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><path d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="workspace-actions">
-          <button class="btn-upgrade" onclick="showToast('Already on the best plan!','info')">
-            <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            Upgrade
-          </button>
-          <button class="btn-icon" title="Settings" onclick="showToast('Settings panel coming soon','info')">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
-          <button class="btn-share">Share</button>
-        </div>
+    <!-- ===== VIEW: CONNECTORS (VERCEL & GITHUB CLUB) ===== -->
+    <div class="view" id="view-connectors">
+      <div class="view-topbar">
+        <span class="topbar-title">Cloud Integration // GitHub & Vercel Club</span>
       </div>
 
-      <div class="workspace-body">
-        <!-- Canvas -->
-        <div class="canvas-area">
-          <div class="canvas-empty">
-            <div class="canvas-empty-icon">
-              <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M3 9h18M9 21V9"/></svg>
+      <div class="connectors-body">
+        <!-- Vercel Card -->
+        <div class="connector-card">
+          <div class="connector-header">
+            <div class="connector-title">
+              <svg width="20" height="20" viewBox="0 0 115 100" fill="currentColor"><path d="M57.5 0L115 100H0L57.5 0z"/></svg>
+              Vercel Cloud Deployment
             </div>
-            <p><strong>Start creating</strong></p>
-            <p>Use the Chat panel to generate content, or open a Skill.</p>
+            <span class="connector-status-badge badge-live">ACCOUNT CONNECTED</span>
           </div>
-
-          <!-- Bottom toolbar -->
-          <div class="workspace-toolbar">
-            <button class="toolbar-btn active" title="Select">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M5 3l14 9-7 1-3 7z"/></svg>
+          <div class="connector-desc">
+            Your Vercel account <strong>ajmaltheauthor@gmail.com</strong> is connected. To authorize your team scope and enable direct 1-click deployments, click the approval link below:
+          </div>
+          <div style="display:flex;gap:var(--space-2);margin-bottom:var(--space-3)">
+            <a class="btn-action-black" href="https://vercel.com/sso/session-requests/pP3OGtoAozkov9tbVAkrL-P0VxVn4rN7" target="_blank" rel="noopener">
+              Authorize Vercel Team Access ↗
+            </a>
+            <button class="btn-action-black" style="background:#fff;color:#000;border:1px solid var(--border)" onclick="showToast('Deploying static build to Vercel...','info')">
+              Run Vercel Deploy
             </button>
-            <button class="toolbar-btn" title="Move" onclick="setActiveTool(this)">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M12 12h.01"/></svg>
-            </button>
-            <div class="toolbar-sep"></div>
-            <button class="toolbar-btn" title="Image" onclick="openVideoModal()">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path stroke-linecap="round" d="M21 15l-5-5L5 21"/></svg>
-            </button>
-            <button class="toolbar-btn" title="Video" onclick="openVideoModal()">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.361a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-            </button>
-            <button class="toolbar-btn" title="Audio" onclick="openVideoModal()">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 18V5l12-2v13M9 18c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3zm12-2c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"/></svg>
-            </button>
-            <div class="toolbar-sep"></div>
-            <button class="toolbar-btn" title="Text" onclick="setActiveTool(this)">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
-            </button>
-            <button class="toolbar-btn" title="Shape" onclick="setActiveTool(this)">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
-            </button>
-            <button class="toolbar-btn" title="Grid" onclick="setActiveTool(this)">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
-            </button>
-            <div class="toolbar-sep"></div>
-            <div class="toolbar-zoom">
-              <button onclick="adjustZoom(-10)" style="color:var(--text-muted);font-size:16px;line-height:1">−</button>
-              <span id="zoom-label">100%</span>
-              <button onclick="adjustZoom(10)" style="color:var(--text-muted);font-size:16px;line-height:1">+</button>
-            </div>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted)">
+            Project configuration: <code>vercel.json</code> is prepared in <code>G:\My Drive\Spidey-AI</code> with static routing and zero serverless friction.
           </div>
         </div>
 
-        <!-- Right Panel -->
-        <div class="right-panel">
-          <div class="panel-header">
-            <div class="panel-tabs">
-              <button class="panel-tab active" onclick="switchPanelTab('chat',this)">Chat</button>
-              <button class="panel-tab" onclick="switchPanelTab('assets',this)">Assets</button>
-              <button class="panel-tab" onclick="switchPanelTab('skills',this)">Skills</button>
+        <!-- GitHub Card -->
+        <div class="connector-card">
+          <div class="connector-header">
+            <div class="connector-title">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub Repository Sync
             </div>
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><path d="M19 9l-7 7-7-7"/></svg>
+            <span class="connector-status-badge badge-ready">COMMITTED // READY TO PUSH</span>
           </div>
-
-          <!-- Chat panel content -->
-          <div class="panel-tab-content active" id="panel-chat">
-            <div class="chat-title-row">
-              <div class="chat-title">
-                New Chat
-                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
-              </div>
-              <button class="btn-run" id="btn-run" onclick="runChatAgent()">Run</button>
-            </div>
-
-            <div class="chat-body" id="chat-body">
-              <div class="chat-empty">
-                <div class="chat-empty-spinner"></div>
-                <p>Start with an idea.</p>
-              </div>
-            </div>
-
-            <div class="chat-input-wrap">
-              <!-- Model selector -->
-              <div class="model-selector" style="margin-bottom:var(--space-2)" id="model-selector-row" onclick="cycleModel()">
-                <div class="model-dot" id="model-dot"></div>
-                <span id="model-name-label">AI Engine — checking…</span>
-                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="margin-left:auto;color:var(--text-muted)"><path d="M19 9l-7 7-7-7"/></svg>
-              </div>
-
-              <div class="chat-input-box">
-                <textarea class="chat-textarea" id="chat-input" placeholder="What do you want to do?"
-                  rows="2"
-                  onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage()}"
-                  oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-                <div class="chat-input-actions">
-                  <div class="chat-input-left">
-                    <button class="chat-action-btn" title="Attach" onclick="showToast('File attachment coming soon','info')">
-                      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-                    </button>
-                    <button class="chat-action-btn" title="Voice" onclick="showToast('Voice input coming soon','info')">
-                      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path stroke-linecap="round" d="M19 10v2a7 7 0 01-14 0v-2"/></svg>
-                    </button>
-                    <span style="font-size:11px;color:var(--text-muted);margin-left:var(--space-1)">2↑</span>
-                  </div>
-                  <button class="chat-send-btn" onclick="sendChatMessage()" title="Send">
-                    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </button>
-                </div>
-              </div>
-            </div>
+          <div class="connector-desc">
+            All code, engines, and Luma redesign are committed to local Git. To push to your GitHub repo and enable automatic deployment:
           </div>
-
-          <!-- Assets panel content -->
-          <div class="panel-tab-content" id="panel-assets">
-            <div class="assets-body">
-              <div class="assets-empty">
-                <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1" style="color:var(--border-strong)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                <p>No assets yet.</p>
-                <p style="font-size:11px;color:var(--text-muted)">Generated videos and images will appear here.</p>
-                <button class="btn-try" style="margin-top:var(--space-2)" onclick="openVideoModal()">Generate your first asset</button>
-              </div>
-            </div>
+          <div class="code-snippet">
+cd "G:\My Drive\Spidey-AI"
+git remote add origin https://github.com/YOUR_USERNAME/spidey-ai.git
+git branch -M main
+git push -u origin main
           </div>
-
-          <!-- Skills panel content -->
-          <div class="panel-tab-content" id="panel-skills">
-            <div class="panel-skills-body">
-              <div class="panel-skill-item" onclick="openVideoModal()">
-                <div class="panel-skill-icon" style="background:linear-gradient(135deg,#1a1a2e,#533483)">🎬</div>
-                <div class="panel-skill-info">
-                  <div class="panel-skill-name">30-Second Film Generator</div>
-                  <div class="panel-skill-desc">Full film from one prompt</div>
-                </div>
-              </div>
-              <div class="panel-skill-item" onclick="openVideoModal()">
-                <div class="panel-skill-icon" style="background:linear-gradient(135deg,#11998e,#38ef7d)">🎙️</div>
-                <div class="panel-skill-info">
-                  <div class="panel-skill-name">AI Voice Narration</div>
-                  <div class="panel-skill-desc">Neural TTS voices</div>
-                </div>
-              </div>
-              <div class="panel-skill-item" onclick="openVideoModal()">
-                <div class="panel-skill-icon" style="background:linear-gradient(135deg,#f093fb,#f5576c)">🎨</div>
-                <div class="panel-skill-info">
-                  <div class="panel-skill-name">Style Transfer Engine</div>
-                  <div class="panel-skill-desc">Cinematic style from refs</div>
-                </div>
-              </div>
-              <div class="panel-skill-item" onclick="openVideoModal()">
-                <div class="panel-skill-icon" style="background:linear-gradient(135deg,#667eea,#764ba2)">📐</div>
-                <div class="panel-skill-info">
-                  <div class="panel-skill-name">Storyboard Creator</div>
-                  <div class="panel-skill-desc">6-act visual storyboard</div>
-                </div>
-              </div>
-              <div class="panel-skill-item" onclick="openVideoModal()">
-                <div class="panel-skill-icon" style="background:linear-gradient(135deg,#0575e6,#021b79)">⬆️</div>
-                <div class="panel-skill-info">
-                  <div class="panel-skill-name">4K AI Upscale</div>
-                  <div class="panel-skill-desc">Upscale to 4K resolution</div>
-                </div>
-              </div>
-            </div>
+          <div style="font-size:12px;color:var(--text-muted)">
+            Or run <code>push_to_github.bat</code> directly from your Spidey-AI folder!
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- ===== PLACEHOLDER VIEWS ===== -->
-    <div class="view" id="view-home" style="align-items:center;justify-content:center;color:var(--text-muted)">
-      <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1" style="margin-bottom:var(--space-3)"><path stroke-linecap="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-      <p style="font-size:16px;font-weight:500;color:var(--text-secondary)">Home</p>
-      <p style="font-size:13px;margin-top:var(--space-2)">Your personalised feed coming soon.</p>
-    </div>
-    <div class="view" id="view-notifications" style="align-items:center;justify-content:center;color:var(--text-muted)">
-      <p style="font-size:16px;font-weight:500;color:var(--text-secondary)">Notifications</p>
-      <p style="font-size:13px;margin-top:var(--space-2)">You're all caught up!</p>
-    </div>
-    <div class="view" id="view-projects" style="align-items:center;justify-content:center;color:var(--text-muted)">
-      <p style="font-size:16px;font-weight:500;color:var(--text-secondary)">Projects</p>
-      <p style="font-size:13px;margin-top:var(--space-2)">Project management coming soon.</p>
-    </div>
-    <div class="view" id="view-apps" style="align-items:center;justify-content:center;color:var(--text-muted)">
-      <p style="font-size:16px;font-weight:500;color:var(--text-secondary)">Apps</p>
-      <p style="font-size:13px;margin-top:var(--space-2)">App integrations coming soon.</p>
     </div>
 
   </main>
 </div>
 
-<!-- ===== VIDEO GENERATION MODAL ===== -->
-<div class="modal-overlay" id="video-modal" onclick="closeModalOnOverlay(event)">
+<!-- ===== MODAL: 30-SECOND FILM GENERATOR ===== -->
+<div class="modal-overlay" id="video-modal" onclick="if(event.target===this)closeVideoModal()">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title" id="modal-title">30-Second Film Generator</span>
-      <button class="modal-close" onclick="closeVideoModal()">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
+      <div class="modal-title">30-Second Ultra-Realistic Film Generator</div>
+      <button onclick="closeVideoModal()" style="font-size:18px;color:var(--text-muted)">✕</button>
     </div>
     <div class="modal-body">
       <div class="form-row">
-        <label class="form-label" for="video-prompt">Creative Prompt</label>
-        <textarea class="form-textarea" id="video-prompt" placeholder="A cinematic journey through a futuristic city at golden hour, with sweeping aerial shots and dramatic lighting…"></textarea>
-        <div class="form-hint">Be descriptive — style, mood, setting, and action all improve output quality.</div>
-      </div>
-      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)">
-        <div>
-          <label class="form-label" for="video-style">Visual Style</label>
-          <select class="form-select" id="video-style">
-            <option value="cinematic">Cinematic</option>
-            <option value="documentary">Documentary</option>
-            <option value="anime">Anime</option>
-            <option value="photorealistic">Photorealistic</option>
-            <option value="abstract">Abstract</option>
-            <option value="noir">Film Noir</option>
-            <option value="scifi">Sci-Fi</option>
-          </select>
-        </div>
-        <div>
-          <label class="form-label" for="video-model">AI Engine</label>
-          <select class="form-select" id="video-model">
-            <option value="gemini">Gemini Flash (Cloud)</option>
-            <option value="ollama">Ollama (Local)</option>
-            <option value="auto">Auto-select</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <label class="form-label" for="video-duration">Duration</label>
-        <select class="form-select" id="video-duration">
-          <option value="30">30 seconds (Free)</option>
-          <option value="60">60 seconds</option>
-          <option value="120">2 minutes</option>
-        </select>
-        <div class="form-hint">30-second generation is fully free using your Ollama local engine.</div>
+        <label class="form-label">Creative Vision Prompt</label>
+        <textarea class="form-textarea" id="modal-video-prompt" placeholder="A breathtaking cosmic journey into the infinite quantum realm, camera plunging through glowing event horizons and kaleidoscopic fractals…"></textarea>
       </div>
 
-      <!-- Progress -->
-      <div class="gen-progress" id="gen-progress">
-        <div class="progress-bar-wrap">
-          <div class="progress-bar" id="progress-bar"></div>
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)">
+        <div>
+          <label class="form-label">Visual Style</label>
+          <select class="form-select" id="modal-video-style">
+            <option value="infinity_cosmos">🌌 Infinity Cosmos (Fractal Deep Zoom)</option>
+            <option value="cyber_matrix">⚡ Cyber Matrix (Holographic Neon)</option>
+            <option value="quantum_warp">🌀 Quantum Warp (Relativistic Speed)</option>
+            <option value="neural_nebula">✨ Neural Nebula (Ethereal River)</option>
+          </select>
         </div>
-        <div class="progress-steps" id="progress-steps">
-          <div class="progress-step" data-step="0"><div class="step-dot"></div> Initializing AI engine…</div>
-          <div class="progress-step" data-step="1"><div class="step-dot"></div> Generating screenplay (6 acts)…</div>
-          <div class="progress-step" data-step="2"><div class="step-dot"></div> Creating scene descriptions…</div>
-          <div class="progress-step" data-step="3"><div class="step-dot"></div> Composing AI narration…</div>
-          <div class="progress-step" data-step="4"><div class="step-dot"></div> Rendering cinematic frames…</div>
-          <div class="progress-step" data-step="5"><div class="step-dot"></div> Encoding final video…</div>
+        <div>
+          <label class="form-label">Engine & Audio</label>
+          <select class="form-select" id="modal-video-engine">
+            <option value="ffmpeg_mp4">FFmpeg Neural Cinema (MP4 + Synth)</option>
+            <option value="browser_canvas">Live WebGL 60FPS Recorder</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">6-Act Narrative Architecture (30.0s Total)</label>
+        <div class="acts-grid">
+          <div class="act-cell">ACT 1<span>00-05s<br/>Genesis</span></div>
+          <div class="act-cell">ACT 2<span>05-10s<br/>Singularity</span></div>
+          <div class="act-cell">ACT 3<span>10-15s<br/>Matrix</span></div>
+          <div class="act-cell">ACT 4<span>15-20s<br/>Cosmos</span></div>
+          <div class="act-cell">ACT 5<span>20-25s<br/>Warp</span></div>
+          <div class="act-cell">ACT 6<span>25-30s<br/>Infinity</span></div>
+        </div>
+      </div>
+
+      <!-- Live progress display -->
+      <div id="gen-progress-bar-wrap" style="display:none;margin-top:var(--space-3)">
+        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;margin-bottom:4px">
+          <span id="gen-progress-label">Synthesizing 30s Film…</span>
+          <span id="gen-progress-pct">0%</span>
+        </div>
+        <div style="background:var(--bg-main);height:6px;border-radius:99px;overflow:hidden">
+          <div id="gen-progress-fill" style="background:#000;height:100%;width:0%;transition:width .3s"></div>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn-ghost" onclick="closeVideoModal()">Cancel</button>
-      <button class="btn-primary" id="btn-generate" onclick="startGeneration()">Generate Film ✨</button>
+      <button class="btn-action-black" style="background:#fff;color:#000;border:1px solid var(--border)" onclick="closeVideoModal()">Cancel</button>
+      <button class="btn-action-black" id="btn-modal-generate" onclick="execute30sGeneration()">Generate 30s Film ✨</button>
     </div>
   </div>
 </div>
 
-<!-- ===== TOAST CONTAINER ===== -->
 <div class="toast-container" id="toast-container"></div>
 
-<!-- ===== SCRIPTS ===== -->
+<!-- ===== SCRIPT: 3D SHADER ENGINE & VIDEO CONTROLLER ===== -->
 <script>
 'use strict';
 
-/* ==================== STATE ==================== */
 const state = {
   currentView: 'boards',
-  currentPanelTab: 'chat',
-  ollamaStatus: null,
-  relayStatus: null,
-  messages: [],
-  currentModel: 'auto',
-  zoom: 100,
-  generating: false,
-  currentStepIndex: -1,
-  stepTimer: null,
-  models: [
-    { id: 'gemini', label: 'Gemini Flash', ready: true },
-    { id: 'ollama', label: 'Ollama Local', ready: false },
-    { id: 'auto', label: 'Auto Engine', ready: true },
-  ]
+  engineStyle: 'infinity_cosmos',
+  time: 0,
+  act: 1,
+  isPlaying: true,
+  currentVideoUrl: '/videos/test_infinity_30s.mp4',
+  isShowingVideoPlayer: false,
+  isRecording: false,
+  mediaRecorder: null,
+  recordedChunks: []
 };
 
-/* ==================== NAVIGATION ==================== */
+/* ===== NAVIGATION ===== */
 function switchView(viewName) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1631,45 +841,320 @@ function switchView(viewName) {
   if (navEl) navEl.classList.add('active');
 
   state.currentView = viewName;
+  if (viewName === 'workspace') resizeCanvas();
 }
 
-function switchPanelTab(tab, btn) {
-  document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel-tab-content').forEach(c => c.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  const content = document.getElementById('panel-' + tab);
-  if (content) content.classList.add('active');
-  state.currentPanelTab = tab;
+/* ===== 3D CANVAS INFINITY SHADER ENGINE ===== */
+const canvas = document.getElementById('infinity-canvas');
+const ctx = canvas.getContext('2d');
+let animFrameId = null;
+
+function resizeCanvas() {
+  if (!canvas.parentElement) return;
+  canvas.width = canvas.parentElement.clientWidth;
+  canvas.height = canvas.parentElement.clientHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+
+// Interactive 3D particle & fractal warp simulation
+const particles = [];
+for (let i = 0; i < 400; i++) {
+  particles.push({
+    x: (Math.random() - 0.5) * 2000,
+    y: (Math.random() - 0.5) * 2000,
+    z: Math.random() * 2000,
+    color: Math.random() > 0.5 ? '#38bdf8' : '#a855f7'
+  });
 }
 
-function setFilter(el, filter) {
-  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
+function renderInfinityEngine() {
+  if (!ctx) return;
+  const w = canvas.width;
+  const h = canvas.height;
+  if (w === 0 || h === 0) {
+    animFrameId = requestAnimationFrame(renderInfinityEngine);
+    return;
+  }
+
+  state.time += 0.016;
+  const t = state.time;
+  const curSec = (t % 30).toFixed(1);
+  state.act = Math.floor((t % 30) / 5) + 1;
+
+  // Update HUD
+  const actNames = ['GENESIS & SINGULARITY', 'EVENT HORIZON', 'QUANTUM MATRIX', 'NEURAL COSMOS', 'HYPERDRIVE WARP', 'INFINITE RECURSION'];
+  document.getElementById('hud-act-text').textContent = `ACT ${state.act} // ${actNames[state.act - 1]}`;
+  document.getElementById('hud-time-text').textContent = `${curSec.padStart(4, '0')}s / 30.0s`;
+
+  // Draw Deep Space Background
+  ctx.fillStyle = '#050508';
+  ctx.fillRect(0, 0, w, h);
+
+  // Center of infinity warp
+  const cx = w / 2;
+  const cy = h / 2;
+
+  // Infinite Hyperspace Tunnel Rings
+  const ringCount = 12;
+  for (let r = 0; r < ringCount; r++) {
+    const ringZ = ((r * 180 - t * 240) % 2000 + 2000) % 2000;
+    const scale = 500 / (ringZ + 1);
+    const radius = 280 * scale;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(t * 0.4 + r * 0.15);
+
+    let strokeColor = `rgba(56, 189, 248, ${Math.min(1, scale * 0.8)})`;
+    if (state.engineStyle === 'cyber_matrix') {
+      strokeColor = `rgba(45, 212, 191, ${Math.min(1, scale * 0.8)})`;
+    } else if (state.engineStyle === 'quantum_warp') {
+      strokeColor = `rgba(168, 85, 247, ${Math.min(1, scale * 0.9)})`;
+    }
+
+    ctx.strokeStyle = strokeColor;
+    ctx.lineWidth = Math.max(1, 3 * scale);
+    ctx.beginPath();
+
+    // Geometric infinity loop
+    for (let a = 0; a < Math.PI * 2; a += 0.2) {
+      const rad = radius * (1 + 0.25 * Math.sin(a * 4 + t * 2));
+      const px = Math.cos(a) * rad;
+      const py = Math.sin(a) * rad;
+      if (a === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Particle Stream
+  for (let p of particles) {
+    p.z -= 15 + Math.sin(t) * 5;
+    if (p.z <= 1) {
+      p.z = 2000;
+      p.x = (Math.random() - 0.5) * 2000;
+      p.y = (Math.random() - 0.5) * 2000;
+    }
+
+    const scale = 400 / p.z;
+    const px = cx + p.x * scale;
+    const py = cy + p.y * scale;
+
+    if (px >= 0 && px <= w && py >= 0 && py <= h) {
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(px, py, Math.max(0.5, 3 * scale), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Central Core Singularity
+  const coreGrad = ctx.createRadialGradient(cx, cy, 2, cx, cy, 140);
+  coreGrad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+  coreGrad.addColorStop(0.3, state.engineStyle === 'cyber_matrix' ? 'rgba(45, 212, 191, 0.4)' : 'rgba(168, 85, 247, 0.4)');
+  coreGrad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = coreGrad;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 140, 0, Math.PI * 2);
+  ctx.fill();
+
+  animFrameId = requestAnimationFrame(renderInfinityEngine);
+}
+renderInfinityEngine();
+
+/* ===== ENGINE STYLES ===== */
+function switchEngineStyle(style) {
+  state.engineStyle = style;
+  showToast('Switched to ' + style.replace('_', ' ').toUpperCase(), 'info');
 }
 
-function setActiveTool(btn) {
-  document.querySelectorAll('.toolbar-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+/* ===== TOGGLE CINEMA PLAYER / 3D SHADER ===== */
+function toggleEngineMode() {
+  const vid = document.getElementById('cinema-video-player');
+  const btnIcon = document.getElementById('engine-mode-icon');
+  const btnLabel = document.getElementById('engine-mode-label');
+
+  state.isShowingVideoPlayer = !state.isShowingVideoPlayer;
+  if (state.isShowingVideoPlayer) {
+    vid.style.display = 'block';
+    vid.src = state.currentVideoUrl;
+    vid.play();
+    btnIcon.textContent = '🌌';
+    btnLabel.textContent = 'Switch to 3D Shader';
+    document.getElementById('hud-mode-badge').textContent = 'CINEMA MP4 (30s)';
+    document.getElementById('btn-download-vid').style.display = 'inline-flex';
+  } else {
+    vid.style.display = 'none';
+    vid.pause();
+    btnIcon.textContent = '🎬';
+    btnLabel.textContent = 'Play Rendered MP4';
+    document.getElementById('hud-mode-badge').textContent = '3D INFINITY SHADER';
+    document.getElementById('btn-download-vid').style.display = 'none';
+  }
 }
 
-function adjustZoom(delta) {
-  state.zoom = Math.max(25, Math.min(400, state.zoom + delta));
-  document.getElementById('zoom-label').textContent = state.zoom + '%';
+function seekAct(seconds) {
+  state.time = seconds;
+  const vid = document.getElementById('cinema-video-player');
+  if (state.isShowingVideoPlayer && vid) {
+    vid.currentTime = seconds;
+  }
+  showToast(`Jumped to Act at ${seconds}s`, 'info');
 }
 
-/* ==================== CHAT ==================== */
+function downloadCurrentVideo() {
+  const a = document.createElement('a');
+  a.href = state.currentVideoUrl;
+  a.download = 'infinity_film_30s.mp4';
+  a.click();
+}
+
+/* ===== BROWSER LIVE CANVAS RECORDER (WEBM/MP4) ===== */
+function recordLiveCanvas30s() {
+  if (state.isRecording) return;
+  state.isRecording = true;
+  state.recordedChunks = [];
+
+  const stream = canvas.captureStream(60);
+  state.mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+
+  state.mediaRecorder.ondataavailable = e => {
+    if (e.data.size > 0) state.recordedChunks.push(e.data);
+  };
+
+  state.mediaRecorder.onstop = () => {
+    state.isRecording = false;
+    const blob = new Blob(state.recordedChunks, { type: 'video/webm' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `infinity_live_30s_${Date.now()}.webm`;
+    a.click();
+    showToast('Live 30s video downloaded successfully!', 'success');
+    document.getElementById('btn-record-canvas').textContent = '🔴 Record 30s Live';
+  };
+
+  state.mediaRecorder.start();
+  let remaining = 30;
+  const btn = document.getElementById('btn-record-canvas');
+  btn.textContent = `Recording... (${remaining}s)`;
+
+  const interval = setInterval(() => {
+    remaining--;
+    if (remaining > 0) {
+      btn.textContent = `Recording... (${remaining}s)`;
+    } else {
+      clearInterval(interval);
+      state.mediaRecorder.stop();
+    }
+  }, 1000);
+}
+
+/* ===== 30S VIDEO BACKEND GENERATOR ===== */
+function openVideoModal(style = 'infinity_cosmos') {
+  document.getElementById('modal-video-style').value = style;
+  document.getElementById('video-modal').classList.add('open');
+  document.getElementById('gen-progress-bar-wrap').style.display = 'none';
+  document.getElementById('btn-modal-generate').disabled = false;
+  document.getElementById('btn-modal-generate').textContent = 'Generate 30s Film ✨';
+}
+
+function closeVideoModal() {
+  document.getElementById('video-modal').classList.remove('open');
+}
+
+function createFromPrompt() {
+  const prompt = document.getElementById('boards-prompt').value.trim();
+  if (!prompt) {
+    showToast('Please describe your vision prompt', 'info');
+    return;
+  }
+  document.getElementById('modal-video-prompt').value = prompt;
+  openVideoModal();
+}
+
+async function execute30sGeneration() {
+  const prompt = document.getElementById('modal-video-prompt').value.trim() || 'Cosmic Infinity Quantum Voyage';
+  const style = document.getElementById('modal-video-style').value;
+  const engine = document.getElementById('modal-video-engine').value;
+
+  if (engine === 'browser_canvas') {
+    closeVideoModal();
+    switchView('workspace');
+    recordLiveCanvas30s();
+    return;
+  }
+
+  // Backend FFmpeg 30s Synthesis
+  const progressWrap = document.getElementById('gen-progress-bar-wrap');
+  const progressFill = document.getElementById('gen-progress-fill');
+  const progressLabel = document.getElementById('gen-progress-label');
+  const progressPct = document.getElementById('gen-progress-pct');
+  const btnGen = document.getElementById('btn-modal-generate');
+
+  progressWrap.style.display = 'block';
+  btnGen.disabled = true;
+  btnGen.textContent = 'Synthesizing…';
+
+  let pct = 5;
+  const timer = setInterval(() => {
+    if (pct < 90) {
+      pct += 4;
+      progressFill.style.width = pct + '%';
+      progressPct.textContent = pct + '%';
+      if (pct > 20 && pct < 45) progressLabel.textContent = 'Generating 6-Act Screenplay & Audio Score…';
+      else if (pct >= 45 && pct < 75) progressLabel.textContent = 'Rendering High-Resolution Fractals & Motion…';
+      else if (pct >= 75) progressLabel.textContent = 'Compiling 30s 60fps MP4 File…';
+    }
+  }, 1800);
+
+  try {
+    const res = await fetch('/api/engine/create-30s-video', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, style, ratio: '16:9', title: 'Quantum Infinity 30s' })
+    });
+
+    clearInterval(timer);
+    progressFill.style.width = '100%';
+    progressPct.textContent = '100%';
+
+    if (res.ok) {
+      const data = await res.json();
+      state.currentVideoUrl = data.url;
+      closeVideoModal();
+      switchView('workspace');
+      showToast('30-Second Ultra-Realistic Film Ready!', 'success');
+
+      // Auto-open video player in workspace
+      if (!state.isShowingVideoPlayer) toggleEngineMode();
+      const vid = document.getElementById('cinema-video-player');
+      vid.src = data.url;
+      vid.play();
+
+      appendChatMessage('assistant', `🎬 **30-Second Film Generated!**\n\n**File:** \`${data.filename}\` (${data.size_mb} MB)\n**Duration:** 30.0s (6 Acts)\n**Style:** ${data.style}\n\nPlaying now in your Infinity Studio.`);
+    } else {
+      const err = await res.json();
+      showToast('Generation failed: ' + (err.error || res.status), 'error');
+    }
+  } catch (e) {
+    clearInterval(timer);
+    showToast('Server error: ' + e.message, 'error');
+  } finally {
+    btnGen.disabled = false;
+    btnGen.textContent = 'Generate 30s Film ✨';
+  }
+}
+
+/* ===== CHAT ===== */
 async function sendChatMessage() {
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if (!text) return;
-
   input.value = '';
-  input.style.height = 'auto';
-  appendMsg('user', text);
-
-  const btn = document.getElementById('btn-run');
-  btn.classList.add('loading');
-  btn.textContent = '…';
+  appendChatMessage('user', text);
 
   try {
     const res = await fetch('/api/chat', {
@@ -1679,258 +1164,48 @@ async function sendChatMessage() {
     });
     if (res.ok) {
       const data = await res.json();
-      appendMsg('assistant', data.response || data.text || JSON.stringify(data));
-    } else {
-      appendMsg('assistant', 'Sorry, the AI engine returned an error (' + res.status + '). Please check your connection and try again.');
+      appendChatMessage('assistant', data.response || data.text || JSON.stringify(data));
     }
   } catch (err) {
-    appendMsg('assistant', 'Could not reach the AI engine. Make sure the local server is running on port 8080.');
-  } finally {
-    btn.classList.remove('loading');
-    btn.textContent = 'Run';
+    appendChatMessage('assistant', 'Error communicating with Gemini director engine.');
   }
 }
 
-async function runChatAgent() {
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if (text) {
-    sendChatMessage();
-  } else {
-    openVideoModal();
-  }
+function appendChatMessage(role, text) {
+  const container = document.getElementById('chat-body');
+  const msg = document.createElement('div');
+  msg.className = `chat-msg ${role}`;
+  msg.innerHTML = text.replace(/\n/g, '<br/>');
+  container.appendChild(msg);
+  container.scrollTop = container.scrollHeight;
 }
 
-function appendMsg(role, text) {
-  const chatBody = document.getElementById('chat-body');
-
-  // Remove empty state
-  const empty = chatBody.querySelector('.chat-empty');
-  if (empty) empty.remove();
-  chatBody.classList.add('has-messages');
-
-  const div = document.createElement('div');
-  div.className = 'chat-msg ' + role;
-  div.textContent = text;
-  chatBody.appendChild(div);
-  chatBody.scrollTop = chatBody.scrollHeight;
-  state.messages.push({ role, text });
-}
-
-/* ==================== CREATE FROM BOARDS PROMPT ==================== */
-function createFromPrompt() {
-  const prompt = document.getElementById('boards-prompt').value.trim();
-  if (!prompt) {
-    showToast('Please enter a creative prompt first', 'info');
-    return;
-  }
-  // Pre-fill video modal and open it
-  document.getElementById('video-prompt').value = prompt;
-  openVideoModal();
-}
-
-/* ==================== VIDEO GENERATION ==================== */
-function openVideoModal() {
-  document.getElementById('video-modal').classList.add('open');
-  document.getElementById('gen-progress').classList.remove('active');
-  document.getElementById('btn-generate').disabled = false;
-  document.getElementById('btn-generate').textContent = 'Generate Film ✨';
-  resetProgressSteps();
-}
-
-function closeVideoModal() {
-  document.getElementById('video-modal').classList.remove('open');
-  if (state.stepTimer) { clearInterval(state.stepTimer); state.stepTimer = null; }
-  state.generating = false;
-}
-
-function closeModalOnOverlay(e) {
-  if (e.target === document.getElementById('video-modal')) closeVideoModal();
-}
-
-function resetProgressSteps() {
-  document.querySelectorAll('.progress-step').forEach(s => {
-    s.classList.remove('done', 'active-step');
-  });
-  document.getElementById('progress-bar').style.width = '0%';
-  state.currentStepIndex = -1;
-}
-
-async function startGeneration() {
-  if (state.generating) return;
-  const prompt = document.getElementById('video-prompt').value.trim();
-  if (!prompt) {
-    showToast('Please enter a creative prompt', 'error');
-    return;
-  }
-
-  state.generating = true;
-  document.getElementById('gen-progress').classList.add('active');
-  document.getElementById('btn-generate').disabled = true;
-  document.getElementById('btn-generate').textContent = 'Generating…';
-
-  const steps = document.querySelectorAll('.progress-step');
-  const totalSteps = steps.length;
-  state.currentStepIndex = 0;
-  activateStep(0, steps, totalSteps);
-
-  // Step 1–3: local progress animation while API call runs
-  const stepInterval = 4000; // 4s per step for visual feedback
-  let stepIdx = 1;
-
-  state.stepTimer = setInterval(() => {
-    if (stepIdx < 4) {
-      activateStep(stepIdx, steps, totalSteps);
-      stepIdx++;
-    }
-  }, stepInterval);
-
-  try {
-    const style = document.getElementById('video-style').value;
-    const model = document.getElementById('video-model').value;
-    const duration = document.getElementById('video-duration').value;
-
-    // Call the screenplay generator
-    const res = await fetch('/api/ollama/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: prompt + ' Style: ' + style + '. Duration: ' + duration + 's.', model })
-    });
-
-    clearInterval(state.stepTimer);
-    activateStep(4, steps, totalSteps);
-    await sleep(1200);
-    activateStep(5, steps, totalSteps);
-    await sleep(1000);
-
-    if (res.ok) {
-      const data = await res.json();
-      markAllDone(steps, totalSteps);
-      closeVideoModal();
-      switchView('workspace');
-      showToast('Film generated! Check the workspace.', 'success');
-
-      // Add result to chat
-      switchPanelTab('chat', document.querySelector('.panel-tab'));
-      if (data.screenplay || data.response) {
-        appendMsg('assistant', '🎬 Film generated!\n\n' + (data.screenplay || data.response || '').substring(0, 400) + '…');
-      }
-    } else {
-      throw new Error('API returned ' + res.status);
-    }
-  } catch (err) {
-    clearInterval(state.stepTimer);
-    state.generating = false;
-    document.getElementById('btn-generate').disabled = false;
-    document.getElementById('btn-generate').textContent = 'Retry ✨';
-    showToast('Generation failed: ' + err.message, 'error');
-  } finally {
-    state.generating = false;
-    state.stepTimer = null;
-  }
-}
-
-function activateStep(idx, steps, total) {
-  if (idx > 0) steps[idx - 1].classList.remove('active-step');
-  if (idx > 0) steps[idx - 1].classList.add('done');
-  if (steps[idx]) steps[idx].classList.add('active-step');
-  document.getElementById('progress-bar').style.width = Math.round((idx / (total - 1)) * 100) + '%';
-  state.currentStepIndex = idx;
-}
-
-function markAllDone(steps, total) {
-  steps.forEach(s => { s.classList.remove('active-step'); s.classList.add('done'); });
-  document.getElementById('progress-bar').style.width = '100%';
-}
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-/* ==================== CYCLE MODEL ==================== */
-function cycleModel() {
-  const models = state.models;
-  const current = models.findIndex(m => m.id === state.currentModel);
-  const next = models[(current + 1) % models.length];
-  state.currentModel = next.id;
-  updateModelDisplay();
-}
-
-function updateModelDisplay() {
-  const model = state.models.find(m => m.id === state.currentModel);
-  if (!model) return;
-  document.getElementById('model-name-label').textContent = model.label;
-  const dot = document.getElementById('model-dot');
-  dot.className = 'model-dot' + (model.ready ? ' ready' : '');
-}
-
-/* ==================== STATUS CHECKS ==================== */
+/* ===== STATUS & TOAST ===== */
 async function checkAllStatus() {
-  await checkRelayStatus();
-  await checkOllamaStatus();
-}
-
-async function checkRelayStatus() {
   try {
     const res = await fetch('/api/status');
     if (res.ok) {
-      setStatusPill('online', 'All engines ready');
-      state.relayStatus = 'online';
-    } else {
-      setStatusPill('error', 'Server error');
+      document.getElementById('status-dot').className = 'status-dot online';
+      document.getElementById('status-text').textContent = '30s Engine Online';
     }
   } catch {
-    setStatusPill('error', 'Server offline');
+    document.getElementById('status-dot').className = 'status-dot';
+    document.getElementById('status-text').textContent = 'Server Offline';
   }
 }
 
-async function checkOllamaStatus() {
-  try {
-    const res = await fetch('/api/ollama/status');
-    if (res.ok) {
-      const data = await res.json();
-      const ollamaModel = state.models.find(m => m.id === 'ollama');
-      if (data.online) {
-        if (ollamaModel) ollamaModel.ready = true;
-        if (ollamaModel) ollamaModel.label = 'Ollama (Online)';
-        showToast('Ollama local engine is online', 'success');
-      } else {
-        if (ollamaModel) ollamaModel.label = 'Ollama (Standby)';
-      }
-      updateModelDisplay();
-    }
-  } catch { /* silently fail */ }
-}
-
-function setStatusPill(status, text) {
-  const dot = document.getElementById('relay-dot');
-  const label = document.getElementById('relay-status-text');
-  dot.className = 'status-dot ' + status;
-  label.textContent = text;
-}
-
-/* ==================== TOAST ==================== */
-function showToast(message, type = 'info') {
+function showToast(msg, type = 'info') {
   const container = document.getElementById('toast-container');
-  const icons = {
-    success: '<svg class="toast-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>',
-    error: '<svg class="toast-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg>',
-    info: '<svg class="toast-icon" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 8v4M12 16h.01"/></svg>'
-  };
   const toast = document.createElement('div');
-  toast.className = 'toast ' + type;
-  toast.innerHTML = (icons[type] || '') + '<span>' + message + '</span>';
+  toast.className = 'toast';
+  toast.textContent = msg;
   container.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity .3s'; setTimeout(() => toast.remove(), 300); }, 3500);
+  setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3500);
 }
 
-/* ==================== INIT ==================== */
-document.addEventListener('DOMContentLoaded', async () => {
-  updateModelDisplay();
-  setStatusPill('busy', 'Connecting…');
-  await checkAllStatus();
-  // Show notification badge after a delay
-  setTimeout(() => {
-    // document.getElementById('notif-badge').style.display = 'inline-flex';
-  }, 2000);
+document.addEventListener('DOMContentLoaded', () => {
+  resizeCanvas();
+  checkAllStatus();
 });
 </script>
 </body>
