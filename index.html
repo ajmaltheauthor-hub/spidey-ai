@@ -676,7 +676,7 @@
     <!-- ==============================================
          3. VIEW: APPS (EXACTLY MATCHING IMAGE 3)
          ============================================== -->
-    <div class="view active" id="view-apps">
+    <div class="view" id="view-apps">
       <div class="apps-body">
         <div class="apps-header">
           <h1 class="apps-title">Apps</h1>
@@ -897,7 +897,7 @@
     <!-- ==============================================
          4. VIEW: WORKSPACE (GOOGLE HYDROGEN VIDEO STUDIO)
          ============================================== -->
-    <div class="view" id="view-workspace">
+    <div class="view active" id="view-workspace">
       <div class="view-topbar">
         <div style="display:flex;align-items:center;gap:var(--space-2)">
           <span class="topbar-title">Google Hydrogen Video Studio</span>
@@ -1625,6 +1625,7 @@ function showToast(msg, type = 'info') {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  switchView('workspace');
   resizeCanvas();
   fetchConnectors();
   fetchAssets();
