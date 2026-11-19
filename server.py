@@ -23,6 +23,7 @@ except ImportError:
     hydrogen_video_engine = None
 
 BASE_DIR = Path(__file__).resolve().parent
+os.chdir(BASE_DIR)
 ENV_FILE = BASE_DIR / ".env"
 VIDEOS_DIR = BASE_DIR / "videos"
 AUDIO_DIR = BASE_DIR / "audio"
@@ -231,6 +232,16 @@ class SpideyHandler(SimpleHTTPRequestHandler):
                         "modified": int(p.stat().st_mtime),
                     })
             self.send_json({"videos": items})
+            return
+
+        if path in ("/", "/index.html"):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+            html_bytes = (BASE_DIR / "index.html").read_bytes()
+            self.send_header("Content-Length", str(len(html_bytes)))
+            self.end_headers()
+            self.wfile.write(html_bytes)
             return
 
         super().do_GET()
@@ -524,9 +535,10 @@ class SpideyHandler(SimpleHTTPRequestHandler):
 
         if self.path in ("/api/engine/hydrogen-direct", "/api/hydrogen/direct"):
             prompt = payload.get("prompt", "Cinematic slow motion shot of a lone samurai walking through a misty forest")
+            higgsfield = payload.get("higgsfield", {})
             try:
                 if hydrogen_video_engine:
-                    spec = hydrogen_video_engine.direct_with_gemini_4_hydrogen(prompt, api_key=GEMINI_API_KEY)
+                    spec = hydrogen_video_engine.direct_with_gemini_4_hydrogen(prompt, api_key=GEMINI_API_KEY, higgsfield=higgsfield)
                 else:
                     spec = {"title": "Hydrogen Scene", "acts": []}
                 self.send_json({"ok": True, "specification": spec})

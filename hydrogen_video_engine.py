@@ -35,17 +35,33 @@ TEMP_DIR.mkdir(parents=True, exist_ok=True)
 
 FFMPEG_BIN = shutil.which("ffmpeg") or r"C:\ffmpeg\bin\ffmpeg.exe"
 
-def direct_with_gemini_4_hydrogen(prompt: str, api_key: str = None) -> dict:
-    """Directs scene cinematography, kinematics, and acts using Gemini 4 Hydrogen."""
+def direct_with_gemini_4_hydrogen(prompt: str, api_key: str = None, higgsfield: dict = None) -> dict:
+    """Directs scene cinematography, kinematics, and acts using Gemini 4 Hydrogen and Higgsfield AI optics."""
     if not api_key:
         api_key = os.environ.get("GEMINI_API_KEY", "")
+
+    hf_info = ""
+    if higgsfield:
+        hf_body = higgsfield.get("cameraBody", "arri_alexa_65")
+        hf_lens = higgsfield.get("lensMm", 35)
+        hf_aperture = higgsfield.get("aperture", "f1.4")
+        hf_motion = higgsfield.get("motionPreset", "dolly_in")
+        hf_ratio = higgsfield.get("aspectRatio", "2.39")
+        hf_info = (
+            f"\nHiggsfield AI (openhiggsfield.ai) Camera Optic Configuration:\n"
+            f"- Virtual Camera Body: {hf_body}\n"
+            f"- Lens Focal Length: {hf_lens}mm Cinema Prime\n"
+            f"- Aperture / Depth of Field: {hf_aperture}\n"
+            f"- Director of Photography Movement: {hf_motion}\n"
+            f"- Format Aspect Ratio: {hf_ratio}\n"
+        )
 
     if api_key:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-4-hydrogen:generateContent?key={api_key}"
         sys_prompt = (
-            "You are Google Hydrogen Video Engine Director. Given a user prompt, produce a production specification JSON with:\n"
+            "You are Google Hydrogen Video Engine Director cooperating with Higgsfield AI (openhiggsfield.ai). Given a user prompt and camera optics, produce a production specification JSON with:\n"
             "1. title: Cinematic title\n"
-            "2. visual_theme: Atmospheric visual style\n"
+            "2. visual_theme: Atmospheric visual style with Higgsfield optics\n"
             "3. camera_motion: {dolly: float, pan: float, tilt: float, fov: float, roll: float}\n"
             "4. kinematics: {character_stride_hz: float, cape_flutter_speed: float, wind_vector: [x,y,z]}\n"
             "5. particles: {type: str, count: int, turbulence: float}\n"
@@ -55,7 +71,7 @@ def direct_with_gemini_4_hydrogen(prompt: str, api_key: str = None) -> dict:
             "Output valid JSON only."
         )
         payload = {
-            "contents": [{"parts": [{"text": f"{sys_prompt}\n\nPrompt: {prompt}"}]}],
+            "contents": [{"parts": [{"text": f"{sys_prompt}\n\nPrompt: {prompt}\n{hf_info}"}]}],
             "generationConfig": {"response_mime_type": "application/json"}
         }
         try:
